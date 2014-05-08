@@ -40,6 +40,10 @@ public class EntityPlayer extends Entity {
 			moveY(moveSpeed * time);
 		}
 
+		if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
+			map.setTile((int) posX, (int) posY, Map.TORCH);
+		}
+
 		if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
 			selectedWeapon = 0;
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_2) && weapons.size() > 1) {
@@ -50,13 +54,13 @@ public class EntityPlayer extends Entity {
 			selectedWeapon = 3;
 		}
 
-		for(Weapon weapon:weapons){
+		for (Weapon weapon : weapons) {
 			weapon.update(time);
 		}
-		
+
 		if (Mouse.isButtonDown(0)) {
 			float targetX = ((float) Mouse.getX()) / map.getTileSize() + map.getOffsX();
-			float targetY = (float)(Display.getHeight() - Mouse.getY()) / map.getTileSize() + map.getOffsY();
+			float targetY = (float) (Display.getHeight() - Mouse.getY()) / map.getTileSize() + map.getOffsY();
 
 			weapons.get(selectedWeapon).start(targetX, targetY);
 		}

@@ -98,11 +98,14 @@ public class Map {
 		shader.reloadFiles();
 		shader.compile(lightString);
 
-		TextureBank.instance.bindTexture("tiles.png");
+		TextureBank.instance.bindTexture("tiles.png", 0);
+		TextureBank.instance.bindTexture("tiles normal.png", 1);
 		shader.activate();
 
 		glUniform2f(glGetUniformLocation(shader.shaderHandle, "offset"), offsX, offsY);
 		glUniform1f(glGetUniformLocation(shader.shaderHandle, "scale"), tileSize);
+		glUniform1i(glGetUniformLocation(shader.shaderHandle, "colorTex"), 0);
+		glUniform1i(glGetUniformLocation(shader.shaderHandle, "normalTex"), 1);
 
 		float tilesX = (Display.getWidth() / tileSize) + 1f;
 		float tilesY = (Display.getHeight() / tileSize) + 1f;
@@ -138,6 +141,10 @@ public class Map {
 		}
 		shader.deactivate();
 
+	}
+
+	public void setTile(int x, int y, Tile tile) {
+		tileIDs[x + y * size] = tile.id;
 	}
 
 	public void load(int[] tileIDs, int size) {

@@ -2,6 +2,7 @@ varying vec2 varyingTexCoord;
 varying vec2 pos;
 
 uniform sampler2D colorTex;
+uniform sampler2D normalTex;
 uniform vec2 offset;
 uniform float scale;
 
@@ -11,11 +12,14 @@ float rand(vec2 co){
 }
 
 float light(vec2 lightPos, float size){
-	return max(size-distance(pos, lightPos - offset), 0.0);
+	float distMult = max((1-pow(distance(pos, lightPos - offset)/size, 3.0)), 0.0);
+	float dirMult = dot((normalize(texture2D(normalTex, varyingTexCoord.xy).xyz - vec3(0.5, 0.5, 0.5))), normalize(vec3(pos-(lightPos - offset), 1.0)));
+
+	return dirMult * distMult;
 }
 
 vec3 lightColor(float bright){
-	return mix(vec3(0.3, 0.6, 1.0), vec3(1.0, 0.6, 0.3), bright+0.0);
+	return mix(vec3(0.3, 0.6, 1.0), vec3(1.2, 0.6, 0.3), bright);
 }
 
 void main(){
@@ -24,7 +28,8 @@ void main(){
 
 	bright = clamp(bright, 0.2, 1.5);
 
-	//bright = clamp(light(vec2(6.5, 2.5)) + light(vec2(7.5, 5.5)), 0.2, 1.5);
 	bright = clamp({light}, 0.2, 1.5);
 	gl_FragColor = vec4(color.rgb * lightColor(min(bright, 1.0)) * bright, color.a);
+	//gl_FragColor = vec4(color.rgb, 1.0) * color.a;
+	//gl_FragColor = vec4(lightColor(min(bright, 1.0)) * bright, color.a);
 }
