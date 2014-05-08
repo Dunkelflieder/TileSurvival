@@ -16,14 +16,17 @@ public class Map {
 	public static final Tile ROCK = new Tile(1, true);
 	public static final Tile TREE = new Tile(2, true);
 	public static final Tile TORCH = new Tile(3, false);
+	public static final Tile CHEST = new Tile(4, true);
 
-	public static final Tile[] TILES = new Tile[] { GRASS, ROCK, TREE, TORCH };
+	public static final Tile[] TILES = new Tile[] { GRASS, ROCK, TREE, TORCH, CHEST };
 
 	private MapShader shader;
 	private EntityPlayer player;
 	private ArrayList<Entity> entities;
 	private ArrayList<Entity> newEntities;
 	private ArrayList<Light> lights;
+	private float playTime;
+	private float dayTime;
 	private String lightString;
 	private int[] tileIDs;
 	private int size;
@@ -66,6 +69,10 @@ public class Map {
 	}
 
 	public void update(float time) {
+		playTime += time;
+		float dayLength = 240f;
+		dayTime = (float) Math.max(Math.sin(playTime * Math.PI * 2 / dayLength), 0.0f);
+
 		for (int i = entities.size() - 1; i >= 0; i--) {
 			if (entities.get(i).removed) {
 				entities.remove(i);
@@ -106,6 +113,7 @@ public class Map {
 		glUniform1f(glGetUniformLocation(shader.shaderHandle, "scale"), tileSize);
 		glUniform1i(glGetUniformLocation(shader.shaderHandle, "colorTex"), 0);
 		glUniform1i(glGetUniformLocation(shader.shaderHandle, "normalTex"), 1);
+		glUniform1f(glGetUniformLocation(shader.shaderHandle, "dayTime"), dayTime);
 
 		float tilesX = (Display.getWidth() / tileSize) + 1f;
 		float tilesY = (Display.getHeight() / tileSize) + 1f;

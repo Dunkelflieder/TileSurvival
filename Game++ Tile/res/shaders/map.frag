@@ -5,7 +5,11 @@ uniform sampler2D colorTex;
 uniform sampler2D normalTex;
 uniform vec2 offset;
 uniform float scale;
+uniform float dayTime;
 
+vec3 nightColor=vec3(0.3, 0.6, 1.0);
+vec3 torchColor=vec3(1.2, 0.6, 0.3);
+vec3 dayColor=vec3(1.0, 0.8, 0.8);
 
 float rand(vec2 co){
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
@@ -26,10 +30,8 @@ void main(){
 	vec4 color = texture2D(colorTex, varyingTexCoord.xy);
 	float bright = 0.0;
 
-	bright = clamp(bright, 0.2, 1.5);
-
 	bright = clamp({light}, 0.2, 1.5);
-	gl_FragColor = vec4(color.rgb * lightColor(min(bright, 1.0)) * bright, color.a);
-	//gl_FragColor = vec4(color.rgb, 1.0) * color.a;
-	//gl_FragColor = vec4(lightColor(min(bright, 1.0)) * bright, color.a);
+	vec3 lightColor = mix(lightColor(min(bright, 1.0)) * bright, dayColor, sin(dayTime));
+
+	gl_FragColor = vec4(color.rgb * lightColor, color.a);
 }

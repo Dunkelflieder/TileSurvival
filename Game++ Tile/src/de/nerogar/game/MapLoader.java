@@ -20,6 +20,8 @@ public class MapLoader {
 			return Map.TREE.id;
 		case 0x8080:
 			return Map.TORCH.id;
+		case 0x0080:
+			return Map.CHEST.id;
 
 		default:
 			return Map.GRASS.id;
