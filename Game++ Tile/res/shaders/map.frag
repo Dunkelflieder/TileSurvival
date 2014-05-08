@@ -13,7 +13,7 @@ float rand(vec2 co){
 
 float light(vec2 lightPos, float size){
 	float distMult = max((1-pow(distance(pos, lightPos - offset)/size, 3.0)), 0.0);
-	float dirMult = dot((normalize(texture2D(normalTex, varyingTexCoord.xy).xyz - vec3(0.5, 0.5, 0.5))), normalize(vec3(pos-(lightPos - offset), 1.0)));
+	float dirMult = max(dot((normalize(texture2D(normalTex, varyingTexCoord.xy).xyz - vec3(0.5, 0.5, 0.5))), normalize(vec3(pos-(lightPos - offset), 1.0))), 0.0);
 
 	return dirMult * distMult;
 }
