@@ -10,7 +10,7 @@ public class EntityFireball extends Entity {
 	private float targetX;
 	private float targetY;
 
-	private static final float MAX_LIFETIME = 0.3f;
+	private static final float MAX_LIFETIME = 0.15f;
 	private float lifetime;
 
 	public EntityFireball(Map map, float posX, float posY, float targetX, float targetY) {

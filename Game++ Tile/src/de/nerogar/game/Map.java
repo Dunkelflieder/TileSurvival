@@ -7,8 +7,7 @@ import java.util.ArrayList;
 
 import org.lwjgl.opengl.Display;
 
-import de.nerogar.game.entity.Entity;
-import de.nerogar.game.entity.EntityPlayer;
+import de.nerogar.game.entity.*;
 import de.nerogar.game.graphics.*;
 
 public class Map {
@@ -151,7 +150,13 @@ public class Map {
 		lights = new ArrayList<Light>();
 		for (int i = 0; i < tileIDs.length; i++) {
 			if (tileIDs[i] == TORCH.id) {
-				lights.add(new Light(((float) (i % size)) + 0.5f, ((float) (i / size)) + 0.5f, 1f));
+				lights.add(new Light(((float) (i % size)) + 0.5f, ((float) (i / size)) + 0.5f, 5f));
+			}
+		}
+
+		for (Entity entity : entities) {
+			if (entity instanceof EntityFireball) {
+				lights.add(new Light(entity.posX, entity.posY, 1f));
 			}
 		}
 

@@ -11,7 +11,7 @@ float rand(vec2 co){
 }
 
 float light(vec2 lightPos, float size){
-	return max(size-distance(pos, lightPos - offset)/size, 0.0);
+	return max(size-distance(pos, lightPos - offset), 0.0);
 }
 
 vec3 lightColor(float bright){
