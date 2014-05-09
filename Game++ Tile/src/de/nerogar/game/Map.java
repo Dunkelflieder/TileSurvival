@@ -185,7 +185,7 @@ public class Map {
 		}
 
 		
-		final int MAX_LIGHTS = 500;
+		final int MAX_LIGHTS = 100;
 		float[] lightBufferXArray = new float[MAX_LIGHTS];
 		float[] lightBufferYArray = new float[MAX_LIGHTS];
 		float[] lightBufferSizeArray = new float[MAX_LIGHTS];
