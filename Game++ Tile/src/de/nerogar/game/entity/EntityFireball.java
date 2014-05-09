@@ -14,7 +14,7 @@ public class EntityFireball extends Entity {
 	private float lifetime;
 
 	public EntityFireball(Map map, float posX, float posY, float targetX, float targetY) {
-		super(map, posX, posY);
+		super(map, posX, posY, 0);
 
 		this.sourceX = posX;
 		this.sourceY = posY;

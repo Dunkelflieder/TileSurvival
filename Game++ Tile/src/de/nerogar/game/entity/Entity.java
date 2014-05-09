@@ -14,6 +14,7 @@ public abstract class Entity {
 	public float height = 1f;
 
 	public float moveSpeed;
+	public int maxHealth;
 	public int health;
 	public boolean removed;
 
@@ -23,10 +24,12 @@ public abstract class Entity {
 	private float tileTextureSize = 1f / textureSize * 32f;
 	private int tilesOnTexture = 16;
 
-	public Entity(Map map, float posX, float posY) {
+	public Entity(Map map, float posX, float posY, int health) {
 		this.map = map;
 		this.posX = posX;
 		this.posY = posY;
+		this.maxHealth = health;
+		this.health = health;
 	}
 
 	public void moveX(float distance) {
@@ -56,18 +59,17 @@ public abstract class Entity {
 		glBegin(GL_QUADS);
 
 		glTexCoord2f(tilePosX * tileTextureSize, tilePosY * tileTextureSize);
-		glVertex3f((posX - map.getOffsX()) * map.getTileSize(), (posY - map.getOffsY()) * map.getTileSize(), -1f);
+		glVertex3f((posX - map.getOffsX()) * Map.TILE_RENDER_SIZE, (posY - map.getOffsY()) * Map.TILE_RENDER_SIZE, -1f);
 
 		glTexCoord2f((tilePosX + 1) * tileTextureSize, tilePosY * tileTextureSize);
-		glVertex3f((posX - map.getOffsX() + width) * map.getTileSize(), (posY - map.getOffsY()) * map.getTileSize(), -1f);
+		glVertex3f((posX - map.getOffsX() + width) * Map.TILE_RENDER_SIZE, (posY - map.getOffsY()) * Map.TILE_RENDER_SIZE, -1f);
 
 		glTexCoord2f((tilePosX + 1) * tileTextureSize, (tilePosY + 1) * tileTextureSize);
-		glVertex3f((posX - map.getOffsX() + width) * map.getTileSize(), (posY - map.getOffsY() + height) * map.getTileSize(), -1f);
+		glVertex3f((posX - map.getOffsX() + width) * Map.TILE_RENDER_SIZE, (posY - map.getOffsY() + height) * Map.TILE_RENDER_SIZE, -1f);
 
 		glTexCoord2f(tilePosX * tileTextureSize, (tilePosY + 1) * tileTextureSize);
-		glVertex3f((posX - map.getOffsX()) * map.getTileSize(), (posY - map.getOffsY() + height) * map.getTileSize(), -1f);
+		glVertex3f((posX - map.getOffsX()) * Map.TILE_RENDER_SIZE, (posY - map.getOffsY() + height) * Map.TILE_RENDER_SIZE, -1f);
 
 		glEnd();
 	}
-
 }

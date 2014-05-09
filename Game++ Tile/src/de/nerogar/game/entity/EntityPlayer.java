@@ -6,19 +6,21 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
+import de.nerogar.game.InputHandler;
 import de.nerogar.game.Map;
 import de.nerogar.game.weapon.Fireball;
 import de.nerogar.game.weapon.Weapon;
 
 public class EntityPlayer extends Entity {
 
-	private ArrayList<Weapon> weapons;
-	private int selectedWeapon;
+	public ArrayList<Weapon> weapons;
+	public int selectedWeapon;
 
 	public EntityPlayer(Map map, float posX, float posY) {
-		super(map, posX, posY);
+		super(map, posX, posY, 100);
 		weapons = new ArrayList<Weapon>();
-		weapons.add(new Fireball(this, 3, 0.3f));
+		weapons.add(new Fireball(this, 3, 1.0f));
+		weapons.add(new Fireball(this, 3, 0.0f));
 	}
 
 	@Override
@@ -59,11 +61,19 @@ public class EntityPlayer extends Entity {
 		}
 
 		if (Mouse.isButtonDown(0)) {
-			float targetX = ((float) Mouse.getX()) / map.getTileSize() + map.getOffsX();
-			float targetY = (float) (Display.getHeight() - Mouse.getY()) / map.getTileSize() + map.getOffsY();
+			float targetX = ((float) Mouse.getX()) / Map.TILE_RENDER_SIZE + map.getOffsX();
+			float targetY = (float) (Display.getHeight() - Mouse.getY()) / Map.TILE_RENDER_SIZE + map.getOffsY();
 
 			weapons.get(selectedWeapon).start(targetX, targetY);
 		}
 
+		if (InputHandler.isMouseButtonPressed(1)) {
+			selectedWeapon = (selectedWeapon + 1) % weapons.size();
+		}
+
+	}
+
+	public Weapon getSelectedWeapon() {
+		return weapons.get(selectedWeapon);
 	}
 }
