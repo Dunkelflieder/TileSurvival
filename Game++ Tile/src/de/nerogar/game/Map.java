@@ -22,6 +22,12 @@ public class Map {
 
 	public static final Tile[] TILES = new Tile[] { GRASS, ROCK, TREE, TORCH, CHEST };
 
+	public static final float TILE_RENDER_SIZE = 64f;
+	public static final float TEXTURE_SIZE = 256f;
+	public static final float TILE_TEXTURE_SIZE = 1f / TEXTURE_SIZE * 32f;
+	public static final float TILES_ON_TEXTURE = 8f;
+	public static final float TILE_PIXEL_COUNT = TEXTURE_SIZE / TILES_ON_TEXTURE;
+
 	private Shader shader;
 	private EntityPlayer player;
 	private ArrayList<Entity> entities;
@@ -34,10 +40,6 @@ public class Map {
 	private FloatBuffer lightBufferSize;
 	private int[] tileIDs;
 	private int size;
-	private float tileSize = 64f;
-	private float textureSize = 256f;
-	private float tileTextureSize = 1f / textureSize * 32f;
-	private int tilesOnTexture = 8;
 
 	private float offsX;
 	private float offsY;
@@ -92,11 +94,11 @@ public class Map {
 			entity.update(time);
 		}
 
-		offsX = player.posX - (((Display.getWidth() / tileSize) - player.width) / 2f);
-		offsY = player.posY - (((Display.getHeight() / tileSize) - player.height) / 2f);
+		offsX = player.posX - (((Display.getWidth() / TILE_RENDER_SIZE) - player.width) / 2f);
+		offsY = player.posY - (((Display.getHeight() / TILE_RENDER_SIZE) - player.height) / 2f);
 
-		tilesX = (Display.getWidth() / tileSize);
-		tilesY = (Display.getHeight() / tileSize);
+		tilesX = (Display.getWidth() / TILE_RENDER_SIZE);
+		tilesY = (Display.getHeight() / TILE_RENDER_SIZE);
 
 		offsX = Math.max(0f, Math.min(offsX, size - tilesX));
 		offsY = Math.max(0f, Math.min(offsY, size - tilesY));
@@ -114,7 +116,7 @@ public class Map {
 		shader.activate();
 
 		glUniform2f(glGetUniformLocation(shader.shaderHandle, "offset"), offsX, offsY);
-		glUniform1f(glGetUniformLocation(shader.shaderHandle, "scale"), tileSize);
+		glUniform1f(glGetUniformLocation(shader.shaderHandle, "scale"), TILE_RENDER_SIZE);
 		glUniform1i(glGetUniformLocation(shader.shaderHandle, "colorTex"), 0);
 		glUniform1i(glGetUniformLocation(shader.shaderHandle, "normalTex"), 1);
 		glUniform1f(glGetUniformLocation(shader.shaderHandle, "dayTime"), dayTime);
@@ -124,28 +126,28 @@ public class Map {
 		glUniform1(glGetUniformLocation(shader.shaderHandle, "lightsSize"), lightBufferSize);
 		glUniform1i(glGetUniformLocation(shader.shaderHandle, "lightsCount"), lights.size());
 
-		float tilesX = (Display.getWidth() / tileSize) + 1f;
-		float tilesY = (Display.getHeight() / tileSize) + 1f;
+		float tilesX = (Display.getWidth() / TILE_RENDER_SIZE) + 1f;
+		float tilesY = (Display.getHeight() / TILE_RENDER_SIZE) + 1f;
 
 		for (int i = Math.max(0, (int) offsX); i < Math.min(offsX + (tilesX), size); i++) {
 			for (int j = Math.max(0, (int) offsY); j < Math.min(offsY + (tilesY), size); j++) {
 
 				int tileID = tileIDs[i + j * size];
-				int tilePosX = tileID % tilesOnTexture;
-				int tilePosY = tileID / tilesOnTexture;
+				int tilePosX = tileID % (int) TILES_ON_TEXTURE;
+				int tilePosY = tileID / (int) TILES_ON_TEXTURE;
 
 				glBegin(GL_QUADS);
-				glTexCoord2f(tilePosX * tileTextureSize, tilePosY * tileTextureSize);
-				glVertex3f((i * tileSize) - (offsX * tileSize), (j * tileSize) - (offsY * tileSize), -1f);
+				glTexCoord2f(tilePosX * TILE_TEXTURE_SIZE, tilePosY * TILE_TEXTURE_SIZE);
+				glVertex3f((i * TILE_RENDER_SIZE) - (offsX * TILE_RENDER_SIZE), (j * TILE_RENDER_SIZE) - (offsY * TILE_RENDER_SIZE), -1f);
 
-				glTexCoord2f((tilePosX + 1) * tileTextureSize, tilePosY * tileTextureSize);
-				glVertex3f((i * tileSize + tileSize) - (offsX * tileSize), (j * tileSize) - (offsY * tileSize), -1f);
+				glTexCoord2f((tilePosX + 1) * TILE_TEXTURE_SIZE, tilePosY * TILE_TEXTURE_SIZE);
+				glVertex3f((i * TILE_RENDER_SIZE + TILE_RENDER_SIZE) - (offsX * TILE_RENDER_SIZE), (j * TILE_RENDER_SIZE) - (offsY * TILE_RENDER_SIZE), -1f);
 
-				glTexCoord2f((tilePosX + 1) * tileTextureSize, (tilePosY + 1) * tileTextureSize);
-				glVertex3f((i * tileSize + tileSize) - (offsX * tileSize), (j * tileSize + tileSize) - (offsY * tileSize), -1f);
+				glTexCoord2f((tilePosX + 1) * TILE_TEXTURE_SIZE, (tilePosY + 1) * TILE_TEXTURE_SIZE);
+				glVertex3f((i * TILE_RENDER_SIZE + TILE_RENDER_SIZE) - (offsX * TILE_RENDER_SIZE), (j * TILE_RENDER_SIZE + TILE_RENDER_SIZE) - (offsY * TILE_RENDER_SIZE), -1f);
 
-				glTexCoord2f(tilePosX * tileTextureSize, (tilePosY + 1) * tileTextureSize);
-				glVertex3f((i * tileSize) - (offsX * tileSize), (j * tileSize + tileSize) - (offsY * tileSize), -1f);
+				glTexCoord2f(tilePosX * TILE_TEXTURE_SIZE, (tilePosY + 1) * TILE_TEXTURE_SIZE);
+				glVertex3f((i * TILE_RENDER_SIZE) - (offsX * TILE_RENDER_SIZE), (j * TILE_RENDER_SIZE + TILE_RENDER_SIZE) - (offsY * TILE_RENDER_SIZE), -1f);
 
 				glEnd();
 			}
@@ -184,7 +186,6 @@ public class Map {
 			}
 		}
 
-		
 		final int MAX_LIGHTS = 100;
 		float[] lightBufferXArray = new float[MAX_LIGHTS];
 		float[] lightBufferYArray = new float[MAX_LIGHTS];
@@ -193,7 +194,7 @@ public class Map {
 		int index = 0;
 
 		for (Light light : lights) {
-			if (light.inArea(offsX, offsY, (Display.getWidth() / tileSize), (Display.getHeight() / tileSize))) {
+			if (light.inArea(offsX, offsY, (Display.getWidth() / TILE_RENDER_SIZE), (Display.getHeight() / TILE_RENDER_SIZE))) {
 				lightBufferXArray[index] = light.posX;
 				lightBufferYArray[index] = light.posY;
 				lightBufferSizeArray[index] = light.size;
@@ -221,16 +222,16 @@ public class Map {
 		return size;
 	}
 
-	public float getTileSize() {
-		return tileSize;
-	}
-
 	public float getOffsX() {
 		return offsX;
 	}
 
 	public float getOffsY() {
 		return offsY;
+	}
+
+	public EntityPlayer getPlayer() {
+		return player;
 	}
 
 }
