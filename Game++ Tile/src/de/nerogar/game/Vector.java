@@ -4,10 +4,20 @@ public class Vector {
 
 	private float x;
 	private float y;
+	private float value;
+	private boolean valueDirty = true;
 
 	public Vector(float x, float y) {
 		this.setX(x);
 		this.setY(y);
+	}
+
+	// Constructor for cloning
+	private Vector(float x, float y, float value, boolean valueDirty) {
+		this.x = x;
+		this.y = y;
+		this.value = value;
+		this.valueDirty = valueDirty;
 	}
 
 	public void addX(float x) {
@@ -36,6 +46,10 @@ public class Vector {
 		return this;
 	}
 
+	public Vector normalize() {
+		return setValue(1f);
+	}
+
 	public Vector added(Vector v) {
 		return clone().add(v);
 	}
@@ -46,6 +60,10 @@ public class Vector {
 
 	public Vector multiplied(float r) {
 		return clone().multiply(r);
+	}
+
+	public Vector normalized() {
+		return clone().normalize();
 	}
 
 	public Vector set(Vector v) {
@@ -60,6 +78,7 @@ public class Vector {
 
 	public void setX(float x) {
 		this.x = x;
+		valueDirty = true;
 	}
 
 	public float getY() {
@@ -68,11 +87,29 @@ public class Vector {
 
 	public void setY(float y) {
 		this.y = y;
+		valueDirty = true;
+	}
+
+	public float getValue() {
+		if (valueDirty)
+			recalculateValue();
+		return value;
+	}
+
+	public Vector setValue(float value) {
+		multiply(getValue() / this.value);
+		this.value = value;
+		valueDirty = false;
+		return this;
+	}
+
+	private void recalculateValue() {
+		setValue((float) Math.sqrt(getX() * getX() + getY() * getY()));
 	}
 
 	@Override
 	public Vector clone() {
-		return new Vector(getX(), getY());
+		return new Vector(this.x, this.y, this.value, this.valueDirty);
 	}
 
 }
