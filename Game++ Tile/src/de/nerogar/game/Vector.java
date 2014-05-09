@@ -97,7 +97,7 @@ public class Vector {
 	}
 
 	public Vector setValue(float value) {
-		multiply(getValue() / this.value);
+		multiply(value / getValue());
 		this.value = value;
 		valueDirty = false;
 		return this;
