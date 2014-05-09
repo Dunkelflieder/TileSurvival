@@ -3,8 +3,10 @@ package de.nerogar.game;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.entity.*;
@@ -20,14 +22,16 @@ public class Map {
 
 	public static final Tile[] TILES = new Tile[] { GRASS, ROCK, TREE, TORCH, CHEST };
 
-	private MapShader shader;
+	private Shader shader;
 	private EntityPlayer player;
 	private ArrayList<Entity> entities;
 	private ArrayList<Entity> newEntities;
 	private ArrayList<Light> lights;
 	private float playTime;
 	private float dayTime;
-	private String lightString;
+	private FloatBuffer lightBufferX;
+	private FloatBuffer lightBufferY;
+	private FloatBuffer lightBufferSize;
 	private int[] tileIDs;
 	private int size;
 	private float tileSize = 64f;
@@ -41,7 +45,7 @@ public class Map {
 	private float tilesY;
 
 	public Map() {
-		shader = new MapShader("map");
+		shader = new Shader("map");
 		initShader();
 		player = new EntityPlayer(this, 0f, 0f);
 		entities = new ArrayList<Entity>();
@@ -103,7 +107,7 @@ public class Map {
 	public void render() {
 		RenderHelper.disableAlpha();
 		shader.reloadFiles();
-		shader.compile(lightString);
+		shader.compile();
 
 		TextureBank.instance.bindTexture("tiles.png", 0);
 		TextureBank.instance.bindTexture("tiles normal.png", 1);
@@ -114,6 +118,11 @@ public class Map {
 		glUniform1i(glGetUniformLocation(shader.shaderHandle, "colorTex"), 0);
 		glUniform1i(glGetUniformLocation(shader.shaderHandle, "normalTex"), 1);
 		glUniform1f(glGetUniformLocation(shader.shaderHandle, "dayTime"), dayTime);
+
+		glUniform1(glGetUniformLocation(shader.shaderHandle, "lightsX"), lightBufferX);
+		glUniform1(glGetUniformLocation(shader.shaderHandle, "lightsY"), lightBufferY);
+		glUniform1(glGetUniformLocation(shader.shaderHandle, "lightsSize"), lightBufferSize);
+		glUniform1i(glGetUniformLocation(shader.shaderHandle, "lightsCount"), lights.size());
 
 		float tilesX = (Display.getWidth() / tileSize) + 1f;
 		float tilesY = (Display.getHeight() / tileSize) + 1f;
@@ -175,17 +184,37 @@ public class Map {
 			}
 		}
 
-		StringBuilder sb = new StringBuilder();
-		sb.append("");
-		for (int i = 0; i < lights.size(); i++) {
-			if (i < lights.size() - 1) {
-				sb.append(lights.get(i).toString()).append("+");
-			} else {
-				sb.append(lights.get(i).toString());
+		
+		final int MAX_LIGHTS = 500;
+		float[] lightBufferXArray = new float[MAX_LIGHTS];
+		float[] lightBufferYArray = new float[MAX_LIGHTS];
+		float[] lightBufferSizeArray = new float[MAX_LIGHTS];
+
+		int index = 0;
+
+		for (Light light : lights) {
+			if (light.inArea(offsX, offsY, (Display.getWidth() / tileSize), (Display.getHeight() / tileSize))) {
+				lightBufferXArray[index] = light.posX;
+				lightBufferYArray[index] = light.posY;
+				lightBufferSizeArray[index] = light.size;
+				index++;
 			}
+			if (index >= MAX_LIGHTS) break;
 		}
 
-		lightString = sb.toString();
+		System.out.println("lights:" + index);
+
+		lightBufferX = BufferUtils.createFloatBuffer(lightBufferXArray.length);
+		lightBufferX.put(lightBufferXArray);
+		lightBufferX.flip();
+
+		lightBufferY = BufferUtils.createFloatBuffer(lightBufferYArray.length);
+		lightBufferY.put(lightBufferYArray);
+		lightBufferY.flip();
+
+		lightBufferSize = BufferUtils.createFloatBuffer(lightBufferSizeArray.length);
+		lightBufferSize.put(lightBufferSizeArray);
+		lightBufferSize.flip();
 	}
 
 	public int getSize() {

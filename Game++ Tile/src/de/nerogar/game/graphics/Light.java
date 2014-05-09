@@ -15,4 +15,12 @@ public class Light {
 	public String toString() {
 		return "light(vec2(" + posX + "," + posY + ")," + size + ")";
 	}
+
+	public boolean inArea(float offsX, float offsY, float width, float height) {
+		if (posX + size < offsX) return false;
+		if (posX - size > offsX + width) return false;
+		if (posY + size < offsY) return false;
+		if (posY - size > offsY + height) return false;
+		return true;
+	}
 }
