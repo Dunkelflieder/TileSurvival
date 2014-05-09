@@ -104,7 +104,7 @@ public class Vector {
 	}
 
 	private void recalculateValue() {
-		setValue((float) Math.sqrt(getX() * getX() + getY() * getY()));
+		this.value = (float) Math.sqrt(getX() * getX() + getY() * getY());
 	}
 
 	@Override
