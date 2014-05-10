@@ -15,14 +15,18 @@ public class EntityFireball extends Entity {
 	Vector direction;
 	private float hitTime;
 
-	public EntityFireball(Map map, float posX, float posY, float targetX, float targetY) {
-		super(map, posX, posY, 0);
+	private Entity sender;
+
+	public EntityFireball(Entity sender, Map map, float posX, float posY, float targetX, float targetY, int damage) {
+		super(map, posX, posY, damage);
 
 		this.sourceX = posX;
 		this.sourceY = posY;
 
 		this.targetX = targetX;
 		this.targetY = targetY;
+
+		this.sender = sender;
 
 		moveSpeed = 50.0f;
 
@@ -35,7 +39,7 @@ public class EntityFireball extends Entity {
 		width = 0.2f;
 		height = 0.2f;
 
-		light = new Light(0, 0, 2, 2);
+		light = new Light(0, 0, 2, 0.8f);
 	}
 
 	@Override
@@ -43,19 +47,19 @@ public class EntityFireball extends Entity {
 		hitTime -= time;
 
 		if (map.isColliding(posX + direction.getX() * time, posY + direction.getY() * time, width, height)) {
-			explode();
+			kill();
 		} else if (hitTime < 0) {
 			posX = targetX;
 			posY = targetY;
-			explode();
+			kill();
 		} else {
 			moveX(direction.getX() * time);
 			moveY(direction.getY() * time);
 		}
 	}
 
-	private void explode() {
-		map.spawnEntity(new EntityExplosion(map, posX + (width / 2), posY + (height / 2), 2f, 5));
-		remove();
+	@Override
+	public void onDie() {
+		map.spawnEntity(new EntityExplosion(sender, map, posX + (width / 2), posY + (height / 2), 2f, health));
 	}
 }

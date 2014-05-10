@@ -2,11 +2,11 @@ package de.nerogar.game.weapon;
 
 import de.nerogar.game.entity.*;
 
-public class FireBlast extends Weapon {
+public class SlowDownArea extends Weapon {
 
-	public FireBlast(EntityPlayer player, int damage, float cooldown) {
+	public SlowDownArea(EntityPlayer player, int damage, float cooldown) {
 		super(player, damage, cooldown);
-		textureID = 1;
+		textureID = 2;
 	}
 
 	@Override
@@ -17,7 +17,7 @@ public class FireBlast extends Weapon {
 
 	@Override
 	public int getEnergyCost() {
-		return 20;
+		return 15;
 	}
 
 }

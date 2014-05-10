@@ -12,11 +12,13 @@ public class Fireball extends Weapon {
 
 	@Override
 	public void start(float targetX, float targetY) {
-		if (cooldown > 0f) return;
-		cooldown = maxCooldown;
-
-		EntityFireball fireball = new EntityFireball(player.map, player.posX, player.posY, targetX, targetY);
+		EntityFireball fireball = new EntityFireball(player, player.map, player.posX, player.posY, targetX, targetY, damage);
 		player.map.spawnEntity(fireball);
+	}
+
+	@Override
+	public int getEnergyCost() {
+		return 5;
 	}
 
 }

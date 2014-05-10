@@ -14,39 +14,40 @@ public class EntityPlayer extends Entity {
 
 	public ArrayList<Weapon> weapons;
 	public int selectedWeapon;
-	public float energy;
-	public float maxEnergy;
+	public int energy;
+	public int maxEnergy;
+	private float nextEnergyRestore;
 
 	public EntityPlayer(Map map, float posX, float posY) {
 		super(map, posX, posY, 100);
 		weapons = new ArrayList<Weapon>();
 		weapons.add(new Fireball(this, 3, 1.0f));
-		//weapons.add(new Fireball(this, 3, 0.0f));
+		weapons.add(new SlowDownArea(this, 0, 2.0f));
 		weapons.add(new FireBlast(this, 10, 2.0f));
-		maxEnergy = 10.0f;
+		maxEnergy = 100;
 		energy = maxEnergy;
-		moveSpeed = 2.5f;
+		moveSpeed = 3.0f;
 	}
 
 	@Override
 	public void update(float time) {
 		super.update(time);
 
-		float sprinting = 1.0f;
+		//float sprinting = 1.0f;
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) sprinting *= 2.0f;
+		//if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) sprinting *= 2.0f;
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-			moveX(moveSpeed * time * sprinting);
+			moveX(moveSpeed * time * speedmult);
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-			moveX(-moveSpeed * time * sprinting);
+			moveX(-moveSpeed * time * speedmult);
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-			moveY(-moveSpeed * time * sprinting);
+			moveY(-moveSpeed * time * speedmult);
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			moveY(moveSpeed * time * sprinting);
+			moveY(moveSpeed * time * speedmult);
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
@@ -71,17 +72,34 @@ public class EntityPlayer extends Entity {
 			float targetX = ((float) Mouse.getX()) / Map.TILE_RENDER_SIZE + map.getOffsX();
 			float targetY = (float) (Display.getHeight() - Mouse.getY()) / Map.TILE_RENDER_SIZE + map.getOffsY();
 
-			weapons.get(selectedWeapon).start(targetX, targetY);
+			Weapon weapon = weapons.get(selectedWeapon);
+
+			if (weapon.cooldown <= 0f && energy >= weapon.getEnergyCost()) {
+				weapons.get(selectedWeapon).start(targetX, targetY);
+				energy -= weapons.get(selectedWeapon).getEnergyCost();
+				weapon.cooldown = weapon.maxCooldown;
+			}
 		}
 
 		if (InputHandler.isMouseButtonPressed(1)) {
 			selectedWeapon = (selectedWeapon + 1) % weapons.size();
 		}
 
+		if (nextEnergyRestore <= 0 && energy < maxEnergy) {
+			nextEnergyRestore = 0.5f;
+			energy += 1;
+		}
+		nextEnergyRestore -= time;
+
 	}
 
 	public Weapon getSelectedWeapon() {
 		return weapons.get(selectedWeapon);
+	}
+
+	@Override
+	public void onDie() {
+		//TODO game end
 	}
 
 }

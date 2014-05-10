@@ -21,6 +21,12 @@ public class StatusBar {
 	public void render() {
 		TextureBank.instance.bindTexture("gui.png");
 
+		renderBar(2f, 1f);
+		renderBar(texturePos, position);
+
+	}
+
+	private void renderBar(float texturePos, float position) {
 		glBegin(GL_QUADS);
 
 		glTexCoord2f(0, Map.TILE_TEXTURE_SIZE * 7f + textureHeight * texturePos);
@@ -36,6 +42,5 @@ public class StatusBar {
 		glVertex3f(posX * Map.TILE_RENDER_SIZE, (posY + (pixelHeight / Map.TILE_PIXEL_COUNT)) * Map.TILE_RENDER_SIZE, -1f);
 
 		glEnd();
-
 	}
 }

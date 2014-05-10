@@ -14,4 +14,9 @@ public class EntitySmallEnemy extends Entity {
 	public void update(float time) {
 		super.update(time);
 	}
+
+	@Override
+	public void onDie() {
+		map.spawnEntity(new EntityEnergyDrop(map, posX, posY));
+	}
 }

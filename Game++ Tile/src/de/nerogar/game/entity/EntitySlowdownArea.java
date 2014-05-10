@@ -2,9 +2,8 @@ package de.nerogar.game.entity;
 
 import de.nerogar.game.Map;
 import de.nerogar.game.Vector;
-import de.nerogar.game.graphics.Light;
 
-public class EntityExplosion extends Entity {
+public class EntitySlowdownArea extends Entity {
 
 	private boolean dealtDamage;
 	private final float MAX_LIFFETIME = 0.1f;
@@ -13,7 +12,7 @@ public class EntityExplosion extends Entity {
 
 	private Entity sender;
 
-	public EntityExplosion(Entity sender, Map map, float posX, float posY, float radius, int damage) {
+	public EntitySlowdownArea(Entity sender, Map map, float posX, float posY, float radius, int damage) {
 		super(map, posX, posY, 0);
 		lifeTime = MAX_LIFFETIME;
 		this.radius = radius;
@@ -26,7 +25,12 @@ public class EntityExplosion extends Entity {
 		this.posX -= radius;
 		this.posY -= radius;
 
-		light = new Light(0, 0, 20f, 5f);
+		for (Entity entity : map.getEntities()) {
+			if (intersects(entity.getCenter())) {
+				entity.speedmult = 0.1f;
+				entity.speedmultTime = 6f;
+			}
+		}
 	}
 
 	public boolean intersects(Vector entityPos) {

@@ -21,9 +21,9 @@ public class GuiIngame extends Gui {
 
 	@Override
 	public void render() {
-		
-		lifeBar.position = (float)player.health / player.maxHealth;
-		energyBar.position = player.energy / player.maxEnergy;
+
+		lifeBar.position = (float) player.health / player.maxHealth;
+		energyBar.position = (float) player.energy / player.maxEnergy;
 
 		lifeBar.posX = 0.5f;
 		lifeBar.posY = (Display.getHeight() / Map.TILE_RENDER_SIZE) - 1.6f;

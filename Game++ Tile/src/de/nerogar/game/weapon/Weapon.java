@@ -71,4 +71,6 @@ public abstract class Weapon {
 		glEnd();
 	}
 
+	public abstract int getEnergyCost();
+
 }

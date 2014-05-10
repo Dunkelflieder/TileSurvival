@@ -20,8 +20,11 @@ public abstract class Entity {
 	public float moveSpeed;
 	public int maxHealth;
 	public int health;
-	public boolean removed;
 
+	public float speedmult;
+	public float speedmultTime;
+
+	public boolean removed;
 	public int textureID = 0;
 
 	private float textureSize = 512f;
@@ -48,16 +51,26 @@ public abstract class Entity {
 		}
 	}
 
+	public boolean intersects(Vector entityPos) {
+		if (entityPos.getX() < posX || entityPos.getY() < posY || entityPos.getX() > posX + width || entityPos.getY() > posY + height) return false;
+		return true;
+	}
+
 	public void damage(int damage) {
 		health -= damage;
 	}
 
-	public void remove() {
+	public void kill() {
 		removed = true;
+		onDie();
 	}
 
+	public abstract void onDie();
+
 	public void update(float time) {
-		if (health <= 0) remove();
+		if (health <= 0) kill();
+		if (speedmultTime < 0) speedmult = 1.0f;
+		speedmultTime -= time;
 	}
 
 	public void render() {
@@ -83,7 +96,7 @@ public abstract class Entity {
 
 		glEnd();
 	}
-	
+
 	public Vector getCenter() {
 		return new Vector(posX + width / 2f, posY + height / 2f);
 	}
