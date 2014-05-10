@@ -2,6 +2,7 @@ package de.nerogar.game.entity;
 
 import de.nerogar.game.Map;
 import de.nerogar.game.Vector;
+import de.nerogar.game.graphics.Light;
 
 public class EntityFireball extends Entity {
 
@@ -33,6 +34,8 @@ public class EntityFireball extends Entity {
 		textureID = 16 * 15;
 		width = 0.2f;
 		height = 0.2f;
+
+		light = new Light(0, 0, 2, 2);
 	}
 
 	@Override
@@ -52,8 +55,7 @@ public class EntityFireball extends Entity {
 	}
 
 	private void explode() {
-		//TODO explode
-
+		map.spawnEntity(new EntityExplosion(map, posX + (width / 2), posY + (height / 2), 2f, 5));
 		remove();
 	}
 }

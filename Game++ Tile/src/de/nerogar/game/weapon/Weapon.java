@@ -20,7 +20,8 @@ public abstract class Weapon {
 	public Weapon(EntityPlayer player, int damage, float cooldown) {
 		this.player = player;
 		this.damage = damage;
-		this.cooldown = cooldown;
+		//this.cooldown = cooldown;
+		this.maxCooldown = cooldown;
 	}
 
 	public abstract void start(float targetX, float targetY);

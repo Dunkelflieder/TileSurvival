@@ -8,38 +8,45 @@ import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.InputHandler;
 import de.nerogar.game.Map;
-import de.nerogar.game.weapon.Fireball;
-import de.nerogar.game.weapon.Weapon;
+import de.nerogar.game.weapon.*;
 
 public class EntityPlayer extends Entity {
 
 	public ArrayList<Weapon> weapons;
 	public int selectedWeapon;
+	public float energy;
+	public float maxEnergy;
 
 	public EntityPlayer(Map map, float posX, float posY) {
 		super(map, posX, posY, 100);
 		weapons = new ArrayList<Weapon>();
 		weapons.add(new Fireball(this, 3, 1.0f));
-		weapons.add(new Fireball(this, 3, 0.0f));
+		//weapons.add(new Fireball(this, 3, 0.0f));
+		weapons.add(new FireBlast(this, 10, 2.0f));
+		maxEnergy = 10.0f;
+		energy = maxEnergy;
+		moveSpeed = 2.5f;
 	}
 
 	@Override
 	public void update(float time) {
-		moveSpeed = 2.5f;
+		super.update(time);
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) moveSpeed *= 2.0f;
+		float sprinting = 1.0f;
+
+		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) sprinting *= 2.0f;
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-			moveX(moveSpeed * time);
+			moveX(moveSpeed * time * sprinting);
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-			moveX(-moveSpeed * time);
+			moveX(-moveSpeed * time * sprinting);
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-			moveY(-moveSpeed * time);
+			moveY(-moveSpeed * time * sprinting);
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			moveY(moveSpeed * time);
+			moveY(moveSpeed * time * sprinting);
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
@@ -76,4 +83,5 @@ public class EntityPlayer extends Entity {
 	public Weapon getSelectedWeapon() {
 		return weapons.get(selectedWeapon);
 	}
+
 }

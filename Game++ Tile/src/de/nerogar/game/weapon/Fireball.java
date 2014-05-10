@@ -8,7 +8,6 @@ public class Fireball extends Weapon {
 	public Fireball(EntityPlayer player, int damage, float cooldown) {
 		super(player, damage, cooldown);
 		textureID = 0;
-		maxCooldown = cooldown;
 	}
 
 	@Override

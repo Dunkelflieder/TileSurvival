@@ -4,16 +4,13 @@ public class Light {
 	public float size;
 	public float posX;
 	public float posY;
+	public float intensity;
 
-	public Light(float posX, float posY, float size) {
+	public Light(float posX, float posY, float size, float intensity) {
 		this.size = size;
 		this.posX = posX;
 		this.posY = posY;
-	}
-
-	@Override
-	public String toString() {
-		return "light(vec2(" + posX + "," + posY + ")," + size + ")";
+		this.intensity = intensity;
 	}
 
 	public boolean inArea(float offsX, float offsY, float width, float height) {

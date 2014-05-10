@@ -2,6 +2,8 @@ package de.nerogar.game.entity;
 
 import static org.lwjgl.opengl.GL11.*;
 import de.nerogar.game.Map;
+import de.nerogar.game.Vector;
+import de.nerogar.game.graphics.Light;
 import de.nerogar.game.graphics.TextureBank;
 
 public abstract class Entity {
@@ -12,6 +14,8 @@ public abstract class Entity {
 	public float posY;
 	public float width = 1f;
 	public float height = 1f;
+
+	public Light light;
 
 	public float moveSpeed;
 	public int maxHealth;
@@ -44,14 +48,21 @@ public abstract class Entity {
 		}
 	}
 
+	public void damage(int damage) {
+		health -= damage;
+	}
+
 	public void remove() {
 		removed = true;
 	}
 
-	public abstract void update(float time);
+	public void update(float time) {
+		if (health <= 0) remove();
+	}
 
 	public void render() {
-		TextureBank.instance.bindTexture("entity.png");
+		TextureBank.instance.bindTexture("entity.png", 0);
+		TextureBank.instance.bindTexture("entity normal.png", 1);
 
 		int tilePosX = textureID % tilesOnTexture;
 		int tilePosY = textureID / tilesOnTexture;
@@ -71,5 +82,9 @@ public abstract class Entity {
 		glVertex3f((posX - map.getOffsX()) * Map.TILE_RENDER_SIZE, (posY - map.getOffsY() + height) * Map.TILE_RENDER_SIZE, -1f);
 
 		glEnd();
+	}
+	
+	public Vector getCenter() {
+		return new Vector(posX + width / 2f, posY + height / 2f);
 	}
 }

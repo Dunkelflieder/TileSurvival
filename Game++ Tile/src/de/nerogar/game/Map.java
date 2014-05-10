@@ -39,6 +39,7 @@ public class Map {
 	private FloatBuffer lightBufferX;
 	private FloatBuffer lightBufferY;
 	private FloatBuffer lightBufferSize;
+	private FloatBuffer lightBufferIntensity;
 	private int[] tileIDs;
 	private int size;
 
@@ -59,6 +60,7 @@ public class Map {
 	private void initShader() {
 		shader.setVertexShader("res/shaders/map.vert");
 		shader.setFragmentShader("res/shaders/map.frag");
+		shader.compile();
 	}
 
 	public void spawnEntity(Entity entity) {
@@ -78,7 +80,7 @@ public class Map {
 	}
 
 	public void update(float time) {
-		//playTime += time;
+		playTime += time;
 		float dayLength = 240f;
 		dayTime = (float) Math.max(Math.sin(playTime * Math.PI * 2 / dayLength), 0.0f);
 
@@ -111,8 +113,8 @@ public class Map {
 
 	public void render() {
 		RenderHelper.disableAlpha();
-		shader.reloadFiles();
-		shader.compile();
+		//shader.reloadFiles();
+		//shader.compile();
 
 		TextureBank.instance.bindTexture("tiles.png", 0);
 		TextureBank.instance.bindTexture("tiles normal.png", 1);
@@ -127,6 +129,7 @@ public class Map {
 		glUniform1(glGetUniformLocation(shader.shaderHandle, "lightsX"), lightBufferX);
 		glUniform1(glGetUniformLocation(shader.shaderHandle, "lightsY"), lightBufferY);
 		glUniform1(glGetUniformLocation(shader.shaderHandle, "lightsSize"), lightBufferSize);
+		glUniform1(glGetUniformLocation(shader.shaderHandle, "lightsIntensity"), lightBufferIntensity);
 		glUniform1i(glGetUniformLocation(shader.shaderHandle, "lightsCount"), lights.size() > MAX_LIGHTS ? MAX_LIGHTS : lights.size());
 
 		float tilesX = (Display.getWidth() / TILE_RENDER_SIZE) + 1f;
@@ -179,19 +182,20 @@ public class Map {
 		lights = new ArrayList<Light>();
 		for (int i = 0; i < tileIDs.length; i++) {
 			if (tileIDs[i] == TORCH.id) {
-				lights.add(new Light(((float) (i % size)) + 0.5f, ((float) (i / size)) + 0.5f, 5f));
+				lights.add(new Light(((float) (i % size)) + 0.5f, ((float) (i / size)) + 0.5f, 5f, 1f));
 			}
 		}
 
 		for (Entity entity : entities) {
-			if (entity instanceof EntityFireball) {
-				lights.add(new Light(entity.posX, entity.posY, 1f));
+			if (entity.light != null) {
+				lights.add(new Light(entity.posX + entity.width / 2, entity.posY + entity.height / 2, entity.light.size, entity.light.intensity));
 			}
 		}
 
 		float[] lightBufferXArray = new float[MAX_LIGHTS];
 		float[] lightBufferYArray = new float[MAX_LIGHTS];
 		float[] lightBufferSizeArray = new float[MAX_LIGHTS];
+		float[] lightBufferIntensityArray = new float[MAX_LIGHTS];
 
 		int index = 0;
 
@@ -200,6 +204,7 @@ public class Map {
 				lightBufferXArray[index] = light.posX;
 				lightBufferYArray[index] = light.posY;
 				lightBufferSizeArray[index] = light.size;
+				lightBufferIntensityArray[index] = light.intensity;
 				index++;
 			}
 			if (index >= MAX_LIGHTS) break;
@@ -218,6 +223,10 @@ public class Map {
 		lightBufferSize = BufferUtils.createFloatBuffer(lightBufferSizeArray.length);
 		lightBufferSize.put(lightBufferSizeArray);
 		lightBufferSize.flip();
+
+		lightBufferIntensity = BufferUtils.createFloatBuffer(lightBufferIntensityArray.length);
+		lightBufferIntensity.put(lightBufferIntensityArray);
+		lightBufferIntensity.flip();
 	}
 
 	public int getSize() {
@@ -234,6 +243,10 @@ public class Map {
 
 	public EntityPlayer getPlayer() {
 		return player;
+	}
+
+	public ArrayList<Entity> getEntities() {
+		return entities;
 	}
 
 }

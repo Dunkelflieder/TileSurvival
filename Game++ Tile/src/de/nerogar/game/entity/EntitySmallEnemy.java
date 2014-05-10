@@ -12,6 +12,6 @@ public class EntitySmallEnemy extends Entity {
 
 	@Override
 	public void update(float time) {
-
+		super.update(time);
 	}
 }
