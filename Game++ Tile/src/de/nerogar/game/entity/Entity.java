@@ -33,13 +33,13 @@ public abstract class Entity {
 	}
 
 	public void moveX(float distance) {
-		if (posX + distance >= 0f && posX + distance + width + 1 <= map.getSize() + 1 && !map.isColliding(posX + distance, posY, width, height)) {
+		if (!map.isColliding(posX + distance, posY, width, height)) {
 			posX += distance;
 		}
 	}
 
 	public void moveY(float distance) {
-		if (posY + distance >= 0f && posY + distance <= map.getSize() + 1 && !map.isColliding(posX, posY + distance, width, height)) {
+		if (!map.isColliding(posX, posY + distance, width, height)) {
 			posY += distance;
 		}
 	}

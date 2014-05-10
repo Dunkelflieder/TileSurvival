@@ -32,9 +32,10 @@ public class Map {
 	private EntityPlayer player;
 	private ArrayList<Entity> entities;
 	private ArrayList<Entity> newEntities;
-	private ArrayList<Light> lights;
 	private float playTime;
 	private float dayTime;
+	private ArrayList<Light> lights;
+	private final int MAX_LIGHTS = 100;
 	private FloatBuffer lightBufferX;
 	private FloatBuffer lightBufferY;
 	private FloatBuffer lightBufferSize;
@@ -65,8 +66,10 @@ public class Map {
 	}
 
 	public boolean isColliding(float x, float y, float width, float height) {
-		for (int i = (int) x; i <= (int) (x + width); i++) {
-			for (int j = (int) y; j <= (int) (y + height); j++) {
+		if (x < 0 || y < 0 || x + width >= size || y + height >= size) return true;
+
+		for (int i = Math.max((int) x, 0); i <= Math.min((int) (x + width), size - 1); i++) {
+			for (int j = Math.max((int) y, 0); j <= Math.min((int) (y + height), size - 1); j++) {
 				if (TILES[tileIDs[i + j * size]].collide) return true;
 			}
 		}
@@ -75,7 +78,7 @@ public class Map {
 	}
 
 	public void update(float time) {
-		playTime += time;
+		//playTime += time;
 		float dayLength = 240f;
 		dayTime = (float) Math.max(Math.sin(playTime * Math.PI * 2 / dayLength), 0.0f);
 
@@ -124,7 +127,7 @@ public class Map {
 		glUniform1(glGetUniformLocation(shader.shaderHandle, "lightsX"), lightBufferX);
 		glUniform1(glGetUniformLocation(shader.shaderHandle, "lightsY"), lightBufferY);
 		glUniform1(glGetUniformLocation(shader.shaderHandle, "lightsSize"), lightBufferSize);
-		glUniform1i(glGetUniformLocation(shader.shaderHandle, "lightsCount"), lights.size());
+		glUniform1i(glGetUniformLocation(shader.shaderHandle, "lightsCount"), lights.size() > MAX_LIGHTS ? MAX_LIGHTS : lights.size());
 
 		float tilesX = (Display.getWidth() / TILE_RENDER_SIZE) + 1f;
 		float tilesY = (Display.getHeight() / TILE_RENDER_SIZE) + 1f;
@@ -186,7 +189,6 @@ public class Map {
 			}
 		}
 
-		final int MAX_LIGHTS = 100;
 		float[] lightBufferXArray = new float[MAX_LIGHTS];
 		float[] lightBufferYArray = new float[MAX_LIGHTS];
 		float[] lightBufferSizeArray = new float[MAX_LIGHTS];
@@ -203,7 +205,7 @@ public class Map {
 			if (index >= MAX_LIGHTS) break;
 		}
 
-		System.out.println("lights:" + index);
+		//System.out.println("lights:" + index);
 
 		lightBufferX = BufferUtils.createFloatBuffer(lightBufferXArray.length);
 		lightBufferX.put(lightBufferXArray);

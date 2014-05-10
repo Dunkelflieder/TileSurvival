@@ -5,7 +5,6 @@ import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.graphics.GuiIngame;
-import de.nerogar.game.sound.Sound;
 import de.nerogar.game.sound.SoundManager;
 
 public class Game {
@@ -16,8 +15,6 @@ public class Game {
 	final int HEIGHT = 720;
 	final int FRAMERATE = 60;
 
-	private Sound bgMusic = SoundManager.create("licrea.wav", new Vector(0, 0));
-
 	private GuiIngame guiIngame;
 
 	public Game() {
@@ -25,9 +22,6 @@ public class Game {
 		renderEngine.init(WIDTH, HEIGHT);
 		map = MapLoader.loadMap("map.png");
 		guiIngame = new GuiIngame(map.getPlayer());
-		bgMusic.setGain(0.1f);
-		bgMusic.setLooping(true);
-		bgMusic.play();
 	}
 
 	public void run() {
