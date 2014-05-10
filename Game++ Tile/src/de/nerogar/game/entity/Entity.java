@@ -56,6 +56,11 @@ public abstract class Entity {
 		return true;
 	}
 
+	public boolean intersects(Entity entity) {
+		if (entity.posX + entity.width < posX || entity.posY + entity.height < posY || entity.posX > posX + width || entity.posY > posY + height) return false;
+		return true;
+	}
+
 	public void damage(int damage) {
 		health -= damage;
 	}

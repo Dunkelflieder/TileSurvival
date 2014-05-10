@@ -24,6 +24,8 @@ public class EntityPlayer extends Entity {
 		weapons.add(new Fireball(this, 3, 1.0f));
 		weapons.add(new SlowDownArea(this, 0, 2.0f));
 		weapons.add(new FireBlast(this, 10, 2.0f));
+		weapons.add(new Heal(this, 20, 2.0f));
+
 		maxEnergy = 100;
 		energy = maxEnergy;
 		moveSpeed = 3.0f;

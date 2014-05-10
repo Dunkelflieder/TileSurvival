@@ -11,8 +11,8 @@ public class SlowDownArea extends Weapon {
 
 	@Override
 	public void start(float targetX, float targetY) {
-		EntityExplosion explosion = new EntityExplosion(player, player.map, player.posX, player.posY, 5, damage);
-		player.map.spawnEntity(explosion);
+		EntitySlowdownArea slowDownEntity = new EntitySlowdownArea(player, player.map, player.posX, player.posY, 5, damage);
+		player.map.spawnEntity(slowDownEntity);
 	}
 
 	@Override

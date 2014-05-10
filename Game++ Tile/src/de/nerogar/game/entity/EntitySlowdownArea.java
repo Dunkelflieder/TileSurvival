@@ -5,7 +5,6 @@ import de.nerogar.game.Vector;
 
 public class EntitySlowdownArea extends Entity {
 
-	private boolean dealtDamage;
 	private final float MAX_LIFFETIME = 0.1f;
 	private float lifeTime;
 	private float radius;
@@ -26,7 +25,7 @@ public class EntitySlowdownArea extends Entity {
 		this.posY -= radius;
 
 		for (Entity entity : map.getEntities()) {
-			if (intersects(entity.getCenter())) {
+			if (intersects(entity.getCenter()) && entity != this.sender) {
 				entity.speedmult = 0.1f;
 				entity.speedmultTime = 6f;
 			}
@@ -39,18 +38,6 @@ public class EntitySlowdownArea extends Entity {
 
 	@Override
 	public void update(float time) {
-		light.size = 20f * (lifeTime / MAX_LIFFETIME);
-
-		if (!dealtDamage) {
-			for (Entity entity : map.getEntities()) {
-				if (entity != sender && intersects(entity.getCenter())) {
-					entity.damage(health);
-				}
-			}
-
-			dealtDamage = true;
-		}
-
 		lifeTime -= time;
 		if (lifeTime < 0) {
 			kill();
