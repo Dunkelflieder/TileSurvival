@@ -18,7 +18,7 @@ vec3 torchColor=vec3(1.2, 0.6, 0.3);
 vec3 dayColor=vec3(1.0, 0.8, 0.8);
 
 float rand(vec2 co){
-    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453)+0.5;
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
 float light(vec2 lightPos, float size, float intensity){
