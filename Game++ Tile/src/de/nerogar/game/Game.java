@@ -28,7 +28,7 @@ public class Game {
 	}
 
 	public void run() {
-		bgMusic.play();
+		//bgMusic.play();
 		while (!Display.isCloseRequested()) {
 			//long time1 = System.nanoTime();
 			update();

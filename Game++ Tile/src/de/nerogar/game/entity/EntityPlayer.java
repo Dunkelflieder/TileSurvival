@@ -29,7 +29,7 @@ public class EntityPlayer extends Entity {
 		maxEnergy = 100;
 		energy = maxEnergy;
 		moveSpeed = 3.0f;
-		
+
 		//light = new Light(0, 0, 5f,2.0f);
 	}
 
@@ -78,10 +78,17 @@ public class EntityPlayer extends Entity {
 
 			Weapon weapon = weapons.get(selectedWeapon);
 
-			if (weapon.cooldown <= 0f && energy >= weapon.getEnergyCost() && weapon.canActivate()) {
+			if (weapon.cooldown <= 0f && energy >= weapon.energyCost && weapon.canActivate()) {
 				weapons.get(selectedWeapon).start(targetX, targetY);
-				energy -= weapons.get(selectedWeapon).getEnergyCost();
+				energy -= weapons.get(selectedWeapon).energyCost;
 				weapon.cooldown = weapon.maxCooldown;
+			}
+		}
+
+		if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
+			for (Weapon weapon : weapons) {
+				weapon.maxCooldown = 0;
+				weapon.energyCost = 0;
 			}
 		}
 
