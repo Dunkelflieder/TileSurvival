@@ -25,7 +25,7 @@ public class EntityFireball extends Entity {
 
 		this.sender = sender;
 
-		moveSpeed = 50.0f;
+		moveSpeed = 10.0f;
 
 		direction = target.subtracted(source);
 		direction.setValue(moveSpeed);
@@ -36,6 +36,10 @@ public class EntityFireball extends Entity {
 
 		light = new Light(new Vector(), 2, 0.8f);
 		explodeSound = new Sound("smallpuff1.ogg");
+		Sound fireball_throw = new Sound("fireball_throw1.ogg");
+		//fireball_throw.setGain(0.2f);
+		fireball_throw.setPosition(getCenter());
+		fireball_throw.play();
 	}
 
 	@Override

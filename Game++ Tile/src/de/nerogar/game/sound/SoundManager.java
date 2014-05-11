@@ -18,6 +18,7 @@ public class SoundManager {
 	private static float lastUpdateTime = System.nanoTime() / 1000000000;
 	public static final int CAMERA_HEIGHT = 2;
 	public static boolean alCreated = false;
+	public static final float DEFAULT_ROLLOFF_FACTOR = 0.2f;
 
 	static {
 		if (!SoundManager.alCreated) SoundManager.createAL();

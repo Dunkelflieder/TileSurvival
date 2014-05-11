@@ -18,6 +18,7 @@ public class ALSource {
 
 	public ALSource() {
 		this.sourceID = ALHelper.genSources();
+		ALHelper.setRolloffFactor(sourceID, SoundManager.DEFAULT_ROLLOFF_FACTOR);
 	}
 
 	public void uncouple() {

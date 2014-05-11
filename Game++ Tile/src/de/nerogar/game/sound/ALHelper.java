@@ -120,6 +120,10 @@ public class ALHelper {
 		checkAndThrowALError();
 		return result;
 	}
+	
+	public static void setRolloffFactor(int sourceID, float factor) {
+		alSourcef(sourceID, AL_ROLLOFF_FACTOR, factor);
+	}
 
 	public static boolean initVorbisExtension() {
 		if (alIsExtensionPresent("AL_EXT_vorbis")) {
