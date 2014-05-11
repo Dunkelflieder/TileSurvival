@@ -39,11 +39,11 @@ public class SoundManager {
 	}
 
 	public static Sound create(String filename, Vector position, boolean looping, float gain, float pitch) {
-		return create(filename, Sound.PRIORITY_MODERATE, position, new Vector(0, 0), looping, false, gain, pitch);
+		return create(filename, Sound.PRIORITY_MODERATE, position, new Vector(0, 0), looping, true, gain, pitch);
 	}
 
 	public static Sound create(String[] filename, Vector position, boolean looping, float gain, float pitch) {
-		return create(filename, Sound.PRIORITY_MODERATE, position, new Vector(0, 0), looping, false, gain, pitch);
+		return create(filename, Sound.PRIORITY_MODERATE, position, new Vector(0, 0), looping, true, gain, pitch);
 	}
 
 	public static Sound create(String filename, int priority, Vector position, Vector velocity, boolean looping, boolean destroyWhenDone, float gain, float pitch) {

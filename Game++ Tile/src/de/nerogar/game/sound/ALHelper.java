@@ -10,8 +10,6 @@ import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.openal.AL11.*;
 
 import org.lwjgl.openal.AL10;
-import org.lwjgl.openal.ALC10;
-import org.lwjgl.openal.ALC11;
 import org.lwjgl.openal.OpenALException;
 
 import de.nerogar.game.Vector;
