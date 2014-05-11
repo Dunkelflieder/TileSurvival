@@ -6,7 +6,7 @@ import de.nerogar.game.weapon.Fireball;
 
 public class EntityGhost extends EntityEnemy {
 
-	private static final float MAX_FIGHT_DISTANCE = 10.0f;
+	private static final float MAX_FIGHT_DISTANCE = 8.0f;
 	private Vector walkPos;
 
 	private Fireball fireballWeapon;
@@ -26,17 +26,22 @@ public class EntityGhost extends EntityEnemy {
 		EntityPlayer player = map.getPlayer();
 
 		if (walkPos == null || walkPos.subtracted(player.getCenter()).getValue() > MAX_FIGHT_DISTANCE) {
-			walkPos = player.getCenter().add(new Vector((float) Math.random(), (float) Math.random()).setValue((float) Math.random() * MAX_FIGHT_DISTANCE));
+			walkPos = player.getCenter().add(new Vector((float) Math.random() - 0.5f, (float) Math.random() - 0.5f).setValue((float) Math.random() * MAX_FIGHT_DISTANCE));
 		}
 
-		Vector direction = walkPos.subtracted(getCenter()).setValue(moveSpeed * time * speedmult);
-		moveX(direction.getX());
-		moveY(direction.getY());
+		boolean idle = pos.subtracted(walkPos).getSquaredValue() < 0.5f;
 
-		if (fireballWeapon.cooldown <= 0f) {
-			fireballWeapon.start(player.getCenter());
-			fireballWeapon.cooldown = fireballWeapon.maxCooldown;
+		if (!idle) { //move
+			Vector direction = walkPos.subtracted(getCenter()).setValue(moveSpeed * time * speedmult);
+			moveX(direction.getX());
+			moveY(direction.getY());
+		} else { //shoot
+			if (fireballWeapon.cooldown <= 0f) {
+				fireballWeapon.start(player.getCenter());
+				fireballWeapon.cooldown = fireballWeapon.maxCooldown;
+			}
 		}
+
 		fireballWeapon.update(time);
 	}
 

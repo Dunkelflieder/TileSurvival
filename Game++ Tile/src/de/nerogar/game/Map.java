@@ -5,15 +5,18 @@ import static org.lwjgl.opengl.GL20.*;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.entity.*;
 import de.nerogar.game.graphics.*;
+import de.nerogar.game.network.*;
 
 public class Map {
 
+	//tiles
 	public static final Tile FLOOR = new Tile(0, false);
 	public static final Tile ROCK = new Tile(1, true);
 	public static final Tile TREE = new Tile(2, true);
@@ -25,18 +28,27 @@ public class Map {
 
 	public static final Tile[] TILES = new Tile[] { FLOOR, ROCK, TREE, TORCH, CHEST, OPEN_CHEST, DOOR, DOOR_OPEN };
 
+	//texture
 	public static final float TILE_RENDER_SIZE = 64f;
 	public static final float TEXTURE_SIZE = 256f;
 	public static final float TILE_TEXTURE_SIZE = 1f / TEXTURE_SIZE * 32f;
 	public static final float TILES_ON_TEXTURE = 8f;
 	public static final float TILE_PIXEL_COUNT = TEXTURE_SIZE / TILES_ON_TEXTURE;
 
+	//server
+	public static final int SERVER_WORLD = 0;
+	public static final int CLIENT_WORLD = 1;
+	public Server server;
+	public Client client;
+	public int worldType;
+	private float nextUpdate;
+
+	//attribs
 	private Shader shader;
 	private EntityPlayer player;
-	private ArrayList<Entity> entities;
+	private HashMap<Integer, Entity> entities;
 	private ArrayList<Entity> newEntities;
 	private float playTime;
-	private float dayTime;
 	private ArrayList<Light> lights;
 	private final int MAX_LIGHTS = 100;
 	private FloatBuffer lightBufferX;
@@ -51,13 +63,25 @@ public class Map {
 	private float tilesX;
 	private float tilesY;
 
-	public Map() {
+	public Map(int worldType, Server server) {
+		this(worldType, server, null);
+	}
+
+	public Map(int worldType, Client client) {
+		this(worldType, null, client);
+	}
+
+	private Map(int worldType, Server server, Client client) {
+		this.worldType = worldType;
+		this.server = server;
+		this.client = client;
+
 		shader = new Shader("map");
 		initShader();
 		player = new EntityPlayer(this, new Vector());
-		entities = new ArrayList<Entity>();
+		entities = new HashMap<Integer, Entity>();
 		newEntities = new ArrayList<Entity>();
-		entities.add(player);
+		spawnEntity(player);
 	}
 
 	private void initShader() {
@@ -67,7 +91,19 @@ public class Map {
 	}
 
 	public void spawnEntity(Entity entity) {
-		newEntities.add(entity);
+		if (worldType == SERVER_WORLD) {
+			PacketSpawnEntity spawnEntitypacket = new PacketSpawnEntity();
+			spawnEntitypacket.entityID = entity.id;
+			spawnEntitypacket.spawnID = EntitySpawner.getSpawnID(entity);
+			spawnEntitypacket.pos = new float[] { entity.pos.getX(), entity.pos.getY() };
+
+			server.broadcastData(spawnEntitypacket);
+
+			newEntities.add(entity);
+		} else {
+			entities.put(entity.id, entity);
+		}
+
 	}
 
 	public boolean isColliding(Vector pos, Vector dimension) {
@@ -83,23 +119,23 @@ public class Map {
 	}
 
 	public void update(float time) {
-		playTime += time;
-		float dayLength = 240f;
-		dayTime = (float) Math.max(Math.sin(playTime * Math.PI * 2 / dayLength), 0.0f);
+		if (worldType == SERVER_WORLD) {
+			playTime += time;
 
-		for (int i = entities.size() - 1; i >= 0; i--) {
-			if (entities.get(i).removed) {
-				entities.remove(i);
+			for (Entity entity : getEntities()) {
+				if (entity.removed) {
+					entities.remove(entity.id);
+				}
 			}
-		}
 
-		for (Entity entity : newEntities) {
-			entities.add(entity);
-		}
-		newEntities.clear();
+			for (Entity entity : newEntities) {
+				entities.put(entity.id, entity);
+			}
+			newEntities.clear();
 
-		for (Entity entity : entities) {
-			entity.update(time);
+			for (Entity entity : entities.values()) {
+				entity.update(time);
+			}
 		}
 
 		offsX = player.pos.getX() - (((Display.getWidth() / TILE_RENDER_SIZE) - player.dimension.getX()) / 2f);
@@ -112,6 +148,62 @@ public class Map {
 		offsY = Math.max(0f, Math.min(offsY, size - tilesY));
 
 		calcLightSources();
+
+		if (worldType == SERVER_WORLD) {
+			if (nextUpdate < 0) {
+				sendUpdate();
+				nextUpdate = 0.1f;
+			}
+			nextUpdate -= time;
+		} else {
+			ArrayList<Packet> packets = client.getData(Packet.WORLD_CHANNEL);
+			if (packets != null) {
+				for (Packet packet : packets) {
+					processClientPacket(packet);
+				}
+			}
+		}
+
+	}
+
+	private void processClientPacket(Packet packet) {
+		if (packet instanceof PacketEntityPositions) {
+			PacketEntityPositions entityPositionsPacket = (PacketEntityPositions) packet;
+			for (int i = 0; i < entityPositionsPacket.entityPositions.length / 2; i++) {
+				int id = entityPositionsPacket.entityIDs[i];
+				Entity entity = entities.get(id);
+				if (entity != null) {
+					entity.pos.setX(entityPositionsPacket.entityPositions[i * 2]);
+					entity.pos.setY(entityPositionsPacket.entityPositions[i * 2 + 1]);
+				}
+			}
+
+		} else if (packet instanceof PacketSpawnEntity) {
+			PacketSpawnEntity entitySpawnPacket = (PacketSpawnEntity) packet;
+			Entity entity = EntitySpawner.spawnEntity(this, new Vector(), entitySpawnPacket.spawnID);
+			entity.id = entitySpawnPacket.entityID;
+			spawnEntity(entity);
+		}
+	}
+
+	private void sendUpdate() {
+		PacketEntityPositions entityPositionsPacket = new PacketEntityPositions();
+
+		float[] entityPositions = new float[entities.size() * 2];
+		int[] entityIDs = new int[entities.size()];
+
+		int i = 0;
+		for (Entity entity : entities.values()) {
+			entityIDs[i] = entity.id;
+			entityPositions[i * 2] = entity.pos.getX();
+			entityPositions[i * 2 + 1] = entity.pos.getY();
+			i++;
+		}
+
+		entityPositionsPacket.entityPositions = entityPositions;
+		entityPositionsPacket.entityIDs = entityIDs;
+
+		server.broadcastData(entityPositionsPacket);
 	}
 
 	public void render() {
@@ -127,7 +219,6 @@ public class Map {
 		glUniform1f(glGetUniformLocation(shader.shaderHandle, "scale"), TILE_RENDER_SIZE);
 		glUniform1i(glGetUniformLocation(shader.shaderHandle, "colorTex"), 0);
 		glUniform1i(glGetUniformLocation(shader.shaderHandle, "normalTex"), 1);
-		glUniform1f(glGetUniformLocation(shader.shaderHandle, "dayTime"), dayTime);
 
 		glUniform1(glGetUniformLocation(shader.shaderHandle, "lightsX"), lightBufferX);
 		glUniform1(glGetUniformLocation(shader.shaderHandle, "lightsY"), lightBufferY);
@@ -164,7 +255,7 @@ public class Map {
 
 		RenderHelper.enableAlphaMask();
 
-		for (Entity entity : entities) {
+		for (Entity entity : entities.values()) {
 			entity.render();
 		}
 		shader.deactivate();
@@ -192,7 +283,7 @@ public class Map {
 			}
 		}
 
-		for (Entity entity : entities) {
+		for (Entity entity : entities.values()) {
 			if (entity.light != null) {
 				lights.add(new Light(entity.getCenter(), entity.light.size, entity.light.intensity));
 			}
@@ -252,7 +343,14 @@ public class Map {
 	}
 
 	public ArrayList<Entity> getEntities() {
-		return entities;
+		ArrayList<Entity> entityList = new ArrayList<Entity>();
+		entityList.addAll(entities.values());
+		return entityList;
+	}
+
+	public void cleanup() {
+		if (server != null) server.stopServer();
+		if (client != null) client.stopClient();
 	}
 
 }

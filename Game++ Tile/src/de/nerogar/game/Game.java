@@ -2,6 +2,7 @@ package de.nerogar.game;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.graphics.GuiIngame;
@@ -9,6 +10,11 @@ import de.nerogar.game.sound.Sound;
 import de.nerogar.game.sound.SoundManager;
 
 public class Game {
+	public static String version = "1.0";
+	public static String username = "nerogar";
+	public static int port = 34543;
+	public static String host = "localhost";
+
 	private RenderEngine renderEngine;
 	private Map map;
 
@@ -23,12 +29,10 @@ public class Game {
 	public Game() {
 		renderEngine = new RenderEngine();
 		renderEngine.init(WIDTH, HEIGHT);
-		map = MapLoader.loadMap("map.png");
-		guiIngame = new GuiIngame(map.getPlayer());
 	}
 
 	public void run() {
-		bgMusic.play();
+		//bgMusic.play();
 		while (!Display.isCloseRequested()) {
 			//long time1 = System.nanoTime();
 			update();
@@ -40,20 +44,43 @@ public class Game {
 			//System.out.println("time: " + ((time2 - time1) / 1000000d));
 		}
 		SoundManager.shutdown();
+		if (map != null) map.cleanup();
 	}
 
 	private void update() {
 		SoundManager.update();
-		map.update(1f / FRAMERATE);
 		InputHandler.update(this);
-		float listenerX = (float) map.getOffsX() + 0.5f * WIDTH / Map.TILE_RENDER_SIZE;
-		float listenerY = (float) map.getOffsY() + 0.5f * HEIGHT / Map.TILE_RENDER_SIZE;
-		SoundManager.recalculateListener(new Vector(listenerX, listenerY));
+
+		if (map == null) {
+			startUpGui();
+		}
+		if (map != null) {
+			map.update(1f / FRAMERATE);
+			float listenerX = (float) map.getOffsX() + 0.5f * WIDTH / Map.TILE_RENDER_SIZE;
+			float listenerY = (float) map.getOffsY() + 0.5f * HEIGHT / Map.TILE_RENDER_SIZE;
+			SoundManager.recalculateListener(new Vector(listenerX, listenerY));
+		}
+
+	}
+
+	private void startUpGui() {
+		if (InputHandler.isKeyPressed(Keyboard.KEY_H)) {
+			System.out.println("asdasd");
+			map = MapLoader.loadMap(Map.SERVER_WORLD, "map.png");
+
+			guiIngame = new GuiIngame(map.getPlayer());
+		} else if (InputHandler.isKeyPressed(Keyboard.KEY_C)) {
+			map = MapLoader.loadMap(Map.CLIENT_WORLD, "map.png");
+
+			guiIngame = new GuiIngame(map.getPlayer());
+		}
 	}
 
 	private void render() {
-		map.render();
-		guiIngame.render();
+		if (map != null) {
+			map.render();
+			guiIngame.render();
+		}
 	}
 
 	public static void main(String[] args) {
