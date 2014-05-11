@@ -12,6 +12,14 @@ public class Vector {
 		this.setY(y);
 	}
 
+	public Vector(float xy) {
+		this.setX(xy);
+		this.setY(xy);
+	}
+
+	public Vector() {
+	}
+
 	// Constructor for cloning
 	private Vector(float x, float y, float value, boolean valueDirty) {
 		this.x = x;
@@ -20,12 +28,14 @@ public class Vector {
 		this.valueDirty = valueDirty;
 	}
 
-	public void addX(float x) {
+	public Vector addX(float x) {
 		setX(getX() + x);
+		return this;
 	}
 
-	public void addY(float y) {
+	public Vector addY(float y) {
 		setY(getY() + y);
+		return this;
 	}
 
 	public Vector add(Vector v) {
@@ -76,24 +86,29 @@ public class Vector {
 		return x;
 	}
 
-	public void setX(float x) {
+	public Vector setX(float x) {
 		this.x = x;
 		valueDirty = true;
+		return this;
 	}
 
 	public float getY() {
 		return y;
 	}
 
-	public void setY(float y) {
+	public Vector setY(float y) {
 		this.y = y;
 		valueDirty = true;
+		return this;
 	}
 
 	public float getValue() {
-		if (valueDirty)
-			recalculateValue();
+		if (valueDirty) recalculateValue();
 		return value;
+	}
+
+	public float getSquaredValue() {
+		return x * x + y * y;
 	}
 
 	public Vector setValue(float value) {
@@ -110,6 +125,11 @@ public class Vector {
 	@Override
 	public Vector clone() {
 		return new Vector(this.x, this.y, this.value, this.valueDirty);
+	}
+
+	@Override
+	public String toString() {
+		return "(" + x + "|" + y + ")";
 	}
 
 }
