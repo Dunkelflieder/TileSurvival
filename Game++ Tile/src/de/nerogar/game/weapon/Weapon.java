@@ -11,17 +11,18 @@ public abstract class Weapon {
 	public int damage;
 	public float maxCooldown;
 	public float cooldown;
+	public int energyCost;
 
 	public int textureID;
 
 	public float posX;
 	public float posY;
 
-	public Weapon(EntityPlayer player, int damage, float cooldown) {
+	public Weapon(EntityPlayer player, int damage, float cooldown, int energyCost) {
 		this.player = player;
 		this.damage = damage;
-		//this.cooldown = cooldown;
 		this.maxCooldown = cooldown;
+		this.energyCost = energyCost;
 	}
 
 	public abstract void start(float targetX, float targetY);
@@ -72,7 +73,5 @@ public abstract class Weapon {
 
 		glEnd();
 	}
-
-	public abstract int getEnergyCost();
 
 }
