@@ -17,8 +17,8 @@ public class Game {
 	final int FRAMERATE = 60;
 
 	private GuiIngame guiIngame;
-	
-	private Sound bgMusic = SoundManager.create("music1.ogg", new Vector(0, 0), true, 0.5f, 1f);
+
+	private Sound bgMusic = new Sound(new String[] { "music1.ogg" }, new Vector(0, 0), new Vector(1000, 1000), true, 0.5f, 1f);
 
 	public Game() {
 		renderEngine = new RenderEngine();
@@ -28,7 +28,7 @@ public class Game {
 	}
 
 	public void run() {
-		//bgMusic.play();
+		bgMusic.play();
 		while (!Display.isCloseRequested()) {
 			//long time1 = System.nanoTime();
 			update();

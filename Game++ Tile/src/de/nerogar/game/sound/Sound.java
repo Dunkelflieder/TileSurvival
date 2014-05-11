@@ -1,111 +1,129 @@
 package de.nerogar.game.sound;
 
-import static org.lwjgl.openal.AL10.AL_PAUSED;
-import static org.lwjgl.openal.AL10.AL_PLAYING;
-import static org.lwjgl.openal.AL10.AL_STOPPED;
-
+import java.io.IOException;
 import java.util.Random;
 
+import org.lwjgl.LWJGLException;
 import org.lwjgl.openal.OpenALException;
 
 import de.nerogar.game.Vector;
 
 public class Sound {
 
-	public static final int PRIORITY_LOW = 0;
-	public static final int PRIORITY_MODERATE = 1;
-	public static final int PRIORITY_HIGH = 2;
+	public static final int PRIORITY_DELETE = 0;
+	public static final int PRIORITY_LOW = 1;
+	public static final int PRIORITY_MODERATE = 2;
+	public static final int PRIORITY_HIGH = 3;
 
-	private int sourceID;
-	private ALBuffer[] alBuffers;
-	private ALBuffer selectedBuffer;
+	private ALSource source = null;
+	private ALBuffer[] buffers;
+	private int selectedBuffer = 0;
 	public int priority = PRIORITY_MODERATE;
 
-	private Vector position;
-	private Vector velocity;
-	private float gain;
-	private float pitch;
-	private boolean looping;
-	private boolean destroyedWhenDone;
-	private int byteOffset;
-	private float offset;
-	private int state;
+	private Vector position = new Vector(0, 0);
+	private Vector velocity = new Vector(0, 0);
+	private float gain = 1f;
+	private float pitch = 1f;
+	private boolean looping = false;
+	private float offset = 0f;
 	private Random random = new Random();
-	
-	private boolean deleted = false;
-	
-	protected Sound(int sourceID, ALBuffer[] alBuffers, Vector position, Vector velocity, boolean looping, boolean destroyedWhenDone, float gain, float pitch) {
-		this.sourceID = sourceID;
-		this.setPosition(position);
-		this.setVelocity(velocity);
-		this.setLooping(looping);
-		this.setDestroyedWhenDone(destroyedWhenDone);
-		this.setGain(gain);
-		this.setPitch(pitch);
-		this.alBuffers = alBuffers;
-		this.setALBuffer(alBuffers[0]);
-	}
-	
-	public void randomize() {
-		setALBuffer(alBuffers[random.nextInt(alBuffers.length)]);
+
+	public Sound(String... filenames) {
+		this(filenames, new Vector(0, 0), new Vector(0, 0), false, 1f, 1f);
 	}
 
-	public void update() {
+	public Sound(String[] filenames, Vector position, Vector velocity, boolean looping, float gain, float pitch) {
 		try {
-			byteOffset = ALHelper.getByteOffset(this);
-			state = ALHelper.getSourceState(this);
-		} catch (OpenALException e) {
+			this.buffers = ALBufferBank.getBuffers(filenames);
+		} catch (OpenALException | IOException | LWJGLException e) {
+			System.out.println("Error creating buffer");
 			e.printStackTrace();
-			System.out.println("error fetching offset for Source-ID " + sourceID);
 		}
-		offset = (float) byteOffset / selectedBuffer.getSize();
-		// TODO Ich weiß nicht, was hier zu tun ist
-		setVelocity(new Vector(0f, 0f));
+		this.position = position;
+		this.velocity = velocity;
+		this.looping = looping;
+		this.gain = gain;
+		this.pitch = pitch;
 	}
+
+	/*
+	 * protected Sound(ALBuffer[] buffers, Vector position, Vector velocity, boolean looping, float gain, float pitch) { this.setPosition(position); this.setVelocity(velocity); this.setLooping(looping); this.setGain(gain); this.setPitch(pitch); this.buffers = buffers; this.setALBuffer(buffers[0]); }
+	 */
+
+	public void setUncoupled() {
+		stop();
+		source = null;
+	}
+
+	public void randomizeBuffer() {
+		selectBuffer(random.nextInt(buffers.length));
+	}
+
+	/*
+	 * public void update() { source.update(); offset = source.getOffset(); }
+	 */
 
 	public void play() {
-		ALHelper.play(this);
+		getSource().play();
 	}
 
 	public void stop() {
-		ALHelper.stop(this);
+		getSource().stop();
 	}
 
 	public void pause() {
-		ALHelper.pause(this);
+		getSource().pause();
 	}
 
 	public boolean isStopped() {
-		return (state == AL_STOPPED);
+		return getSource().isStopped();
 	}
 
 	public boolean isPaused() {
-		return (state == AL_PAUSED);
+		return getSource().isPaused();
 	}
 
 	public boolean isPlaying() {
-		return (state == AL_PLAYING);
+		return getSource().isPlaying();
 	}
 
-	public void destroy() {
-		ALHelper.destroySource(this);
+	public ALSource getSource() {
+		if (source == null) {
+			source = SoundManager.getFreeSource(priority);
+			source.couple(this);
+			initSource();
+		}
+		return source;
 	}
 
-	public int getSourceID() {
-		return sourceID;
+	public void initSource() {
+		selectBuffer(selectedBuffer);
+		setGain(gain);
+		setLooping(looping);
+		setOffset(offset);
+		setPitch(pitch);
+		setPosition(position);
+		setVelocity(velocity);
+		if (isPlaying())
+			play();
+		if (isPaused())
+			pause();
+		if (isStopped())
+			stop();
 	}
 
-	public ALBuffer[] getAlBuffers() {
-		return alBuffers;
-	}
-	
-	public ALBuffer getSelectedAlBuffer() {
-		return selectedBuffer;
+	public ALBuffer[] getBuffers() {
+		return buffers;
 	}
 
-	public void setALBuffer(ALBuffer alBuffer) {
-		this.selectedBuffer = alBuffer;
-		ALHelper.bindBufferToSource(alBuffer, this);
+	public ALBuffer getSelectedBuffer() {
+		return buffers[selectedBuffer];
+	}
+
+	private void selectBuffer(int buffer) {
+		this.selectedBuffer = buffer;
+		System.out.println("Selecting buffer: " + buffers[selectedBuffer]);
+		getSource().setBuffer(buffers[selectedBuffer]);
 	}
 
 	public Vector getPosition() {
@@ -113,7 +131,7 @@ public class Sound {
 	}
 
 	public void setPosition(Vector position) {
-		ALHelper.setPosition(this, position);
+		getSource().setPosition(position);
 		this.position = position;
 	}
 
@@ -122,7 +140,7 @@ public class Sound {
 	}
 
 	public void setVelocity(Vector velocity) {
-		ALHelper.setVelocity(this, velocity);
+		getSource().setVelocity(velocity);
 		this.velocity = velocity;
 	}
 
@@ -131,7 +149,7 @@ public class Sound {
 	}
 
 	public void setGain(float gain) {
-		ALHelper.setGain(this, gain);
+		getSource().setGain(gain);
 		this.gain = gain;
 	}
 
@@ -140,7 +158,7 @@ public class Sound {
 	}
 
 	public void setPitch(float pitch) {
-		ALHelper.setPitch(this, pitch);
+		getSource().setPitch(pitch);
 		this.pitch = pitch;
 	}
 
@@ -149,7 +167,7 @@ public class Sound {
 	}
 
 	public void setOffset(float offset) {
-		ALHelper.setOffset(this, offset);
+		getSource().setOffset(offset);
 		this.offset = offset;
 	}
 
@@ -158,30 +176,8 @@ public class Sound {
 	}
 
 	public void setLooping(boolean looping) {
-		ALHelper.setLooping(this, looping);
+		getSource().setLooping(looping);
 		this.looping = looping;
-	}
-
-	public boolean equals(Object o) {
-		if (!(o instanceof Sound)) return false;
-		if (((Sound) o).sourceID == sourceID) return true;
-		return false;
-	}
-	
-	public void markDeleted() {
-		deleted = true;
-	}
-	
-	public boolean isDeleted() {
-		return deleted;
-	}
-
-	public boolean isDestroyedWhenDone() {
-		return destroyedWhenDone;
-	}
-
-	public void setDestroyedWhenDone(boolean destroyedWhenDone) {
-		this.destroyedWhenDone = destroyedWhenDone;
 	}
 
 }

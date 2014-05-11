@@ -4,7 +4,6 @@ import de.nerogar.game.Map;
 import de.nerogar.game.Vector;
 import de.nerogar.game.graphics.Light;
 import de.nerogar.game.sound.Sound;
-import de.nerogar.game.sound.SoundManager;
 
 public class EntityFireball extends Entity {
 
@@ -19,8 +18,8 @@ public class EntityFireball extends Entity {
 
 	private Entity sender;
 
-	private static Sound explodeSound = SoundManager.create("smallpuff1.ogg", new Vector(0,0));
-	
+	private static Sound explodeSound = new Sound("smallpuff1.ogg");
+
 	public EntityFireball(Entity sender, Map map, float posX, float posY, float targetX, float targetY, int damage) {
 		super(map, posX, posY, damage);
 
