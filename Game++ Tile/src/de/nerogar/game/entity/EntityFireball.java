@@ -14,7 +14,7 @@ public class EntityFireball extends Entity {
 	private float hitTime;
 	private Entity sender;
 
-	private static Sound explodeSound = new Sound("smallpuff1.ogg");
+	private Sound explodeSound;
 
 	public EntityFireball(Entity sender, Map map, Vector pos, Vector target, int damage) {
 		super(map, pos, new Vector(0.2f), damage);
@@ -35,6 +35,7 @@ public class EntityFireball extends Entity {
 		textureID = 16 * 15;
 
 		light = new Light(new Vector(), 2, 0.8f);
+		explodeSound = new Sound("smallpuff1.ogg");
 	}
 
 	@Override
@@ -55,7 +56,7 @@ public class EntityFireball extends Entity {
 	@Override
 	public void onDie() {
 		map.spawnEntity(new EntityExplosion(sender, map, getCenter(), 2f, health));
-		//explodeSound.setPosition(getCenter());
-		//explodeSound.play();
+		explodeSound.setPosition(getCenter());
+		explodeSound.play();
 	}
 }
