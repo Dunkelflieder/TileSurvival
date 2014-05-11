@@ -31,11 +31,11 @@ public class SoundManager {
 	}
 
 	public static Sound create(String filename, Vector position) {
-		return create(filename, Sound.PRIORITY_MODERATE, position, new Vector(0, 0), false, false, 1f, 1f);
+		return create(filename, Sound.PRIORITY_MODERATE, position, new Vector(0, 0), false, true, 1f, 1f);
 	}
 
 	public static Sound create(String[] filename, Vector position) {
-		return create(filename, Sound.PRIORITY_MODERATE, position, new Vector(0, 0), false, false, 1f, 1f);
+		return create(filename, Sound.PRIORITY_MODERATE, position, new Vector(0, 0), false, true, 1f, 1f);
 	}
 
 	public static Sound create(String filename, Vector position, boolean looping, float gain, float pitch) {
