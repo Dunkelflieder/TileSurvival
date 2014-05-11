@@ -19,4 +19,9 @@ public class Heal extends Weapon {
 		return 20;
 	}
 
+	@Override
+	public boolean canActivate() {
+		return player.health != player.maxEnergy;
+	}
+
 }

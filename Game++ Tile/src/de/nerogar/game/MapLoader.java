@@ -22,6 +22,10 @@ public class MapLoader {
 			return Map.TORCH.id;
 		case 0x0080:
 			return Map.CHEST.id;
+		case 0x00ff:
+			return Map.DOOR.id;
+		case 0xffff:
+			return Map.GRASS.id;//spawn
 
 		default:
 			return Map.GRASS.id;
@@ -30,6 +34,10 @@ public class MapLoader {
 
 	private static boolean hasMob(int color) {
 		return (color & 0xff0000) != 0x0;
+	}
+
+	private static boolean isSpawn(int color) {
+		return (color & 0x00ffff) == 0xffff;
 	}
 
 	private static Entity getEntity(Map map, int color, float posX, float posY) {
@@ -46,6 +54,9 @@ public class MapLoader {
 		int[] pixels;
 		int width;
 		int height;
+
+		float playerX = 0f;
+		float playerY = 0f;
 
 		try {
 			image = ImageIO.read(new File("res/" + filename));
@@ -68,9 +79,13 @@ public class MapLoader {
 				Entity entity = getEntity(map, pixels[i], i % mapSize, i / mapSize);
 				map.spawnEntity(entity);
 			}
+			if (isSpawn(pixels[i])) {
+				playerX = i % mapSize;
+				playerY = i / mapSize;
+			}
 		}
 
-		map.load(tileIDs, mapSize);
+		map.load(tileIDs, mapSize, playerX, playerY);
 		return map;
 	}
 }

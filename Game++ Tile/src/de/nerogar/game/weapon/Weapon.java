@@ -26,6 +26,8 @@ public abstract class Weapon {
 
 	public abstract void start(float targetX, float targetY);
 
+	public abstract boolean canActivate();
+
 	public void update(float time) {
 		cooldown -= time;
 	}
