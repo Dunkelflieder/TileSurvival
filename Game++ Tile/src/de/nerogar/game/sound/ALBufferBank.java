@@ -26,6 +26,7 @@ public class ALBufferBank {
 	}
 
 	public static void addSound(String filename) throws IOException, LWJGLException, OpenALException {
+		if (!SoundManager.alCreated) SoundManager.createAL();
 		File file = new File("res/sound/" + filename);
 
 		int id = ALHelper.genBuffers();
@@ -45,7 +46,8 @@ public class ALBufferBank {
 		}
 
 		int size = ALHelper.getBufferSize(id);
-		buffers.put(file.getName(), new ALBuffer(id, size));
+		int channels = ALHelper.getBufferChannels(id);
+		buffers.put(file.getName(), new ALBuffer(id, size, channels));
 	}
 
 	public static ALBuffer getSound(String filename) throws OpenALException, IOException, LWJGLException {
@@ -54,7 +56,7 @@ public class ALBufferBank {
 		return buffers.get(filename);
 	}
 
-	public static ALBuffer[] getSounds(String[] filenames) throws OpenALException, IOException, LWJGLException {
+	public static ALBuffer[] getBuffers(String[] filenames) throws OpenALException, IOException, LWJGLException {
 		ALBuffer[] buffers = new ALBuffer[filenames.length];
 		for (int i = 0; i < buffers.length; i++) {
 			buffers[i] = getSound(filenames[i]);

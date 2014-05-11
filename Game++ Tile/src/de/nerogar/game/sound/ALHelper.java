@@ -9,25 +9,34 @@ import org.lwjgl.BufferUtils;
 import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.openal.AL11.*;
 
+import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
+import org.lwjgl.openal.ALC10;
+import org.lwjgl.openal.ALC11;
+import org.lwjgl.openal.ALCdevice;
+import org.lwjgl.openal.EFX10;
 import org.lwjgl.openal.OpenALException;
 
 import de.nerogar.game.Vector;
 
 public class ALHelper {
 
-	public static void play(Sound source) throws OpenALException {
-		alSourcePlay(source.getSourceID());
+	public static int ALC_MONO_SOURCES = -1;
+	public static int ALC_STEREO_SOURCES = -1;
+	public static int ALC_FREQUENCY = -1;
+
+	public static void play(int sourceID) throws OpenALException {
+		alSourcePlay(sourceID);
 		checkAndThrowALError();
 	}
 
-	public static void stop(Sound source) throws OpenALException {
-		alSourceStop(source.getSourceID());
+	public static void stop(int sourceID) throws OpenALException {
+		alSourceStop(sourceID);
 		checkAndThrowALError();
 	}
 
-	public static void pause(Sound source) throws OpenALException {
-		alSourcePause(source.getSourceID());
+	public static void pause(int sourceID) throws OpenALException {
+		alSourcePause(sourceID);
 		checkAndThrowALError();
 	}
 
@@ -50,8 +59,8 @@ public class ALHelper {
 		checkAndThrowALError();
 	}
 
-	public static void bindBufferToSource(ALBuffer buffer, Sound source) throws OpenALException {
-		alSourcei(source.getSourceID(), AL_BUFFER, buffer.getBufferID());
+	public static void bindBufferToSource(int bufferID, int sourceID) throws OpenALException {
+		alSourcei(sourceID, AL_BUFFER, bufferID);
 		checkAndThrowALError();
 	}
 
@@ -60,48 +69,54 @@ public class ALHelper {
 		checkAndThrowALError();
 		return result;
 	}
-
-	public static void setPosition(Sound source, Vector position) throws OpenALException {
-		alSource3f(source.getSourceID(), AL_POSITION, position.getX(), position.getY(), SoundManager.CAMERA_HEIGHT);
-		checkAndThrowALError();
-	}
-
-	public static void setVelocity(Sound source, Vector velocity) throws OpenALException {
-		alSource3f(source.getSourceID(), AL_VELOCITY, velocity.getX(), velocity.getY(), 0);
-		checkAndThrowALError();
-	}
-
-	public static void setLooping(Sound source, boolean looping) throws OpenALException {
-		if (looping)
-			alSourcei(source.getSourceID(), AL_LOOPING, AL_TRUE);
-		else
-			alSourcei(source.getSourceID(), AL_LOOPING, AL_FALSE);
-		checkAndThrowALError();
-	}
-
-	public static void setPitch(Sound source, float pitch) throws OpenALException {
-		alSourcef(source.getSourceID(), AL_PITCH, pitch);
-		checkAndThrowALError();
-	}
-
-	public static void setGain(Sound source, float gain) throws OpenALException {
-		alSourcef(source.getSourceID(), AL_GAIN, gain);
-		checkAndThrowALError();
-	}
-
-	public static void setOffset(Sound source, float offset) throws OpenALException {
-		alSourcei(source.getSourceID(), AL_BYTE_OFFSET, (int) (offset * source.getSelectedAlBuffer().getSize()));
-		checkAndThrowALError();
-	}
-
-	public static int getByteOffset(Sound source) throws OpenALException {
-		int result = alGetSourcei(source.getSourceID(), AL_BYTE_OFFSET);
+	
+	public static int getBufferChannels(int id) {
+		int result = AL10.alGetBufferi(id, AL_CHANNELS);
 		checkAndThrowALError();
 		return result;
 	}
 
-	public static int getSourceState(Sound source) throws OpenALException {
-		int result = alGetSourcei(source.getSourceID(), AL_SOURCE_STATE);
+	public static void setPosition(int sourceID, Vector position) throws OpenALException {
+		alSource3f(sourceID, AL_POSITION, position.getX(), position.getY(), 0);
+		checkAndThrowALError();
+	}
+
+	public static void setVelocity(int sourceID, Vector velocity) throws OpenALException {
+		alSource3f(sourceID, AL_VELOCITY, velocity.getX(), velocity.getY(), 0);
+		checkAndThrowALError();
+	}
+
+	public static void setLooping(int sourceID, boolean looping) throws OpenALException {
+		if (looping)
+			alSourcei(sourceID, AL_LOOPING, AL_TRUE);
+		else
+			alSourcei(sourceID, AL_LOOPING, AL_FALSE);
+		checkAndThrowALError();
+	}
+
+	public static void setPitch(int sourceID, float pitch) throws OpenALException {
+		alSourcef(sourceID, AL_PITCH, pitch);
+		checkAndThrowALError();
+	}
+
+	public static void setGain(int sourceID, float gain) throws OpenALException {
+		alSourcef(sourceID, AL_GAIN, gain);
+		checkAndThrowALError();
+	}
+
+	public static void setOffset(int sourceID, int bufferSize, float offset) throws OpenALException {
+		alSourcei(sourceID, AL_BYTE_OFFSET, (int) (offset * bufferSize));
+		checkAndThrowALError();
+	}
+
+	public static int getByteOffset(int sourceID) throws OpenALException {
+		int result = alGetSourcei(sourceID, AL_BYTE_OFFSET);
+		checkAndThrowALError();
+		return result;
+	}
+
+	public static int getSourceState(int sourceID) throws OpenALException {
+		int result = alGetSourcei(sourceID, AL_SOURCE_STATE);
 		checkAndThrowALError();
 		return result;
 	}
@@ -133,18 +148,58 @@ public class ALHelper {
 		checkAndThrowALError();
 	}
 
-	public static void destroySource(Sound source) throws OpenALException {
+	public static void destroySource(int sourceID) throws OpenALException {
 		IntBuffer intBuffer = BufferUtils.createIntBuffer(1);
-		intBuffer.put(0, source.getSourceID());
+		intBuffer.put(0, sourceID);
 		alDeleteSources(intBuffer);
 		checkAndThrowALError();
 	}
 
-	public static void destroyBuffer(ALBuffer buffer) throws OpenALException {
+	public static void destroyBuffer(int bufferID) throws OpenALException {
 		IntBuffer intBuffer = BufferUtils.createIntBuffer(1);
-		intBuffer.put(0, buffer.getBufferID());
+		intBuffer.put(0, bufferID);
 		alDeleteBuffers(intBuffer);
 		checkAndThrowALError();
+	}
+
+	public static void readDeviceAttributes() {
+
+		ALCdevice device = AL.getDevice();
+
+		IntBuffer buffer = BufferUtils.createIntBuffer(1);
+
+		ALC10.alcGetInteger(device, ALC10.ALC_ATTRIBUTES_SIZE, buffer);
+		checkAndThrowALError();
+
+		int length = buffer.get(0);
+		buffer = BufferUtils.createIntBuffer(length);
+
+		ALC10.alcGetInteger(device, ALC10.ALC_ALL_ATTRIBUTES, buffer);
+		checkAndThrowALError();
+
+		for (int i = 0; i + 1 < buffer.limit(); i += 2) {
+			if (buffer.get(i) == ALC11.ALC_MONO_SOURCES) {
+				ALHelper.ALC_MONO_SOURCES = buffer.get(i + 1);
+				System.out.println("ALC_MONO_SOURCES: " + buffer.get(i + 1));
+			} else if (buffer.get(i) == ALC11.ALC_STEREO_SOURCES) {
+				ALHelper.ALC_STEREO_SOURCES = buffer.get(i + 1);
+				System.out.println("ALC_STEREO_SOURCES: " + buffer.get(i + 1));
+			} else if (buffer.get(i) == ALC10.ALC_FREQUENCY) {
+				ALHelper.ALC_FREQUENCY = buffer.get(i + 1);
+				System.out.println("ALC_FREQUENCY: " + buffer.get(i + 1));
+			} else if (buffer.get(i) == AL10.AL_BUFFER) {
+				System.out.println("AL_BUFFER: " + buffer.get(i + 1));
+			} else if (buffer.get(i) == ALC10.ALC_REFRESH) {
+				System.out.println("ALC_REFRESH: " + buffer.get(i + 1));
+			} else if (buffer.get(i) == EFX10.ALC_MAX_AUXILIARY_SENDS) {
+				System.out.println("ALC_MAX_AUXILIARY_SENDS: " + buffer.get(i + 1));
+			} else {
+				System.out.println("unspecified: " + buffer.get(i) + " > " + buffer.get(i + 1));
+			}
+
+		}
+		//System.out.println("Buffer content: "+buffer.get(0));
+
 	}
 
 	public static String getALErrorString(int err) {
@@ -173,7 +228,7 @@ public class ALHelper {
 	public static void checkAndThrowALError() throws OpenALException {
 		int error = alGetError();
 		if (error != AL_NO_ERROR) {
-			throw new OpenALException(getALErrorString(error));
+			throw new OpenALException(getALErrorString(error).toString());
 		}
 	}
 }

@@ -11,80 +11,32 @@ import de.nerogar.game.Vector;
 public class SoundManager {
 
 	public static SoundManager instance = new SoundManager();
-	private static final int maxSources = 16;
-	private static Sound[] sourceSpots;
+	private static ALSource[] sourceSpots;
 	private static String[] preLoadedFiles = new String[] {};
 
 	private static Vector lastListenerPosition = new Vector(0, 0);
 	private static float lastUpdateTime = System.nanoTime() / 1000000000;
-	public static final int CAMERA_HEIGHT = 10;
-	
+	public static final int CAMERA_HEIGHT = 2;
+	public static boolean alCreated = false;
+
 	static {
+		if (!SoundManager.alCreated) SoundManager.createAL();
+		System.out.println(".ogg sound extension available: " + ALHelper.initVorbisExtension());
+		ALHelper.readDeviceAttributes();
+		sourceSpots = new ALSource[ALHelper.ALC_MONO_SOURCES / 2];
+		for (int i = 0; i < sourceSpots.length; i++) {
+			sourceSpots[i] = new ALSource();
+		}
+	}
+	
+	public static void createAL() {
 		try {
 			AL.create();
+			alCreated = true;
 		} catch (LWJGLException e) {
 			System.out.println("Could not create OpenAL (Sound) Context!");
 			e.printStackTrace();
 		}
-		System.out.println(".ogg sound extension available: " + ALHelper.initVorbisExtension());
-		sourceSpots = new Sound[maxSources];
-	}
-
-	public static Sound create(String filename, Vector position) {
-		return create(filename, Sound.PRIORITY_MODERATE, position, new Vector(0, 0), false, true, 1f, 1f);
-	}
-
-	public static Sound create(String[] filename, Vector position) {
-		return create(filename, Sound.PRIORITY_MODERATE, position, new Vector(0, 0), false, true, 1f, 1f);
-	}
-
-	public static Sound create(String filename, Vector position, boolean looping, float gain, float pitch) {
-		return create(filename, Sound.PRIORITY_MODERATE, position, new Vector(0, 0), looping, true, gain, pitch);
-	}
-
-	public static Sound create(String[] filename, Vector position, boolean looping, float gain, float pitch) {
-		return create(filename, Sound.PRIORITY_MODERATE, position, new Vector(0, 0), looping, true, gain, pitch);
-	}
-
-	public static Sound create(String filename, int priority, Vector position, Vector velocity, boolean looping, boolean destroyWhenDone, float gain, float pitch) {
-		return create(new String[] { filename }, priority, position, velocity, looping, destroyWhenDone, gain, pitch);
-	}
-
-	public static Sound create(String[] filenames, int priority, Vector position, Vector velocity, boolean looping, boolean destroyWhenDone, float gain, float pitch) {
-		int spot = getFreeSpot(priority);
-		if (spot == -1) {
-			System.out.println("No free source spot for playing " + filenames);
-		} else {
-			int sourceID = ALHelper.genSources();
-			try {
-				//ALBuffer[] buffers = new ALBuffer[filenames.length];
-				sourceSpots[spot] = new Sound(sourceID, ALBufferBank.getSounds(filenames), position, velocity, looping, destroyWhenDone, gain, pitch);
-			} catch (OpenALException | IOException | LWJGLException e) {
-				sourceSpots[spot] = null;
-				e.printStackTrace();
-			}
-		}
-		if (spot != -1)
-			return sourceSpots[spot];
-		return null;
-	}
-
-	public static int getFreeSpot(int priority) {
-		int spot = -1;
-		for (int i = 0; i < sourceSpots.length; i++) {
-			if (sourceSpots[i] == null) {
-				spot = i;
-				break;
-			} else {
-				if (sourceSpots[i].priority < priority) {
-					if (spot == -1)
-						spot = i;
-					else if (sourceSpots[i].priority < sourceSpots[spot].priority)
-						spot = i;
-				}
-			}
-		}
-		return spot;
 	}
 
 	public static void preLoadSounds() {
@@ -104,13 +56,7 @@ public class SoundManager {
 	public static void update() {
 		for (int i = 0; i < sourceSpots.length; i++) {
 			if (sourceSpots[i] != null) {
-				if (sourceSpots[i].isStopped() && sourceSpots[i].isDestroyedWhenDone()) {
-					sourceSpots[i].markDeleted();
-					sourceSpots[i].destroy();
-					sourceSpots[i] = null;
-				} else {
 					sourceSpots[i].update();
-				}
 			}
 		}
 	}
@@ -133,15 +79,39 @@ public class SoundManager {
 			Vector velocity = elapsedPosition.multiply(1 / elapsedTime);
 			lastUpdateTime = time;
 			lastListenerPosition.set(position);
-			SoundManager.setListener(position, velocity, new float[] { 0, 0, -1 }, new float[] { 0, -1, 0 });
+			SoundManager.setListener(position, velocity, new float[] { 0, 0, 1 }, new float[] { 0, -1, 0 });
 		}
 
 	}
 
-	public static Sound getSource(int i) {
-		if (i < 0 || i >= maxSources)
+	public static ALSource getSource(int i) {
+		if (i < 0 || i >= sourceSpots.length)
 			return null;
 		return sourceSpots[i];
+	}
+
+	public static ALSource getFreeSource(int priority) {
+		ALSource newSource = null;
+		for (ALSource source : sourceSpots) {
+			if (source.isUncoupled()) {
+				System.out.println("Free spot!");
+				return source;
+			} else if (source.isStopped()) {
+				System.out.println("Stopped spot!");
+				source.uncouple();
+				return source;
+			} else if (source.priority <= priority) {
+				priority = source.priority;
+				newSource = source;
+			}
+		}
+		if (newSource == null) {
+			System.out.println("OpenAL ERROR: All Sources are occupied. No free source for Priority " + priority + " was found!");
+			return null;
+		}
+		System.out.println("Priority-based overwritten spot!");
+		newSource.uncouple();
+		return newSource;
 	}
 
 	public static void shutdown() {
