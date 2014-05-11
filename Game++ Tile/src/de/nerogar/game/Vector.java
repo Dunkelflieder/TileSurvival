@@ -20,12 +20,14 @@ public class Vector {
 		this.valueDirty = valueDirty;
 	}
 
-	public void addX(float x) {
+	public Vector addX(float x) {
 		setX(getX() + x);
+		return this;
 	}
 
-	public void addY(float y) {
+	public Vector addY(float y) {
 		setY(getY() + y);
+		return this;
 	}
 
 	public Vector add(Vector v) {
@@ -91,9 +93,12 @@ public class Vector {
 	}
 
 	public float getValue() {
-		if (valueDirty)
-			recalculateValue();
+		if (valueDirty) recalculateValue();
 		return value;
+	}
+
+	public float getSquaredValue() {
+		return x * x + y * y;
 	}
 
 	public Vector setValue(float value) {
