@@ -12,6 +12,9 @@ public class Vector {
 		this.setY(y);
 	}
 
+	public Vector() {
+	}
+
 	// Constructor for cloning
 	private Vector(float x, float y, float value, boolean valueDirty) {
 		this.x = x;
