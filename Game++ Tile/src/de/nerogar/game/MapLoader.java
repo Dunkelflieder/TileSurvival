@@ -6,6 +6,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import de.nerogar.game.network.Client;
+import de.nerogar.game.network.Server;
+
 public class MapLoader {
 
 	private static int getID(int color) {
@@ -36,7 +39,7 @@ public class MapLoader {
 		return (color & 0x00ffff) == 0xffff;
 	}
 
-	public static Map loadMap(String filename) {
+	public static Map loadMap(int worldType, String filename) {
 		BufferedImage image;
 		int[] pixels;
 		int width;
@@ -55,7 +58,13 @@ public class MapLoader {
 		height = image.getHeight();
 		pixels = image.getRGB(0, 0, width, height, null, 0, width);
 
-		Map map = new Map();
+		Map map;
+		if (worldType == Map.SERVER_WORLD) {
+			map = new Map(worldType, new Server(Game.port));
+		} else {
+			map = new Map(worldType, new Client(Game.host, Game.port));
+		}
+
 		int mapSize = width;
 		int[] tileIDs = new int[mapSize * mapSize];
 

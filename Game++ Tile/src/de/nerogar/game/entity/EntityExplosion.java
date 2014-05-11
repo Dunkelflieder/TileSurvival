@@ -13,6 +13,10 @@ public class EntityExplosion extends Entity {
 
 	private Entity sender;
 
+	public EntityExplosion(Map map, Vector pos) {
+		super(map, pos, new Vector(0.1f), 0);
+	}
+
 	public EntityExplosion(Entity sender, Map map, Vector pos, float radius, int damage) {
 		super(map, pos, new Vector(radius * 2f), damage);
 		resistDamage = true;

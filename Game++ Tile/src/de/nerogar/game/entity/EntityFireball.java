@@ -16,6 +16,10 @@ public class EntityFireball extends Entity {
 
 	private Sound explodeSound;
 
+	public EntityFireball(Map map, Vector pos) {
+		super(map, pos, new Vector(0.2f), 0);
+	}
+
 	public EntityFireball(Entity sender, Map map, Vector pos, Vector target, int damage) {
 		super(map, pos, new Vector(0.2f), damage);
 		resistDamage = true;

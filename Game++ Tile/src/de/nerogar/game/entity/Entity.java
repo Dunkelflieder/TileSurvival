@@ -13,6 +13,9 @@ public abstract class Entity {
 	public static final int DIR_LEFT = 2;
 	public static final int DIR_RIGHT = 4;
 
+	public static int MAX_ID;
+	public int id;
+
 	public Map map;
 
 	public Vector pos;
@@ -41,6 +44,8 @@ public abstract class Entity {
 	private int tilesOnTexture = 16;
 
 	public Entity(Map map, Vector pos, Vector dimension, int health) {
+		id = getNewID();
+
 		this.map = map;
 		this.pos = pos;
 		this.dimension = dimension;
@@ -114,5 +119,10 @@ public abstract class Entity {
 
 	public Vector getCenter() {
 		return dimension.multiplied(0.5f).add(pos);
+	}
+
+	private int getNewID() {
+		MAX_ID++;
+		return MAX_ID;
 	}
 }
