@@ -12,6 +12,11 @@ public class Vector {
 		this.setY(y);
 	}
 
+	public Vector(float xy) {
+		this.setX(xy);
+		this.setY(xy);
+	}
+
 	public Vector() {
 	}
 
@@ -120,6 +125,11 @@ public class Vector {
 	@Override
 	public Vector clone() {
 		return new Vector(this.x, this.y, this.value, this.valueDirty);
+	}
+
+	@Override
+	public String toString() {
+		return "(" + x + "|" + y + ")";
 	}
 
 }
