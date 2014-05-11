@@ -81,18 +81,20 @@ public class Vector {
 		return x;
 	}
 
-	public void setX(float x) {
+	public Vector setX(float x) {
 		this.x = x;
 		valueDirty = true;
+		return this;
 	}
 
 	public float getY() {
 		return y;
 	}
 
-	public void setY(float y) {
+	public Vector setY(float y) {
 		this.y = y;
 		valueDirty = true;
+		return this;
 	}
 
 	public float getValue() {
