@@ -34,7 +34,7 @@ public class Sound {
 	
 	private boolean deleted = false;
 	
-	protected Sound(int sourceID, ALBuffer[] alBuffer, Vector position, Vector velocity, boolean looping, boolean destroyedWhenDone, float gain, float pitch) {
+	protected Sound(int sourceID, ALBuffer[] alBuffers, Vector position, Vector velocity, boolean looping, boolean destroyedWhenDone, float gain, float pitch) {
 		this.sourceID = sourceID;
 		this.setPosition(position);
 		this.setVelocity(velocity);
@@ -42,6 +42,7 @@ public class Sound {
 		this.setDestroyedWhenDone(destroyedWhenDone);
 		this.setGain(gain);
 		this.setPitch(pitch);
+		this.alBuffers = alBuffers;
 		this.setALBuffer(alBuffers[0]);
 	}
 	

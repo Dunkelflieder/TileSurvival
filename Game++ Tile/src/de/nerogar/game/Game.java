@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.graphics.GuiIngame;
+import de.nerogar.game.sound.Sound;
 import de.nerogar.game.sound.SoundManager;
 
 public class Game {
@@ -16,6 +17,8 @@ public class Game {
 	final int FRAMERATE = 60;
 
 	private GuiIngame guiIngame;
+	
+	private Sound bgMusic = SoundManager.create("music1.ogg", new Vector(0, 0), true, 0.5f, 1f);
 
 	public Game() {
 		renderEngine = new RenderEngine();
@@ -25,6 +28,7 @@ public class Game {
 	}
 
 	public void run() {
+		bgMusic.play();
 		while (!Display.isCloseRequested()) {
 			//long time1 = System.nanoTime();
 			update();

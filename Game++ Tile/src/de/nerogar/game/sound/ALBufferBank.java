@@ -1,20 +1,29 @@
 package de.nerogar.game.sound;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.HashMap;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.OpenALException;
-
 import org.lwjgl.util.WaveData;
+
+import com.jcraft.oggdecoder.OggData;
+import com.jcraft.oggdecoder.OggDecoder;
 
 public class ALBufferBank {
 
 	public static HashMap<String, ALBuffer> buffers;
+	private static OggDecoder oggDecoder = new OggDecoder();
 
 	static {
 		buffers = new HashMap<String, ALBuffer>();
@@ -30,6 +39,9 @@ public class ALBufferBank {
 		switch (format) {
 		case "wav":
 			setWaveFile(id, file);
+			break;
+		case "ogg":
+			setVorbisFile(id, file);
 			break;
 		default:
 			System.out.println("did not recognize extension for: " + file.getName());
@@ -59,6 +71,27 @@ public class ALBufferBank {
 		ALHelper.setBuffer(bufferID, waveFile.format, waveFile.data, waveFile.samplerate);
 		waveFile.dispose();
 	}
+
+	private static void setVorbisFile(int bufferID, File file) throws IOException {
+		// Decode OGG into PCM
+		InputStream inputStream = new FileInputStream(file);
+		OggData oggData = oggDecoder.getData(inputStream);
+
+		// Load PCM data into buffer
+		ALHelper.setBuffer(bufferID, oggData.channels > 1 ? AL10.AL_FORMAT_STEREO16 : AL10.AL_FORMAT_MONO16, oggData.data, oggData.rate);
+
+		inputStream.close();
+	}
+
+	/*
+	 * private static void setVorbisFile3(int bufferID, File file) throws IOException {
+	 * 
+	 * FileInputStream vorbisStream = new FileInputStream(file); byte[] data = new byte[(int) file.length()]; vorbisStream.read(data); vorbisStream.close(); ByteBuffer buffer = BufferUtils.createByteBuffer(data.length); buffer.put(data); buffer.flip();
+	 * 
+	 * ALHelper.setBuffer(bufferID, AL10.AL_FORMAT_VORBIS_EXT, buffer, buffer.capacity()); }
+	 * 
+	 * private static void setVorbisFile2(int bufferID, File file) throws IOException { FileInputStream vorbisStream = new FileInputStream(file); FileChannel channel = vorbisStream.getChannel(); ByteBuffer buffer = ByteBuffer.allocate((int) channel.size()); channel.read(buffer); channel.close(); vorbisStream.close(); buffer.flip(); ALHelper.setBuffer(bufferID, AL10.AL_FORMAT_VORBIS_EXT, buffer, buffer.capacity()); }
+	 */
 
 	public static String getExtension(File file) {
 		String[] parts = file.getName().split("\\.");

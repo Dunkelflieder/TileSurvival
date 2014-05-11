@@ -18,7 +18,7 @@ public class SoundManager {
 	private static Vector lastListenerPosition = new Vector(0, 0);
 	private static float lastUpdateTime = System.nanoTime() / 1000000000;
 	public static final int CAMERA_HEIGHT = 10;
-
+	
 	static {
 		try {
 			AL.create();
@@ -26,21 +26,30 @@ public class SoundManager {
 			System.out.println("Could not create OpenAL (Sound) Context!");
 			e.printStackTrace();
 		}
+		System.out.println(".ogg sound extension available: " + ALHelper.initVorbisExtension());
 		sourceSpots = new Sound[maxSources];
 	}
-	
+
 	public static Sound create(String filename, Vector position) {
 		return create(filename, Sound.PRIORITY_MODERATE, position, new Vector(0, 0), false, false, 1f, 1f);
 	}
-	
+
 	public static Sound create(String[] filename, Vector position) {
 		return create(filename, Sound.PRIORITY_MODERATE, position, new Vector(0, 0), false, false, 1f, 1f);
 	}
 
-	public static Sound create(String filename, int priority, Vector position, Vector velocity, boolean looping, boolean destroyWhenDone, float gain, float pitch) {
-		return create(new String[]{filename}, priority, position, velocity, looping, destroyWhenDone, gain, pitch);
+	public static Sound create(String filename, Vector position, boolean looping, float gain, float pitch) {
+		return create(filename, Sound.PRIORITY_MODERATE, position, new Vector(0, 0), looping, false, gain, pitch);
 	}
-	
+
+	public static Sound create(String[] filename, Vector position, boolean looping, float gain, float pitch) {
+		return create(filename, Sound.PRIORITY_MODERATE, position, new Vector(0, 0), looping, false, gain, pitch);
+	}
+
+	public static Sound create(String filename, int priority, Vector position, Vector velocity, boolean looping, boolean destroyWhenDone, float gain, float pitch) {
+		return create(new String[] { filename }, priority, position, velocity, looping, destroyWhenDone, gain, pitch);
+	}
+
 	public static Sound create(String[] filenames, int priority, Vector position, Vector velocity, boolean looping, boolean destroyWhenDone, float gain, float pitch) {
 		int spot = getFreeSpot(priority);
 		if (spot == -1) {
@@ -134,7 +143,7 @@ public class SoundManager {
 			return null;
 		return sourceSpots[i];
 	}
-	
+
 	public static void shutdown() {
 		clear();
 		AL.destroy();
