@@ -88,7 +88,7 @@ public class ALHelper {
 	}
 	
 	public static void setOffset(Sound source, float offset) throws OpenALException {
-		alSourcei(source.getSourceID(), AL_BYTE_OFFSET, (int) (offset*source.getAlBuffer().getSize()));
+		alSourcei(source.getSourceID(), AL_BYTE_OFFSET, (int) (offset*source.getSelectedAlBuffer().getSize()));
 		checkAndThrowALError();
 	}
 	

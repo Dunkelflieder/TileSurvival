@@ -39,8 +39,12 @@ public class Game {
 	}
 
 	private void update() {
+		SoundManager.update();
 		map.update(1f / FRAMERATE);
 		InputHandler.update(this);
+		float listenerX = (float) map.getOffsX() + 0.5f * HEIGHT / Map.TILE_RENDER_SIZE;
+		float listenerY = (float) map.getOffsY() + 0.5f * WIDTH / Map.TILE_RENDER_SIZE;
+		SoundManager.recalculateListener(new Vector(listenerX, listenerY));
 	}
 
 	private void render() {

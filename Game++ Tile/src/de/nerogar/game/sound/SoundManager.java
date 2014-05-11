@@ -32,15 +32,24 @@ public class SoundManager {
 	public static Sound create(String filename, Vector position) {
 		return create(filename, Sound.PRIORITY_MODERATE, position, new Vector(0, 0), false, false, 1f, 1f);
 	}
+	
+	public static Sound create(String[] filename, Vector position) {
+		return create(filename, Sound.PRIORITY_MODERATE, position, new Vector(0, 0), false, false, 1f, 1f);
+	}
 
 	public static Sound create(String filename, int priority, Vector position, Vector velocity, boolean looping, boolean destroyWhenDone, float gain, float pitch) {
+		return create(new String[]{filename}, priority, position, velocity, looping, destroyWhenDone, gain, pitch);
+	}
+	
+	public static Sound create(String[] filenames, int priority, Vector position, Vector velocity, boolean looping, boolean destroyWhenDone, float gain, float pitch) {
 		int spot = getFreeSpot(priority);
 		if (spot == -1) {
-			System.out.println("No free source spot for playing " + filename);
+			System.out.println("No free source spot for playing " + filenames);
 		} else {
 			int sourceID = ALHelper.genSources();
 			try {
-				sourceSpots[spot] = new Sound(sourceID, ALBufferBank.instance.getSound(filename), position, velocity, looping, destroyWhenDone, gain, pitch);
+				//ALBuffer[] buffers = new ALBuffer[filenames.length];
+				sourceSpots[spot] = new Sound(sourceID, ALBufferBank.getSounds(filenames), position, velocity, looping, destroyWhenDone, gain, pitch);
 			} catch (OpenALException | IOException | LWJGLException e) {
 				sourceSpots[spot] = null;
 				e.printStackTrace();
@@ -72,7 +81,7 @@ public class SoundManager {
 	public static void preLoadSounds() {
 		for (String filename : preLoadedFiles) {
 			try {
-				ALBufferBank.instance.addSound(filename);
+				ALBufferBank.addSound(filename);
 			} catch (OpenALException | IOException | LWJGLException e) {
 				e.printStackTrace();
 			}
@@ -106,7 +115,7 @@ public class SoundManager {
 		}
 	}
 
-	public static void setListenerLazy(Vector position) {
+	public static void recalculateListener(Vector position) {
 
 		float time = (float) System.nanoTime() / 1000000000;
 		float elapsedTime = time - lastUpdateTime;

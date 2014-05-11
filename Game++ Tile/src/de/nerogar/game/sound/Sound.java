@@ -4,6 +4,8 @@ import static org.lwjgl.openal.AL10.AL_PAUSED;
 import static org.lwjgl.openal.AL10.AL_PLAYING;
 import static org.lwjgl.openal.AL10.AL_STOPPED;
 
+import java.util.Random;
+
 import org.lwjgl.openal.OpenALException;
 
 import de.nerogar.game.Vector;
@@ -15,8 +17,9 @@ public class Sound {
 	public static final int PRIORITY_HIGH = 2;
 
 	private int sourceID;
-	private ALBuffer alBuffer;
-	public int priority = PRIORITY_LOW;
+	private ALBuffer[] alBuffers;
+	private ALBuffer selectedBuffer;
+	public int priority = PRIORITY_MODERATE;
 
 	private Vector position;
 	private Vector velocity;
@@ -27,19 +30,23 @@ public class Sound {
 	private int byteOffset;
 	private float offset;
 	private int state;
+	private Random random = new Random();
 	
 	private boolean deleted = false;
 	
-	public Sound(int sourceID, ALBuffer alBuffer, Vector position, Vector velocity, boolean looping, boolean destroyedWhenDone, float gain, float pitch) {
+	protected Sound(int sourceID, ALBuffer[] alBuffer, Vector position, Vector velocity, boolean looping, boolean destroyedWhenDone, float gain, float pitch) {
 		this.sourceID = sourceID;
-		this.setALBuffer(alBuffer);
 		this.setPosition(position);
 		this.setVelocity(velocity);
 		this.setLooping(looping);
 		this.setDestroyedWhenDone(destroyedWhenDone);
 		this.setGain(gain);
 		this.setPitch(pitch);
-		ALHelper.bindBufferToSource(alBuffer, this);
+		this.setALBuffer(alBuffers[0]);
+	}
+	
+	public void randomize() {
+		setALBuffer(alBuffers[random.nextInt(alBuffers.length)]);
 	}
 
 	public void update() {
@@ -50,8 +57,8 @@ public class Sound {
 			e.printStackTrace();
 			System.out.println("error fetching offset for Source-ID " + sourceID);
 		}
-		offset = (float) byteOffset / alBuffer.getSize();
-		// TODO
+		offset = (float) byteOffset / selectedBuffer.getSize();
+		// TODO Ich weiß nicht, was hier zu tun ist
 		setVelocity(new Vector(0f, 0f));
 	}
 
@@ -87,12 +94,17 @@ public class Sound {
 		return sourceID;
 	}
 
-	public ALBuffer getAlBuffer() {
-		return alBuffer;
+	public ALBuffer[] getAlBuffers() {
+		return alBuffers;
+	}
+	
+	public ALBuffer getSelectedAlBuffer() {
+		return selectedBuffer;
 	}
 
 	public void setALBuffer(ALBuffer alBuffer) {
-		this.alBuffer = alBuffer;
+		this.selectedBuffer = alBuffer;
+		ALHelper.bindBufferToSource(alBuffer, this);
 	}
 
 	public Vector getPosition() {
