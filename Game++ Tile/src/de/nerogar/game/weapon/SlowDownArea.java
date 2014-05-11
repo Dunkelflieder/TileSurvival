@@ -1,18 +1,19 @@
 package de.nerogar.game.weapon;
 
+import de.nerogar.game.Vector;
 import de.nerogar.game.entity.*;
 
 public class SlowDownArea extends Weapon {
 
-	public SlowDownArea(EntityPlayer player, int damage, float cooldown) {
-		super(player, damage, cooldown, 15);
+	public SlowDownArea(Entity owner, int damage, float cooldown) {
+		super(owner, damage, cooldown, 15);
 		textureID = 2;
 	}
 
 	@Override
-	public void start(float targetX, float targetY) {
-		EntitySlowdownArea slowDownEntity = new EntitySlowdownArea(player, player.map, player.posX, player.posY, 5, damage);
-		player.map.spawnEntity(slowDownEntity);
+	public void start(Vector target) {
+		EntitySlowdownArea slowDownEntity = new EntitySlowdownArea(owner, owner.map, owner.pos.clone(), 5, damage);
+		owner.map.spawnEntity(slowDownEntity);
 	}
 
 	@Override

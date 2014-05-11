@@ -42,8 +42,7 @@ public class MapLoader {
 		int width;
 		int height;
 
-		float playerX = 0f;
-		float playerY = 0f;
+		Vector playerPos = new Vector();
 
 		try {
 			image = ImageIO.read(new File("res/" + filename));
@@ -64,12 +63,11 @@ public class MapLoader {
 			tileIDs[i] = getID(pixels[i]);
 
 			if (isSpawn(pixels[i])) {
-				playerX = i % mapSize;
-				playerY = i / mapSize;
+				playerPos.setX(i % mapSize).setY(i / mapSize);
 			}
 		}
 
-		map.load(tileIDs, mapSize, playerX, playerY);
+		map.load(tileIDs, mapSize, playerPos);
 		return map;
 	}
 }

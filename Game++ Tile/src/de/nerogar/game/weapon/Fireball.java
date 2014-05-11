@@ -1,19 +1,19 @@
 package de.nerogar.game.weapon;
 
-import de.nerogar.game.entity.EntityFireball;
-import de.nerogar.game.entity.EntityPlayer;
+import de.nerogar.game.Vector;
+import de.nerogar.game.entity.*;
 
 public class Fireball extends Weapon {
 
-	public Fireball(EntityPlayer player, int damage, float cooldown) {
-		super(player, damage, cooldown, 5);
+	public Fireball(Entity owner, int damage, float cooldown) {
+		super(owner, damage, cooldown, 5);
 		textureID = 0;
 	}
 
 	@Override
-	public void start(float targetX, float targetY) {
-		EntityFireball fireball = new EntityFireball(player, player.map, player.posX, player.posY, targetX, targetY, damage);
-		player.map.spawnEntity(fireball);
+	public void start(Vector target) {
+		EntityFireball fireball = new EntityFireball(owner, owner.map, owner.pos.clone(), target, damage);
+		owner.map.spawnEntity(fireball);
 	}
 
 	@Override

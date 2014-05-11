@@ -8,8 +8,8 @@ public abstract class EntityEnemy extends Entity {
 	public float damageCooldown;
 	public float maxDamageCooldown;
 
-	public EntityEnemy(Map map, float posX, float posY, int health, float damageCooldown) {
-		super(map, posX, posY, health);
+	public EntityEnemy(Map map, Vector pos, Vector dimension, int health, float damageCooldown) {
+		super(map, pos, dimension, health);
 		this.maxDamageCooldown = damageCooldown;
 	}
 
@@ -24,11 +24,5 @@ public abstract class EntityEnemy extends Entity {
 	public void update(float time) {
 		super.update(time);
 		damageCooldown -= time;
-	}
-
-	@Override
-	public void onDie() {
-		Vector center = getCenter();
-		map.spawnEntity(new EntityEnergyDrop(map, center.getX(), center.getY()));
 	}
 }

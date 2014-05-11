@@ -13,20 +13,17 @@ public class EntityExplosion extends Entity {
 
 	private Entity sender;
 
-	public EntityExplosion(Entity sender, Map map, float posX, float posY, float radius, int damage) {
-		super(map, posX, posY, 0);
+	public EntityExplosion(Entity sender, Map map, Vector pos, float radius, int damage) {
+		super(map, pos, new Vector(radius * 2f), damage);
+		resistDamage = true;
 		lifeTime = MAX_LIFFETIME;
 		this.radius = radius;
 		this.sender = sender;
 
-		this.health = damage;
 		textureID = 16 * 15 + 1;
-		width = radius * 2f;
-		height = radius * 2f;
-		this.posX -= radius;
-		this.posY -= radius;
+		pos.addX(-radius).addY(-radius);
 
-		light = new Light(0, 0, 20f, 5f);
+		light = new Light(new Vector(), 20f, 5f);
 	}
 
 	public boolean intersects(Vector entityPos) {

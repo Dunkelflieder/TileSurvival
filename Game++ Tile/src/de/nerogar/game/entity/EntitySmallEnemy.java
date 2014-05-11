@@ -5,8 +5,8 @@ import de.nerogar.game.Vector;
 
 public class EntitySmallEnemy extends EntityEnemy {
 
-	public EntitySmallEnemy(Map map, float posX, float posY) {
-		super(map, posX, posY, 5, 1f);
+	public EntitySmallEnemy(Map map, Vector pos) {
+		super(map, pos, new Vector(1.0f), 5, 1f);
 		moveSpeed = 1.0f;
 		textureID = 16;
 	}
@@ -28,8 +28,7 @@ public class EntitySmallEnemy extends EntityEnemy {
 	@Override
 	public void onDie() {
 		if (Math.random() < 0.3) {
-			Vector center = getCenter();
-			map.spawnEntity(new EntityEnergyDrop(map, center.getX(), center.getY()));
+			map.spawnEntity(new EntityEnergyDrop(map, getCenter()));
 		}
 	}
 }

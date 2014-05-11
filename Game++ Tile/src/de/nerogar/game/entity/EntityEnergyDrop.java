@@ -1,16 +1,15 @@
 package de.nerogar.game.entity;
 
 import de.nerogar.game.Map;
+import de.nerogar.game.Vector;
 
 public class EntityEnergyDrop extends Entity {
 
-	public EntityEnergyDrop(Map map, float posX, float posY) {
-		super(map, posX, posY, Integer.MAX_VALUE);
+	public EntityEnergyDrop(Map map, Vector pos) {
+		super(map, pos, new Vector(0.3f), 0);
+		resistDamage = true;
 		moveSpeed = 1.0f;
 		textureID = 16 * 15 + 2;
-
-		width = 0.3f;
-		height = 0.3f;
 	}
 
 	@Override

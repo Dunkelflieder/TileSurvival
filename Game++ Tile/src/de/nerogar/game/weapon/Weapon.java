@@ -2,12 +2,14 @@ package de.nerogar.game.weapon;
 
 import static org.lwjgl.opengl.GL11.*;
 import de.nerogar.game.Map;
+import de.nerogar.game.Vector;
+import de.nerogar.game.entity.Entity;
 import de.nerogar.game.entity.EntityPlayer;
 import de.nerogar.game.graphics.TextureBank;
 
 public abstract class Weapon {
 
-	public EntityPlayer player;
+	public Entity owner;
 	public int damage;
 	public float maxCooldown;
 	public float cooldown;
@@ -18,14 +20,14 @@ public abstract class Weapon {
 	public float posX;
 	public float posY;
 
-	public Weapon(EntityPlayer player, int damage, float cooldown, int energyCost) {
-		this.player = player;
+	public Weapon(Entity owner, int damage, float cooldown, int energyCost) {
+		this.owner = owner;
 		this.damage = damage;
 		this.maxCooldown = cooldown;
 		this.energyCost = energyCost;
 	}
 
-	public abstract void start(float targetX, float targetY);
+	public abstract void start(Vector target);
 
 	public abstract boolean canActivate();
 
@@ -35,6 +37,8 @@ public abstract class Weapon {
 
 	public void render() {
 		TextureBank.instance.bindTexture("gui.png");
+
+		EntityPlayer player = owner.map.getPlayer();
 
 		int tilePosX = textureID % (int) Map.TILES_ON_TEXTURE;
 		int tilePosY = textureID / (int) Map.TILES_ON_TEXTURE;

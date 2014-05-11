@@ -1,18 +1,19 @@
 package de.nerogar.game.weapon;
 
+import de.nerogar.game.Vector;
 import de.nerogar.game.entity.*;
 
 public class FireBlast extends Weapon {
 
-	public FireBlast(EntityPlayer player, int damage, float cooldown) {
-		super(player, damage, cooldown, 20);
+	public FireBlast(Entity owner, int damage, float cooldown) {
+		super(owner, damage, cooldown, 20);
 		textureID = 1;
 	}
 
 	@Override
-	public void start(float targetX, float targetY) {
-		EntityExplosion explosion = new EntityExplosion(player, player.map, player.posX, player.posY, 5, damage);
-		player.map.spawnEntity(explosion);
+	public void start(Vector target) {
+		EntityExplosion explosion = new EntityExplosion(owner, owner.map, owner.pos.clone(), 5, damage);
+		owner.map.spawnEntity(explosion);
 	}
 
 	@Override

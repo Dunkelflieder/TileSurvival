@@ -11,18 +11,17 @@ public class EntitySlowdownArea extends Entity {
 
 	private Entity sender;
 
-	public EntitySlowdownArea(Entity sender, Map map, float posX, float posY, float radius, int damage) {
-		super(map, posX, posY, 0);
+	public EntitySlowdownArea(Entity sender, Map map, Vector pos, float radius, int damage) {
+		super(map, pos, new Vector(radius * 2f), damage);
+		resistDamage = true;
+
 		lifeTime = MAX_LIFFETIME;
 		this.radius = radius;
 		this.sender = sender;
 
 		this.health = damage;
 		textureID = 16 * 15 + 1;
-		width = radius * 2f;
-		height = radius * 2f;
-		this.posX -= radius;
-		this.posY -= radius;
+		pos.addX(-radius).addY(-radius);
 
 		for (Entity entity : map.getEntities()) {
 			if (intersects(entity.getCenter()) && entity != this.sender) {

@@ -54,7 +54,7 @@ public class Map {
 	public Map() {
 		shader = new Shader("map");
 		initShader();
-		player = new EntityPlayer(this, 0f, 0f);
+		player = new EntityPlayer(this, new Vector());
 		entities = new ArrayList<Entity>();
 		newEntities = new ArrayList<Entity>();
 		entities.add(player);
@@ -70,11 +70,11 @@ public class Map {
 		newEntities.add(entity);
 	}
 
-	public boolean isColliding(float x, float y, float width, float height) {
-		if (x < 0 || y < 0 || x + width >= size || y + height >= size) return true;
+	public boolean isColliding(Vector pos, Vector dimension) {
+		if (pos.getX() < 0 || pos.getY() < 0 || pos.getX() + dimension.getX() >= size || pos.getY() + dimension.getY() >= size) return true;
 
-		for (int i = Math.max((int) x, 0); i <= Math.min((int) (x + width), size - 1); i++) {
-			for (int j = Math.max((int) y, 0); j <= Math.min((int) (y + height), size - 1); j++) {
+		for (int i = Math.max((int) pos.getX(), 0); i <= Math.min((int) (pos.getX() + dimension.getX()), size - 1); i++) {
+			for (int j = Math.max((int) pos.getY(), 0); j <= Math.min((int) (pos.getY() + dimension.getY()), size - 1); j++) {
 				if (TILES[tileIDs[i + j * size]].collide) return true;
 			}
 		}
@@ -102,8 +102,8 @@ public class Map {
 			entity.update(time);
 		}
 
-		offsX = player.posX - (((Display.getWidth() / TILE_RENDER_SIZE) - player.width) / 2f);
-		offsY = player.posY - (((Display.getHeight() / TILE_RENDER_SIZE) - player.height) / 2f);
+		offsX = player.pos.getX() - (((Display.getWidth() / TILE_RENDER_SIZE) - player.dimension.getX()) / 2f);
+		offsY = player.pos.getY() - (((Display.getHeight() / TILE_RENDER_SIZE) - player.dimension.getY()) / 2f);
 
 		tilesX = (Display.getWidth() / TILE_RENDER_SIZE);
 		tilesY = (Display.getHeight() / TILE_RENDER_SIZE);
@@ -175,24 +175,26 @@ public class Map {
 		tileIDs[x + y * size] = tile.id;
 	}
 
-	public void load(int[] tileIDs, int size, float playerX, float playerY) {
+	public void load(int[] tileIDs, int size, Vector playerPos) {
 		this.tileIDs = tileIDs;
 		this.size = size;
-		player.posX = playerX;
-		player.posY = playerY;
+		player.pos = playerPos;
+
+		for (int i = 0; i < 10; i++)
+			spawnEntity(new EntityGhost(this, new Vector(19f, 19f)));
 	}
 
 	private void calcLightSources() {
 		lights = new ArrayList<Light>();
 		for (int i = 0; i < tileIDs.length; i++) {
 			if (tileIDs[i] == TORCH.id) {
-				lights.add(new Light(((float) (i % size)) + 0.5f, ((float) (i / size)) + 0.5f, 5f, 1f));
+				lights.add(new Light(new Vector(((float) (i % size)) + 0.5f, ((float) (i / size)) + 0.5f), 5f, 1f));
 			}
 		}
 
 		for (Entity entity : entities) {
 			if (entity.light != null) {
-				lights.add(new Light(entity.posX + entity.width / 2, entity.posY + entity.height / 2, entity.light.size, entity.light.intensity));
+				lights.add(new Light(entity.getCenter(), entity.light.size, entity.light.intensity));
 			}
 		}
 
@@ -205,8 +207,8 @@ public class Map {
 
 		for (Light light : lights) {
 			if (light.inArea(offsX, offsY, (Display.getWidth() / TILE_RENDER_SIZE), (Display.getHeight() / TILE_RENDER_SIZE))) {
-				lightBufferXArray[index] = light.posX;
-				lightBufferYArray[index] = light.posY;
+				lightBufferXArray[index] = light.pos.getX();
+				lightBufferYArray[index] = light.pos.getY();
 				lightBufferSizeArray[index] = light.size;
 				lightBufferIntensityArray[index] = light.intensity;
 				index++;

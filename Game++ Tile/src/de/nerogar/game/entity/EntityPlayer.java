@@ -6,20 +6,18 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
-import de.nerogar.game.InputHandler;
-import de.nerogar.game.Map;
+import de.nerogar.game.*;
 import de.nerogar.game.weapon.*;
 
 public class EntityPlayer extends Entity {
 
 	public ArrayList<Weapon> weapons;
 	public int selectedWeapon;
-	public int energy;
-	public int maxEnergy;
+
 	private float nextEnergyRestore;
 
-	public EntityPlayer(Map map, float posX, float posY) {
-		super(map, posX, posY, 100);
+	public EntityPlayer(Map map, Vector pos) {
+		super(map, pos, new Vector(1.0f), 100);
 		weapons = new ArrayList<Weapon>();
 		weapons.add(new Fireball(this, 3, 1.0f));
 		//weapons.add(new SlowDownArea(this, 0, 2.0f));
@@ -73,13 +71,16 @@ public class EntityPlayer extends Entity {
 		}
 
 		if (Mouse.isButtonDown(0)) {
-			float targetX = ((float) Mouse.getX()) / Map.TILE_RENDER_SIZE + map.getOffsX();
-			float targetY = (float) (Display.getHeight() - Mouse.getY()) / Map.TILE_RENDER_SIZE + map.getOffsY();
+
+			Vector target = new Vector();
+
+			target.setX(((float) Mouse.getX()) / Map.TILE_RENDER_SIZE + map.getOffsX());
+			target.setY((float) (Display.getHeight() - Mouse.getY()) / Map.TILE_RENDER_SIZE + map.getOffsY());
 
 			Weapon weapon = weapons.get(selectedWeapon);
 
 			if (weapon.cooldown <= 0f && energy >= weapon.energyCost && weapon.canActivate()) {
-				weapons.get(selectedWeapon).start(targetX, targetY);
+				weapons.get(selectedWeapon).start(target);
 				energy -= weapons.get(selectedWeapon).energyCost;
 				weapon.cooldown = weapon.maxCooldown;
 			}
