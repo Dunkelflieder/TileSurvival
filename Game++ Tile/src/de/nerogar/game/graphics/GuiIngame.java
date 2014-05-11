@@ -14,8 +14,8 @@ public class GuiIngame extends Gui {
 
 	public GuiIngame(EntityPlayer player) {
 		this.player = player;
-		lifeBar = new StatusBar(player.map);
-		energyBar = new StatusBar(player.map);
+		lifeBar = new StatusBar();
+		energyBar = new StatusBar();
 		energyBar.texturePos = 1;
 	}
 

@@ -21,4 +21,9 @@ public class Fireball extends Weapon {
 		return 5;
 	}
 
+	@Override
+	public boolean canActivate() {
+		return true;
+	}
+
 }

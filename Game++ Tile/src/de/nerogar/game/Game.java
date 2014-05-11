@@ -26,14 +26,14 @@ public class Game {
 
 	public void run() {
 		while (!Display.isCloseRequested()) {
-			long time1 = System.nanoTime();
+			//long time1 = System.nanoTime();
 			update();
 			render();
 			Display.sync(FRAMERATE);
 			Display.update();
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			long time2 = System.nanoTime();
-			System.out.println("time: " + ((time2 - time1) / 1000000d));
+			//long time2 = System.nanoTime();
+			//System.out.println("time: " + ((time2 - time1) / 1000000d));
 		}
 		SoundManager.shutdown();
 	}

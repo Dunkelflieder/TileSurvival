@@ -19,8 +19,12 @@ public class Map {
 	public static final Tile TREE = new Tile(2, true);
 	public static final Tile TORCH = new Tile(3, false);
 	public static final Tile CHEST = new Tile(4, true);
-
-	public static final Tile[] TILES = new Tile[] { GRASS, ROCK, TREE, TORCH, CHEST };
+	public static final Tile OPEN_CHEST = new Tile(5, true);
+	public static final Tile DOOR = new Tile(6, false);
+	public static final Tile DOOR_OPEN = new Tile(7, false);
+	public static final Tile FLOOR = new Tile(8, false);
+	
+	public static final Tile[] TILES = new Tile[] { GRASS, ROCK, TREE, TORCH, CHEST, OPEN_CHEST, DOOR, DOOR_OPEN };
 
 	public static final float TILE_RENDER_SIZE = 64f;
 	public static final float TEXTURE_SIZE = 256f;
@@ -172,10 +176,11 @@ public class Map {
 		tileIDs[x + y * size] = tile.id;
 	}
 
-	public void load(int[] tileIDs, int size) {
+	public void load(int[] tileIDs, int size, float playerX, float playerY) {
 		this.tileIDs = tileIDs;
 		this.size = size;
-
+		player.posX = playerX;
+		player.posY = playerY;
 	}
 
 	private void calcLightSources() {

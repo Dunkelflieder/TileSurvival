@@ -20,4 +20,9 @@ public class FireBlast extends Weapon {
 		return 20;
 	}
 
+	@Override
+	public boolean canActivate() {
+		return true;
+	}
+
 }

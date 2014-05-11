@@ -27,7 +27,9 @@ public class EntitySmallEnemy extends EntityEnemy {
 
 	@Override
 	public void onDie() {
-		Vector center = getCenter();
-		map.spawnEntity(new EntityEnergyDrop(map, center.getX(), center.getY()));
+		if (Math.random() < 0.3) {
+			Vector center = getCenter();
+			map.spawnEntity(new EntityEnergyDrop(map, center.getX(), center.getY()));
+		}
 	}
 }

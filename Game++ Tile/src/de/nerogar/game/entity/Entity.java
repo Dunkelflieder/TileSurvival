@@ -8,10 +8,17 @@ import de.nerogar.game.graphics.TextureBank;
 
 public abstract class Entity {
 
+	public static final int DIR_UP = 0;
+	public static final int DIR_DOWN = 1;
+	public static final int DIR_LEFT = 2;
+	public static final int DIR_RIGHT = 4;
+
 	public Map map;
 
 	public float posX;
 	public float posY;
+	public int facingDir;
+
 	public float width = 1f;
 	public float height = 1f;
 

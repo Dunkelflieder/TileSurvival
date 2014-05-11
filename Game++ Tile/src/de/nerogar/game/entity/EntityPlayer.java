@@ -29,6 +29,8 @@ public class EntityPlayer extends Entity {
 		maxEnergy = 100;
 		energy = maxEnergy;
 		moveSpeed = 3.0f;
+		
+		//light = new Light(0, 0, 5f,2.0f);
 	}
 
 	@Override
@@ -52,10 +54,6 @@ public class EntityPlayer extends Entity {
 			moveY(moveSpeed * time * speedmult);
 		}
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
-			map.setTile((int) posX, (int) posY, Map.TORCH);
-		}
-
 		if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
 			selectedWeapon = 0;
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_2) && weapons.size() > 1) {
@@ -65,6 +63,10 @@ public class EntityPlayer extends Entity {
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_4) && weapons.size() > 3) {
 			selectedWeapon = 3;
 		}
+		if (InputHandler.isMouseButtonPressed(1)) {
+			selectedWeapon = (selectedWeapon + 1) % weapons.size();
+		}
+		selectedWeapon = (selectedWeapon - Integer.signum(Mouse.getDWheel()) + weapons.size()) % weapons.size();
 
 		for (Weapon weapon : weapons) {
 			weapon.update(time);
@@ -76,15 +78,11 @@ public class EntityPlayer extends Entity {
 
 			Weapon weapon = weapons.get(selectedWeapon);
 
-			if (weapon.cooldown <= 0f && energy >= weapon.getEnergyCost()) {
+			if (weapon.cooldown <= 0f && energy >= weapon.getEnergyCost() && weapon.canActivate()) {
 				weapons.get(selectedWeapon).start(targetX, targetY);
 				energy -= weapons.get(selectedWeapon).getEnergyCost();
 				weapon.cooldown = weapon.maxCooldown;
 			}
-		}
-
-		if (InputHandler.isMouseButtonPressed(1)) {
-			selectedWeapon = (selectedWeapon + 1) % weapons.size();
 		}
 
 		if (nextEnergyRestore <= 0 && energy < maxEnergy) {

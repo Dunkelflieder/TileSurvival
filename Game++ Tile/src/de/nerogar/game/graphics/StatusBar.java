@@ -10,12 +10,11 @@ public class StatusBar {
 	private float textureHeight = pixelHeight / Map.TEXTURE_SIZE;
 	public float texturePos = 0;
 
-	private Map map;
 	public float posX;
 	public float posY;
 
-	public StatusBar(Map map) {
-		this.map = map;
+	public StatusBar() {
+
 	}
 
 	public void render() {

@@ -20,4 +20,9 @@ public class SlowDownArea extends Weapon {
 		return 15;
 	}
 
+	@Override
+	public boolean canActivate() {
+		return true;
+	}
+
 }
