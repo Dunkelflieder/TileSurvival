@@ -6,47 +6,34 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import de.nerogar.game.entity.*;
-
 public class MapLoader {
 
 	private static int getID(int color) {
-		switch (color & 0xffff) {
-		case 0xa000:
-			return Map.GRASS.id;
-		case 0x0000:
+		switch (color & 0xffffff) {
+		case 0x00a000:
+			return Map.FLOOR.id;
+		case 0x000000:
 			return Map.ROCK.id;
-		case 0x6000:
+		case 0x006000:
 			return Map.TREE.id;
-		case 0x8080:
+		case 0x008080:
 			return Map.TORCH.id;
-		case 0x0080:
+		case 0x000080:
 			return Map.CHEST.id;
-		case 0x00ff:
+		case 0x0000ff:
 			return Map.DOOR.id;
-		case 0xffff:
-			return Map.GRASS.id;//spawn
+		case 0x00ffff:
+			return Map.FLOOR.id;//spawn
+		case 0xffaa00:
+			return Map.FLOOR.id;
 
 		default:
-			return Map.GRASS.id;
+			return Map.FLOOR.id;
 		}
-	}
-
-	private static boolean hasMob(int color) {
-		return (color & 0xff0000) != 0x0;
 	}
 
 	private static boolean isSpawn(int color) {
 		return (color & 0x00ffff) == 0xffff;
-	}
-
-	private static Entity getEntity(Map map, int color, float posX, float posY) {
-		switch ((color & 0xff0000) >> 16) {
-		case 0x20:
-			return new EntitySmallEnemy(map, posX, posY);
-		default:
-			return null;
-		}
 	}
 
 	public static Map loadMap(String filename) {
@@ -75,10 +62,7 @@ public class MapLoader {
 
 		for (int i = 0; i < pixels.length; i++) {
 			tileIDs[i] = getID(pixels[i]);
-			if (hasMob(pixels[i])) {
-				Entity entity = getEntity(map, pixels[i], i % mapSize, i / mapSize);
-				map.spawnEntity(entity);
-			}
+
 			if (isSpawn(pixels[i])) {
 				playerX = i % mapSize;
 				playerY = i / mapSize;
