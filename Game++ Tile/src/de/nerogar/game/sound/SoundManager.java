@@ -23,7 +23,7 @@ public class SoundManager {
 		if (!SoundManager.alCreated) SoundManager.createAL();
 		System.out.println(".ogg sound extension available: " + ALHelper.initVorbisExtension());
 		ALHelper.readDeviceAttributes();
-		sourceSpots = new ALSource[ALHelper.ALC_MONO_SOURCES / 2];
+		sourceSpots = new ALSource[ALHelper.ALC_MONO_SOURCES];
 		for (int i = 0; i < sourceSpots.length; i++) {
 			sourceSpots[i] = new ALSource();
 		}
@@ -94,10 +94,8 @@ public class SoundManager {
 		ALSource newSource = null;
 		for (ALSource source : sourceSpots) {
 			if (source.isUncoupled()) {
-				System.out.println("Free spot!");
 				return source;
 			} else if (source.isStopped()) {
-				System.out.println("Stopped spot!");
 				source.uncouple();
 				return source;
 			} else if (source.priority <= priority) {
@@ -108,8 +106,7 @@ public class SoundManager {
 		if (newSource == null) {
 			System.out.println("OpenAL ERROR: All Sources are occupied. No free source for Priority " + priority + " was found!");
 			return null;
-		}
-		System.out.println("Priority-based overwritten spot!");
+		};
 		newSource.uncouple();
 		return newSource;
 	}

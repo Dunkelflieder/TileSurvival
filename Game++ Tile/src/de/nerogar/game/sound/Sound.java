@@ -122,7 +122,6 @@ public class Sound {
 
 	private void selectBuffer(int buffer) {
 		this.selectedBuffer = buffer;
-		System.out.println("Selecting buffer: " + buffers[selectedBuffer]);
 		getSource().setBuffer(buffers[selectedBuffer]);
 	}
 
