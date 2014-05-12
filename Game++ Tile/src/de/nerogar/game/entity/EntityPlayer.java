@@ -47,28 +47,26 @@ public class EntityPlayer extends Entity {
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
 			moveX(moveSpeed * time * speedmult);
-			sendPos[0] = pos.getX();
 			newPos = true;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
 			moveX(-moveSpeed * time * speedmult);
-			sendPos[0] = pos.getX();
 			newPos = true;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 			moveY(-moveSpeed * time * speedmult);
-			sendPos[1] = pos.getY();
 			newPos = true;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
 			moveY(moveSpeed * time * speedmult);
-			sendPos[1] = pos.getY();
 			newPos = true;
 		}
 
 		if (client != null && newPos) {
 			PacketPlayerPosition playerPositionPacket = new PacketPlayerPosition();
 			playerPositionPacket.playerID = id;
+			sendPos[0] = pos.getX();
+			sendPos[1] = pos.getY();
 			playerPositionPacket.playerPosition = sendPos;
 			Game.game.client.sendPacket(playerPositionPacket);
 		}
