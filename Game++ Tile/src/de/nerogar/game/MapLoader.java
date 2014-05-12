@@ -6,9 +6,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import de.nerogar.game.network.Client;
-import de.nerogar.game.network.Server;
-
 public class MapLoader {
 
 	private static int getID(int color) {

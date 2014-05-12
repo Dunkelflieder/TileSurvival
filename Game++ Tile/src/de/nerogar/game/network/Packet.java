@@ -74,5 +74,7 @@ public abstract class Packet {
 		registerPacket(PacketSpawnEntity.class);
 		registerPacket(PacketDespawnEntity.class);
 		registerPacket(PacketStartGame.class);
+		registerPacket(PacketPlayerPosition.class);
+		registerPacket(PacketActivateWeapon.class);
 	}
 }

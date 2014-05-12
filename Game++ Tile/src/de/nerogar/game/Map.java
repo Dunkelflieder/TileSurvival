@@ -85,7 +85,7 @@ public class Map {
 
 	public void spawnEntity(Entity entity) {
 		if (entity.id == playerID) {
-			player = (EntityPlayer) entity;
+			setPlayer((EntityPlayer) entity);
 			playerID = -1;
 		}
 
@@ -145,7 +145,7 @@ public class Map {
 			updating = false;
 		}
 
-		player.updateInput(time);
+		player.updateInput(time, client);
 
 		offsX = player.pos.getX() - (((Display.getWidth() / TILE_RENDER_SIZE) - player.dimension.getX()) / 2f);
 		offsY = player.pos.getY() - (((Display.getHeight() / TILE_RENDER_SIZE) - player.dimension.getY()) / 2f);
@@ -182,8 +182,10 @@ public class Map {
 				int id = entityPositionsPacket.entityIDs[i];
 				Entity entity = entities.get(id);
 				if (entity != null) {
-					entity.pos.setX(entityPositionsPacket.entityPositions[i * 2]);
-					entity.pos.setY(entityPositionsPacket.entityPositions[i * 2 + 1]);
+					if (entity != player) {
+						entity.pos.setX(entityPositionsPacket.entityPositions[i * 2]);
+						entity.pos.setY(entityPositionsPacket.entityPositions[i * 2 + 1]);
+					}
 					entity.moveSpeed = entityPositionsPacket.entityMoveSpeeds[i];
 					entity.speedmult = entityPositionsPacket.entitySpeedMults[i];
 				}
@@ -301,9 +303,14 @@ public class Map {
 		if (player == null) {
 			this.playerID = playerID;
 		} else {
-			this.player = player;
+			setPlayer(player);
 		}
 		ready = true;
+	}
+
+	private void setPlayer(EntityPlayer player) {
+		this.player = player;
+		player.pos = getSpawnLocation();
 	}
 
 	private void calcLightSources() {

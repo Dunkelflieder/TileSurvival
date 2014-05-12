@@ -7,6 +7,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.*;
+import de.nerogar.game.network.*;
 import de.nerogar.game.weapon.*;
 
 public class EntityPlayer extends Entity {
@@ -40,18 +41,36 @@ public class EntityPlayer extends Entity {
 		return weapons.get(selectedWeapon);
 	}
 
-	public void updateInput(float time) {
+	public void updateInput(float time, Client client) {
+		float[] sendPos = new float[2];
+		boolean newPos = false;
+
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
 			moveX(moveSpeed * time * speedmult);
+			sendPos[0] = pos.getX();
+			newPos = true;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
 			moveX(-moveSpeed * time * speedmult);
+			sendPos[0] = pos.getX();
+			newPos = true;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 			moveY(-moveSpeed * time * speedmult);
+			sendPos[1] = pos.getY();
+			newPos = true;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
 			moveY(moveSpeed * time * speedmult);
+			sendPos[1] = pos.getY();
+			newPos = true;
+		}
+
+		if (client != null && newPos) {
+			PacketPlayerPosition playerPositionPacket = new PacketPlayerPosition();
+			playerPositionPacket.playerID = id;
+			playerPositionPacket.playerPosition = sendPos;
+			map.client.sendPacket(playerPositionPacket);
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
@@ -85,6 +104,14 @@ public class EntityPlayer extends Entity {
 				weapons.get(selectedWeapon).start(target);
 				energy -= weapons.get(selectedWeapon).energyCost;
 				weapon.cooldown = weapon.maxCooldown;
+
+				if (client != null) {
+					PacketActivateWeapon activateWeaponPacket = new PacketActivateWeapon();
+					activateWeaponPacket.targetPosition = new float[] { target.getX(), target.getY() };
+					activateWeaponPacket.playerID = id;
+					activateWeaponPacket.selectedWeapon = selectedWeapon;
+					map.client.sendPacket(activateWeaponPacket);
+				}
 			}
 		}
 

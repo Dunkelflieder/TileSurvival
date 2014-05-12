@@ -36,7 +36,6 @@ public class GuiLobbyHost extends Gui {
 			
 			EntityPlayer playerEntity = new EntityPlayer(map, map.getSpawnLocation());
 			map.spawnEntity(playerEntity);
-			System.out.println(playerEntity.id);
 			map.initPlayer(playerEntity.id);
 
 			ArrayList<Client> clients = server.getClients();
