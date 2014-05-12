@@ -10,7 +10,7 @@ public class GuiLobbyClient extends Gui {
 	private Client client;
 
 	public GuiLobbyClient() {
-		client = new Client(Game.host, Game.port);
+		
 	}
 
 	@Override
@@ -37,7 +37,6 @@ public class GuiLobbyClient extends Gui {
 					Game.game.map = map;
 
 					GuiBank.selectGui(GuiBank.GUI_INGAME);
-					GuiBank.setPlayer(Game.game.map.getPlayer());
 				}
 			}
 		}

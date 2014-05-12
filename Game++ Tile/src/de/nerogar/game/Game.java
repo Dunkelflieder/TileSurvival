@@ -6,6 +6,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.graphics.gui.*;
+import de.nerogar.game.network.Client;
+import de.nerogar.game.network.Server;
 import de.nerogar.game.sound.Sound;
 import de.nerogar.game.sound.SoundManager;
 
@@ -66,13 +68,17 @@ public class Game {
 
 	private void startUpGui() {
 		if (InputHandler.isKeyPressed(Keyboard.KEY_H)) {
-			GuiBank.selectGui(new GuiLobbyHost());
+			// TODO verschieben Server in Game
+			map.server = new Server(Game.port);
+			GuiBank.selectGui(GuiBank.GUI_LOBBY_HOST);
 
 			//guiIngame = new GuiIngame(map.getPlayer());
 			//GuiBank.selectGui(GuiBank.GUI_INGAME);
 			//GuiBank.setPlayer(map.getPlayer());
 		} else if (InputHandler.isKeyPressed(Keyboard.KEY_C)) {
-			GuiBank.selectGui(new GuiLobbyClient());
+			// TODO verschieben Server in Game
+			map.client = new Client(Game.host, Game.port);
+			GuiBank.selectGui(GuiBank.GUI_LOBBY_CLIENT);
 
 			//guiIngame = new GuiIngame(map.getPlayer());
 			//GuiBank.selectGui(GuiBank.GUI_INGAME);

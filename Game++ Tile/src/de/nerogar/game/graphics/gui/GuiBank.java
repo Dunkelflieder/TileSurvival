@@ -7,21 +7,17 @@ import de.nerogar.game.InputHandler;
 import de.nerogar.game.Vector;
 import de.nerogar.game.entity.EntityPlayer;
 import de.nerogar.game.graphics.gui.GuiIngame;
+import de.nerogar.game.network.Server;
 
 public class GuiBank {
 
-	private static EntityPlayer player = null;
-
 	public static final Gui GUI_NONE = new GuiNone();
 	public static final Gui GUI_TITLE = new GuiTitle();
-	public static final Gui GUI_INGAME = new GuiIngame(player);
-
+	public static final Gui GUI_LOBBY_HOST = new GuiLobbyHost();
+	public static final Gui GUI_LOBBY_CLIENT = new GuiLobbyClient();
+	public static final Gui GUI_INGAME = new GuiIngame();
+	
 	private static Gui selectedGui = GUI_TITLE;
-
-	public static void setPlayer(EntityPlayer player) {
-		GuiBank.player = player;
-		((GuiIngame) GUI_INGAME).setPlayer(player);
-	}
 
 	public static void selectGui(Gui gui) {
 		selectedGui = gui;

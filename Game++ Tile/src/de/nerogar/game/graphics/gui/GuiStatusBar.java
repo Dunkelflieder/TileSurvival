@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex3f;
 import de.nerogar.game.Map;
+import de.nerogar.game.RenderHelper;
 import de.nerogar.game.Vector;
 import de.nerogar.game.graphics.TextureBank;
 
@@ -28,6 +29,7 @@ public class GuiStatusBar extends GuiElement {
 	public void render() {
 		TextureBank.instance.bindTexture("gui.png");
 
+		RenderHelper.enableAlphaMask();
 		renderBar(2f, 1f);
 		renderBar(texturePos, position);
 	}

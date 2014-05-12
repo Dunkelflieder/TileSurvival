@@ -7,6 +7,7 @@ import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex3f;
 import de.nerogar.game.Map;
 import de.nerogar.game.Vector;
+import de.nerogar.game.graphics.TextureBank;
 
 public class GuiButton extends GuiElement {
 
@@ -28,6 +29,8 @@ public class GuiButton extends GuiElement {
 
 	@Override
 	public void render() {
+		TextureBank.instance.bindTexture("gui.png");
+		
 		float posX = getPos().getX();
 		float posY = getPos().getY();
 		float sizeX = getSize().getX();
