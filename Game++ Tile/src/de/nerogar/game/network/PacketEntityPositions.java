@@ -5,8 +5,10 @@ import java.io.IOException;
 import de.nerogar.DNFileSystem.DNFile;
 
 public class PacketEntityPositions extends Packet {
-	public float[] entityPositions;
 	public int[] entityIDs;
+	public float[] entityPositions;
+	public float[] entityMoveSpeeds;
+	public float[] entitySpeedMults;
 
 	public PacketEntityPositions() {
 		channel = WORLD_CHANNEL;
@@ -18,6 +20,8 @@ public class PacketEntityPositions extends Packet {
 
 		data.addFloat("ep", entityPositions);
 		data.addInt("eID", entityIDs);
+		data.addFloat("s", entityMoveSpeeds);
+		data.addFloat("sm", entitySpeedMults);
 
 		packedData = data.toByteArray();
 	}
@@ -33,6 +37,8 @@ public class PacketEntityPositions extends Packet {
 
 		entityPositions = data.getFloatArray("ep");
 		entityIDs = data.getIntArray("eID");
+		entityMoveSpeeds = data.getFloatArray("s");
+		entitySpeedMults = data.getFloatArray("sm");
 	}
 
 	@Override

@@ -51,6 +51,7 @@ public abstract class Entity {
 		this.dimension = dimension;
 		this.maxHealth = health;
 		this.health = health;
+		this.speedmult = 1.0f;
 	}
 
 	public void moveX(float distance) {

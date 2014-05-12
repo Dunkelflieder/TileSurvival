@@ -40,14 +40,17 @@ public class Map {
 	public static final int CLIENT_WORLD = 1;
 	public Server server;
 	public Client client;
-	public int worldType;
+	private int worldType;
 	private float nextUpdate;
 
 	//attribs
 	private Shader shader;
 	private EntityPlayer player;
+	private int playerID;
+	private Vector spawnLocation;
 	private HashMap<Integer, Entity> entities;
 	private ArrayList<Entity> newEntities;
+	private boolean updating;
 	private float playTime;
 	private ArrayList<Light> lights;
 	private final int MAX_LIGHTS = 100;
@@ -57,31 +60,21 @@ public class Map {
 	private FloatBuffer lightBufferIntensity;
 	private int[] tileIDs;
 	private int size;
+	public boolean ready;
 
 	private float offsX;
 	private float offsY;
 	private float tilesX;
 	private float tilesY;
 
-	public Map(int worldType, Server server) {
-		this(worldType, server, null);
-	}
-
-	public Map(int worldType, Client client) {
-		this(worldType, null, client);
-	}
-
-	private Map(int worldType, Server server, Client client) {
+	public Map(int worldType) {
 		this.worldType = worldType;
-		this.server = server;
-		this.client = client;
 
+		player = new EntityPlayer(this, new Vector());
 		shader = new Shader("map");
 		initShader();
-		player = new EntityPlayer(this, new Vector());
 		entities = new HashMap<Integer, Entity>();
 		newEntities = new ArrayList<Entity>();
-		spawnEntity(player);
 	}
 
 	private void initShader() {
@@ -91,6 +84,11 @@ public class Map {
 	}
 
 	public void spawnEntity(Entity entity) {
+		if (entity.id == playerID) {
+			player = (EntityPlayer) entity;
+			playerID = -1;
+		}
+
 		if (worldType == SERVER_WORLD) {
 			PacketSpawnEntity spawnEntitypacket = new PacketSpawnEntity();
 			spawnEntitypacket.entityID = entity.id;
@@ -99,7 +97,11 @@ public class Map {
 
 			server.broadcastData(spawnEntitypacket);
 
-			newEntities.add(entity);
+			if (updating) {
+				newEntities.add(entity);
+			} else {
+				entities.put(entity.id, entity);
+			}
 		} else {
 			entities.put(entity.id, entity);
 		}
@@ -136,12 +138,14 @@ public class Map {
 			}
 			newEntities.clear();
 
+			updating = true;
 			for (Entity entity : entities.values()) {
 				entity.update(time);
 			}
-		}else{
-			player.update(time);
+			updating = false;
 		}
+
+		player.updateInput(time);
 
 		offsX = player.pos.getX() - (((Display.getWidth() / TILE_RENDER_SIZE) - player.dimension.getX()) / 2f);
 		offsY = player.pos.getY() - (((Display.getHeight() / TILE_RENDER_SIZE) - player.dimension.getY()) / 2f);
@@ -180,6 +184,8 @@ public class Map {
 				if (entity != null) {
 					entity.pos.setX(entityPositionsPacket.entityPositions[i * 2]);
 					entity.pos.setY(entityPositionsPacket.entityPositions[i * 2 + 1]);
+					entity.moveSpeed = entityPositionsPacket.entityMoveSpeeds[i];
+					entity.speedmult = entityPositionsPacket.entitySpeedMults[i];
 				}
 			}
 
@@ -199,17 +205,23 @@ public class Map {
 
 		float[] entityPositions = new float[entities.size() * 2];
 		int[] entityIDs = new int[entities.size()];
+		float[] entityMoveSpeeds = new float[entities.size()];
+		float[] entitySpeedMults = new float[entities.size()];
 
 		int i = 0;
 		for (Entity entity : entities.values()) {
 			entityIDs[i] = entity.id;
 			entityPositions[i * 2] = entity.pos.getX();
 			entityPositions[i * 2 + 1] = entity.pos.getY();
+			entityMoveSpeeds[i] = entity.moveSpeed;
+			entitySpeedMults[i] = entity.speedmult;
 			i++;
 		}
 
 		entityPositionsPacket.entityPositions = entityPositions;
 		entityPositionsPacket.entityIDs = entityIDs;
+		entityPositionsPacket.entityMoveSpeeds = entityMoveSpeeds;
+		entityPositionsPacket.entitySpeedMults = entitySpeedMults;
 
 		server.broadcastData(entityPositionsPacket);
 	}
@@ -262,10 +274,11 @@ public class Map {
 		}
 
 		RenderHelper.enableAlphaMask();
-
 		for (Entity entity : entities.values()) {
 			entity.render();
 		}
+		RenderHelper.disableAlpha();
+
 		shader.deactivate();
 
 	}
@@ -274,13 +287,23 @@ public class Map {
 		tileIDs[x + y * size] = tile.id;
 	}
 
-	public void load(int[] tileIDs, int size, Vector playerPos) {
+	public void load(int[] tileIDs, int size, Vector spawnLocation) {
 		this.tileIDs = tileIDs;
 		this.size = size;
-		player.pos = playerPos;
+		this.spawnLocation = spawnLocation;
 
-		for (int i = 0; i < 10; i++)
-			spawnEntity(new EntityGhost(this, new Vector(19f, 19f)));
+		/*for (int i = 0; i < 10; i++)
+			spawnEntity(new EntityGhost(this, new Vector(19f, 19f)));*/
+	}
+
+	public void initPlayer(int playerID) {
+		EntityPlayer player = (EntityPlayer) entities.get(playerID);
+		if (player == null) {
+			this.playerID = playerID;
+		} else {
+			this.player = player;
+		}
+		ready = true;
 	}
 
 	private void calcLightSources() {
@@ -344,6 +367,10 @@ public class Map {
 
 	public float getOffsY() {
 		return offsY;
+	}
+
+	public Vector getSpawnLocation() {
+		return spawnLocation.clone();
 	}
 
 	public EntityPlayer getPlayer() {

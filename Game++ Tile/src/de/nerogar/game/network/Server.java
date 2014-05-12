@@ -44,6 +44,15 @@ public class Server extends Thread {
 		}
 	}
 
+	public void stopAcceptingClients() {
+		try {
+			running = false;
+			serverSocket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public ArrayList<Client> getClients() {
 		return clients;
 	}

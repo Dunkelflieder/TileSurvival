@@ -34,11 +34,13 @@ public class EntityPlayer extends Entity {
 	@Override
 	public void update(float time) {
 		super.update(time);
+	}
 
-		//float sprinting = 1.0f;
+	public Weapon getSelectedWeapon() {
+		return weapons.get(selectedWeapon);
+	}
 
-		//if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) sprinting *= 2.0f;
-
+	public void updateInput(float time) {
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
 			moveX(moveSpeed * time * speedmult);
 		}
@@ -98,16 +100,10 @@ public class EntityPlayer extends Entity {
 			energy += 1;
 		}
 		nextEnergyRestore -= time;
-
-	}
-
-	public Weapon getSelectedWeapon() {
-		return weapons.get(selectedWeapon);
 	}
 
 	@Override
 	public void onDie() {
 		//TODO game end
 	}
-
 }

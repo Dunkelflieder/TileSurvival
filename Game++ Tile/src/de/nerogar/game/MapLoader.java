@@ -60,9 +60,9 @@ public class MapLoader {
 
 		Map map;
 		if (worldType == Map.SERVER_WORLD) {
-			map = new Map(worldType, new Server(Game.port));
+			map = new Map(worldType);
 		} else {
-			map = new Map(worldType, new Client(Game.host, Game.port));
+			map = new Map(worldType);
 		}
 
 		int mapSize = width;
