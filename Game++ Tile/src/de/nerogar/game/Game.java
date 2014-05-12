@@ -6,6 +6,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.graphics.GuiIngame;
+import de.nerogar.game.graphics.gui.GuiBank;
 import de.nerogar.game.sound.Sound;
 import de.nerogar.game.sound.SoundManager;
 
@@ -50,6 +51,7 @@ public class Game {
 	private void update() {
 		SoundManager.update();
 		InputHandler.update(this);
+		GuiBank.update();
 
 		if (map == null) {
 			startUpGui();
@@ -68,19 +70,24 @@ public class Game {
 			System.out.println("asdasd");
 			map = MapLoader.loadMap(Map.SERVER_WORLD, "map.png");
 
-			guiIngame = new GuiIngame(map.getPlayer());
+			//guiIngame = new GuiIngame(map.getPlayer());
+			GuiBank.selectGui(GuiBank.GUI_INGAME);
+			GuiBank.setPlayer(map.getPlayer());
 		} else if (InputHandler.isKeyPressed(Keyboard.KEY_C)) {
 			map = MapLoader.loadMap(Map.CLIENT_WORLD, "map.png");
 
-			guiIngame = new GuiIngame(map.getPlayer());
+			//guiIngame = new GuiIngame(map.getPlayer());
+			GuiBank.selectGui(GuiBank.GUI_INGAME);
+			GuiBank.setPlayer(map.getPlayer());
 		}
 	}
 
 	private void render() {
 		if (map != null) {
 			map.render();
-			guiIngame.render();
+			//guiIngame.render();
 		}
+		GuiBank.render();
 	}
 
 	public static void main(String[] args) {
