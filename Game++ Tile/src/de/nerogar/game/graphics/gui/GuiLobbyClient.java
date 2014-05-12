@@ -7,8 +7,6 @@ import de.nerogar.game.network.*;
 
 public class GuiLobbyClient extends Gui {
 
-	private Client client;
-
 	public GuiLobbyClient() {
 		
 	}
@@ -25,13 +23,13 @@ public class GuiLobbyClient extends Gui {
 
 	@Override
 	public void update() {
-		ArrayList<Packet> packets = client.getData(Packet.LOBBY_CHANNEL);
+		ArrayList<Packet> packets = Game.game.client.getData(Packet.LOBBY_CHANNEL);
 		if (packets != null) {
 			for (Packet packet : packets) {
 				if (packet instanceof PacketStartGame) {
 					PacketStartGame startgamepacket = (PacketStartGame) packet;
 					Map map = MapLoader.loadMap(Map.CLIENT_WORLD, "map.png");
-					Game.game.client = client;
+					//Game.game.client = client;
 
 					map.initPlayer(startgamepacket.playerID);
 					Game.game.map = map;
