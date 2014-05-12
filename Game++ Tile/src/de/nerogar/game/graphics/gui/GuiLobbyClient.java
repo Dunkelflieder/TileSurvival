@@ -31,7 +31,7 @@ public class GuiLobbyClient extends Gui {
 				if (packet instanceof PacketStartGame) {
 					PacketStartGame startgamepacket = (PacketStartGame) packet;
 					Map map = MapLoader.loadMap(Map.CLIENT_WORLD, "map.png");
-					map.client = client;
+					Game.game.client = client;
 
 					map.initPlayer(startgamepacket.playerID);
 					Game.game.map = map;

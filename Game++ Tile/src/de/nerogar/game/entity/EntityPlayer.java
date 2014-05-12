@@ -70,7 +70,7 @@ public class EntityPlayer extends Entity {
 			PacketPlayerPosition playerPositionPacket = new PacketPlayerPosition();
 			playerPositionPacket.playerID = id;
 			playerPositionPacket.playerPosition = sendPos;
-			map.client.sendPacket(playerPositionPacket);
+			Game.game.client.sendPacket(playerPositionPacket);
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
@@ -110,7 +110,7 @@ public class EntityPlayer extends Entity {
 					activateWeaponPacket.targetPosition = new float[] { target.getX(), target.getY() };
 					activateWeaponPacket.playerID = id;
 					activateWeaponPacket.selectedWeapon = selectedWeapon;
-					map.client.sendPacket(activateWeaponPacket);
+					Game.game.client.sendPacket(activateWeaponPacket);
 				}
 			}
 		}

@@ -10,8 +10,6 @@ public class GuiLobbyHost extends Gui {
 
 	private GuiButton buttonStart;
 
-	private Server server;
-
 	public GuiLobbyHost() {
 
 		buttonStart = new GuiButton(new Vector(0.5f, 0.5f), new Vector(4, 1), "start");
@@ -28,16 +26,16 @@ public class GuiLobbyHost extends Gui {
 	@Override
 	public void click(int id, int which) {
 		if (id == buttonStart.getId()) {
-			server.stopAcceptingClients();
+			Game.game.server.stopAcceptingClients();
 
 			Map map = MapLoader.loadMap(Map.SERVER_WORLD, "map.png");
-			map.server = server;
+			//Game.game.server = server;
 			
 			EntityPlayer playerEntity = new EntityPlayer(map, map.getSpawnLocation());
 			map.spawnEntity(playerEntity);
 			map.initPlayer(playerEntity.id);
 
-			ArrayList<Client> clients = server.getClients();
+			ArrayList<Client> clients = Game.game.server.getClients();
 			for (Client client : clients) {
 				EntityPlayer playerEntityClient = new EntityPlayer(map, map.getSpawnLocation());
 				PacketStartGame gameStartPacket = new PacketStartGame();

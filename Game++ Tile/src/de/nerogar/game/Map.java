@@ -35,14 +35,6 @@ public class Map {
 	public static final float TILES_ON_TEXTURE = 8f;
 	public static final float TILE_PIXEL_COUNT = TEXTURE_SIZE / TILES_ON_TEXTURE;
 
-	//server
-	public static final int SERVER_WORLD = 0;
-	public static final int CLIENT_WORLD = 1;
-	public Server server;
-	public Client client;
-	private int worldType;
-	private float nextUpdate;
-
 	//attribs
 	private Shader shader;
 	private EntityPlayer player;
@@ -62,6 +54,12 @@ public class Map {
 	private int size;
 	public boolean ready;
 
+	//server
+	private int worldType;
+	private float nextUpdate;
+	public static final int SERVER_WORLD = 0;
+	public static final int CLIENT_WORLD = 1;
+	
 	private float offsX;
 	private float offsY;
 	private float tilesX;
@@ -95,7 +93,7 @@ public class Map {
 			spawnEntitypacket.spawnID = EntitySpawner.getSpawnID(entity);
 			spawnEntitypacket.pos = new float[] { entity.pos.getX(), entity.pos.getY() };
 
-			server.broadcastData(spawnEntitypacket);
+			Game.game.server.broadcastData(spawnEntitypacket);
 
 			if (updating) {
 				newEntities.add(entity);
@@ -129,7 +127,7 @@ public class Map {
 					entities.remove(entity.id);
 					PacketDespawnEntity despawnEntityPacket = new PacketDespawnEntity();
 					despawnEntityPacket.entityID = entity.id;
-					server.broadcastData(despawnEntityPacket);
+					Game.game.server.broadcastData(despawnEntityPacket);
 				}
 			}
 
@@ -145,7 +143,7 @@ public class Map {
 			updating = false;
 		}
 
-		player.updateInput(time, client);
+		player.updateInput(time, Game.game.client);
 
 		offsX = player.pos.getX() - (((Display.getWidth() / TILE_RENDER_SIZE) - player.dimension.getX()) / 2f);
 		offsY = player.pos.getY() - (((Display.getHeight() / TILE_RENDER_SIZE) - player.dimension.getY()) / 2f);
@@ -165,7 +163,7 @@ public class Map {
 			}
 			nextUpdate -= time;
 		} else {
-			ArrayList<Packet> packets = client.getData(Packet.WORLD_CHANNEL);
+			ArrayList<Packet> packets = Game.game.client.getData(Packet.WORLD_CHANNEL);
 			if (packets != null) {
 				for (Packet packet : packets) {
 					processClientPacket(packet);
@@ -225,7 +223,7 @@ public class Map {
 		entityPositionsPacket.entityMoveSpeeds = entityMoveSpeeds;
 		entityPositionsPacket.entitySpeedMults = entitySpeedMults;
 
-		server.broadcastData(entityPositionsPacket);
+		Game.game.server.broadcastData(entityPositionsPacket);
 	}
 
 	public void render() {
@@ -388,11 +386,6 @@ public class Map {
 		ArrayList<Entity> entityList = new ArrayList<Entity>();
 		entityList.addAll(entities.values());
 		return entityList;
-	}
-
-	public void cleanup() {
-		if (server != null) server.stopServer();
-		if (client != null) client.stopClient();
 	}
 
 }

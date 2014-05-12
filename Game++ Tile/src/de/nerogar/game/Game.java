@@ -8,7 +8,6 @@ import org.lwjgl.opengl.Display;
 import de.nerogar.game.graphics.gui.*;
 import de.nerogar.game.network.Client;
 import de.nerogar.game.network.Server;
-import de.nerogar.game.sound.Sound;
 import de.nerogar.game.sound.SoundManager;
 
 public class Game {
@@ -25,7 +24,11 @@ public class Game {
 	final int HEIGHT = 720;
 	final int FRAMERATE = 60;
 
-	private Sound bgMusic = new Sound(new String[] { "music1.ogg" }, new Vector(0, 0), new Vector(1000, 1000), true, 0.5f, 1f);
+	//server
+	public Server server;
+	public Client client;
+	
+	//private Sound bgMusic = new Sound(new String[] { "music1.ogg" }, new Vector(0, 0), new Vector(1000, 1000), true, 0.5f, 1f);
 
 	public Game() {
 		renderEngine = new RenderEngine();
@@ -45,7 +48,7 @@ public class Game {
 			//System.out.println("time: " + ((time2 - time1) / 1000000d));
 		}
 		SoundManager.shutdown();
-		if (map != null) map.cleanup();
+		cleanup();
 	}
 
 	private void update() {
@@ -68,16 +71,14 @@ public class Game {
 
 	private void startUpGui() {
 		if (InputHandler.isKeyPressed(Keyboard.KEY_H)) {
-			// TODO verschieben Server in Game
-			map.server = new Server(Game.port);
+			server = new Server(Game.port);
 			GuiBank.selectGui(GuiBank.GUI_LOBBY_HOST);
 
 			//guiIngame = new GuiIngame(map.getPlayer());
 			//GuiBank.selectGui(GuiBank.GUI_INGAME);
 			//GuiBank.setPlayer(map.getPlayer());
 		} else if (InputHandler.isKeyPressed(Keyboard.KEY_C)) {
-			// TODO verschieben Server in Game
-			map.client = new Client(Game.host, Game.port);
+			client = new Client(Game.host, Game.port);
 			GuiBank.selectGui(GuiBank.GUI_LOBBY_CLIENT);
 
 			//guiIngame = new GuiIngame(map.getPlayer());
@@ -101,6 +102,11 @@ public class Game {
 
 		game = new Game();
 		game.run();
+	}
+	
+	public void cleanup() {
+		if (server != null) server.stopServer();
+		if (client != null) client.stopClient();
 	}
 
 }
