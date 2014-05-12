@@ -18,6 +18,7 @@ public class EntityFireball extends Entity {
 
 	public EntityFireball(Map map, Vector pos) {
 		super(map, pos, new Vector(0.2f), 0);
+		init();
 	}
 
 	public EntityFireball(Entity sender, Map map, Vector pos, Vector target, int damage) {
@@ -36,6 +37,10 @@ public class EntityFireball extends Entity {
 
 		hitTime = (target.getX() - source.getX()) / direction.getX();
 
+		init();
+	}
+
+	private void init() {
 		textureID = 16 * 15;
 
 		light = new Light(new Vector(), 2, 0.8f);

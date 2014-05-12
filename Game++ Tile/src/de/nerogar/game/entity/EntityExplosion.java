@@ -15,6 +15,7 @@ public class EntityExplosion extends Entity {
 
 	public EntityExplosion(Map map, Vector pos) {
 		super(map, pos, new Vector(0.1f), 0);
+		init();
 	}
 
 	public EntityExplosion(Entity sender, Map map, Vector pos, float radius, int damage) {
@@ -24,9 +25,12 @@ public class EntityExplosion extends Entity {
 		this.radius = radius;
 		this.sender = sender;
 
-		textureID = 16 * 15 + 1;
 		pos.addX(-radius).addY(-radius);
+		init();
+	}
 
+	private void init() {
+		textureID = 16 * 15 + 1;
 		light = new Light(new Vector(), 20f, 5f);
 	}
 

@@ -50,7 +50,7 @@ public class SendThread extends Thread {
 							//long time3 = System.nanoTime();//send flush
 							//System.out.println(((time2 - time1) / 1000) + " send packet");
 							//System.out.println(((time3 - time2) / 1000) + " send flush");
-							System.out.println("sent packet: " + packet.getName() + " (" + (buffer.length - 8) + " bytes)");
+							//System.out.println("sent packet: " + packet.getName() + " (" + (buffer.length - 8) + " bytes)");
 						}
 					}
 				}

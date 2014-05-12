@@ -72,5 +72,6 @@ public abstract class Packet {
 		registerPacket(PacketTestString.class);
 		registerPacket(PacketEntityPositions.class);
 		registerPacket(PacketSpawnEntity.class);
+		registerPacket(PacketDespawnEntity.class);
 	}
 }

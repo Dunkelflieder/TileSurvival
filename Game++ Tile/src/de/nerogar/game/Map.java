@@ -125,6 +125,9 @@ public class Map {
 			for (Entity entity : getEntities()) {
 				if (entity.removed) {
 					entities.remove(entity.id);
+					PacketDespawnEntity despawnEntityPacket = new PacketDespawnEntity();
+					despawnEntityPacket.entityID = entity.id;
+					server.broadcastData(despawnEntityPacket);
 				}
 			}
 
@@ -136,6 +139,8 @@ public class Map {
 			for (Entity entity : entities.values()) {
 				entity.update(time);
 			}
+		}else{
+			player.update(time);
 		}
 
 		offsX = player.pos.getX() - (((Display.getWidth() / TILE_RENDER_SIZE) - player.dimension.getX()) / 2f);
@@ -183,6 +188,9 @@ public class Map {
 			Entity entity = EntitySpawner.spawnEntity(this, new Vector(), entitySpawnPacket.spawnID);
 			entity.id = entitySpawnPacket.entityID;
 			spawnEntity(entity);
+		} else if (packet instanceof PacketDespawnEntity) {
+			PacketDespawnEntity entityDespawnPacket = (PacketDespawnEntity) packet;
+			entities.remove(entityDespawnPacket.entityID);
 		}
 	}
 
