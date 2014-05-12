@@ -1,20 +1,18 @@
 package de.nerogar.game.graphics.gui;
 
+import de.nerogar.game.Game;
 import de.nerogar.game.Vector;
 import de.nerogar.game.entity.EntityPlayer;
 import de.nerogar.game.sound.Sound;
 
 public class GuiIngame extends Gui {
 
-	private EntityPlayer player;
 	private GuiStatusBar barHealth;
 	private GuiStatusBar barEnergy;
 	private GuiButton buttonTest;
 	private Sound testsound = new Sound("music1.ogg");
 
-	public GuiIngame(EntityPlayer player) {
-
-		this.player = player;
+	public GuiIngame() {
 
 		barHealth = new GuiStatusBar(new Vector(0.5f, 10f), 0);
 		barEnergy = new GuiStatusBar(new Vector(0.5f, 10.2f), 1);
@@ -22,10 +20,6 @@ public class GuiIngame extends Gui {
 
 		addGuiElements(barHealth, barEnergy, buttonTest);
 
-	}
-
-	public void setPlayer(EntityPlayer player) {
-		this.player = player;
 	}
 
 	@Override
@@ -48,8 +42,7 @@ public class GuiIngame extends Gui {
 
 	@Override
 	public void update() {
-		if (player == null)
-			return;
+		EntityPlayer player = Game.game.map.getPlayer();
 		barHealth.setPosition((float) player.health / player.maxHealth);
 		barEnergy.setPosition((float) player.energy / player.maxEnergy);
 	}

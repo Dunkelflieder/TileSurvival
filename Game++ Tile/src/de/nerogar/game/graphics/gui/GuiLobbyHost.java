@@ -13,7 +13,6 @@ public class GuiLobbyHost extends Gui {
 	private Server server;
 
 	public GuiLobbyHost() {
-		server = new Server(Game.port);
 
 		buttonStart = new GuiButton(new Vector(0.5f, 0.5f), new Vector(4, 1), "start");
 
@@ -51,7 +50,6 @@ public class GuiLobbyHost extends Gui {
 			Game.game.map = map;
 
 			GuiBank.selectGui(GuiBank.GUI_INGAME);
-			GuiBank.setPlayer(map.getPlayer());
 		}
 	}
 

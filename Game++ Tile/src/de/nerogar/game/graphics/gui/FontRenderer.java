@@ -1,7 +1,7 @@
 package de.nerogar.game.graphics.gui;
 
 import static org.lwjgl.opengl.GL11.*;
-
+import de.nerogar.game.RenderHelper;
 import de.nerogar.game.graphics.TextureBank;
 
 public class FontRenderer {
@@ -17,6 +17,8 @@ public class FontRenderer {
 
 	public static void drawString(String textString, float x, float y, float width, float height, int alignment) {
 
+		RenderHelper.enableAlphaMask();
+		
 		if (textString == null)
 			return;
 		textureBank.bindTexture("font.png");
