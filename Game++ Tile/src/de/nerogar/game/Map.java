@@ -59,7 +59,7 @@ public class Map {
 	private float nextUpdate;
 	public static final int SERVER_WORLD = 0;
 	public static final int CLIENT_WORLD = 1;
-	
+
 	private float offsX;
 	private float offsY;
 	private float tilesX;
@@ -141,6 +141,16 @@ public class Map {
 				entity.update(time);
 			}
 			updating = false;
+
+			for (Client client : Game.game.server.getClients()) {
+				ArrayList<Packet> packets = client.getData(Packet.WORLD_CHANNEL);
+				if (packets != null) {
+					for (Packet packet : packets) {
+						processServerPacket(packet);
+					}
+				}
+			}
+
 		}
 
 		player.updateInput(time, Game.game.client);
@@ -171,6 +181,27 @@ public class Map {
 			}
 		}
 
+	}
+
+	private void processServerPacket(Packet packet) {
+		if (packet instanceof PacketPlayerPosition) {
+			PacketPlayerPosition playerPositionPacket = (PacketPlayerPosition) packet;
+			Entity entity = entities.get(playerPositionPacket.playerID);
+
+			if (entity != null) {
+				entity.pos.setX(playerPositionPacket.playerPosition[0]);
+				entity.pos.setY(playerPositionPacket.playerPosition[1]);
+			}
+		} else if (packet instanceof PacketActivateWeapon) {
+			PacketActivateWeapon activateWeaponPacket = (PacketActivateWeapon) packet;
+			Entity entity = entities.get(activateWeaponPacket.playerID);
+
+			if (entity != null && entity instanceof EntityPlayer) {
+				EntityPlayer playerEntity = (EntityPlayer) entity;
+				playerEntity.weapons.get(playerEntity.selectedWeapon).start(new Vector(activateWeaponPacket.targetPosition[0], activateWeaponPacket.targetPosition[1]));
+			}
+
+		}
 	}
 
 	private void processClientPacket(Packet packet) {

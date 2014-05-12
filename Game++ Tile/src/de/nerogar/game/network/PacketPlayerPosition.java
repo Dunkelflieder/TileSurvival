@@ -31,7 +31,7 @@ public class PacketPlayerPosition extends Packet {
 			e.printStackTrace();
 		}
 
-		playerID = data.getInt("ep");
+		playerID = data.getInt("pID");
 		playerPosition = data.getFloatArray("pos");
 	}
 

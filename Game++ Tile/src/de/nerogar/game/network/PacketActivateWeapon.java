@@ -33,7 +33,7 @@ public class PacketActivateWeapon extends Packet {
 			e.printStackTrace();
 		}
 
-		playerID = data.getInt("ep");
+		playerID = data.getInt("pID");
 		targetPosition = data.getFloatArray("pos");
 		selectedWeapon = data.getInt("wID");
 	}
