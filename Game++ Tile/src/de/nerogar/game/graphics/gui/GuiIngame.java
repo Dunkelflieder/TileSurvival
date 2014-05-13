@@ -4,13 +4,14 @@ import de.nerogar.game.Game;
 import de.nerogar.game.Vector;
 import de.nerogar.game.entity.EntityPlayer;
 import de.nerogar.game.sound.Sound;
+import de.nerogar.game.sound.SoundCategory;
 
 public class GuiIngame extends Gui {
 
 	private GuiStatusBar barHealth;
 	private GuiStatusBar barEnergy;
 	private GuiButton buttonTest;
-	private Sound testsound = new Sound("music1.ogg");
+	private Sound testsound = new Sound(SoundCategory.MUSIC, "music1.ogg");
 
 	public GuiIngame() {
 

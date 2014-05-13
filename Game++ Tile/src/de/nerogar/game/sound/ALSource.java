@@ -16,20 +16,24 @@ public class ALSource {
 
 	private Sound sound;
 
+	/** Creates a new ALSource object that is linked to a new source on the sound device */
 	public ALSource() {
-		this.sourceID = ALHelper.genSources();
+		this.sourceID = ALHelper.genSource();
 		ALHelper.setRolloffFactor(sourceID, SoundManager.DEFAULT_ROLLOFF_FACTOR);
 	}
 
+	/** uncouples this source from the sound it was playing */
 	public void uncouple() {
 		sound.setUncoupled();
 		sound = null;
 	}
-	
+
+	/** couples this source with a new sound to be played */
 	public void couple(Sound sound) {
 		this.sound = sound;
 	}
 
+	/** returns whether this source is currently coupled to a sound */
 	public boolean isUncoupled() {
 		return sound == null;
 	}
@@ -38,11 +42,12 @@ public class ALSource {
 		if (isUncoupled())
 			return;
 		try {
+			// byteOffset is needed to calculate local offset between 0 and 1
 			byteOffset = ALHelper.getByteOffset(sourceID);
 			state = ALHelper.getSourceState(sourceID);
 		} catch (OpenALException e) {
 			e.printStackTrace();
-			System.out.println("error fetching offset for Source-ID " + sourceID);
+			System.out.println("error fetching offset and state for Source with ID " + sourceID);
 		}
 		offset = (float) byteOffset / buffer.getSize();
 		if (isStopped() && sound.isLooping()) {
@@ -51,30 +56,37 @@ public class ALSource {
 		}
 	}
 
+	/** plays the sound this source is coupled with */
 	public void play() {
 		ALHelper.play(sourceID);
 	}
 
+	/** stops the playback of the sound this source is coupled with */
 	public void stop() {
 		ALHelper.stop(sourceID);
 	}
 
+	/** Pauses the playback of the sound this source is coupled with */
 	public void pause() {
 		ALHelper.pause(sourceID);
 	}
 
+	/** returns whether the playback is stopped or not */
 	public boolean isStopped() {
 		return (state == AL10.AL_STOPPED);
 	}
 
+	/** returns whether the playback is paused or not */
 	public boolean isPaused() {
 		return (state == AL10.AL_PAUSED);
 	}
 
+	/** returns whether the playback is running or not */
 	public boolean isPlaying() {
 		return (state == AL10.AL_PLAYING);
 	}
 
+	/** Frees this source from the sound device */
 	public void destroy() {
 		ALHelper.destroySource(sourceID);
 	}
@@ -83,10 +95,12 @@ public class ALSource {
 		return sourceID;
 	}
 
+	/** Gets the current playback offset (between 0 and 1) */
 	public float getOffset() {
 		return offset;
 	}
 
+	/** Set a new buffer (audio file) to be played */
 	public void setBuffer(ALBuffer buffer) {
 		this.buffer = buffer;
 		ALHelper.bindBufferToSource(buffer.getBufferID(), sourceID);
@@ -124,6 +138,13 @@ public class ALSource {
 		if (!(o instanceof ALSource))
 			return false;
 		return ((ALSource) o).getSourceID() == sourceID;
+	}
+
+	public void updateGain(SoundCategory category) {
+		if (isUncoupled())
+			return;
+		if (category == null || category == sound.getCategory())
+			sound.updateGain();
 	}
 
 }

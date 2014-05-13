@@ -27,18 +27,20 @@ public class Sound {
 	private boolean looping = false;
 	private float offset = 0f;
 	private Random random = new Random();
+	private SoundCategory category;
 
-	public Sound(String... filenames) {
-		this(filenames, new Vector(0, 0), new Vector(0, 0), false, 1f, 1f);
+	public Sound(SoundCategory category, String... filenames) {
+		this(category, filenames, new Vector(0, 0), new Vector(0, 0), false, 1f, 1f);
 	}
 
-	public Sound(String[] filenames, Vector position, Vector velocity, boolean looping, float gain, float pitch) {
+	public Sound(SoundCategory category, String[] filenames, Vector position, Vector velocity, boolean looping, float gain, float pitch) {
 		try {
 			this.buffers = ALBufferBank.getBuffers(filenames);
 		} catch (OpenALException | IOException | LWJGLException e) {
 			System.out.println("Error creating buffer");
 			e.printStackTrace();
 		}
+		this.category = category;
 		this.position = position;
 		this.velocity = velocity;
 		this.looping = looping;
@@ -148,8 +150,12 @@ public class Sound {
 	}
 
 	public void setGain(float gain) {
-		getSource().setGain(gain);
 		this.gain = gain;
+		updateGain();
+	}
+	
+	public void updateGain() {
+		getSource().setGain(gain * category.getGain());
 	}
 
 	public float getPitch() {
@@ -177,6 +183,14 @@ public class Sound {
 	public void setLooping(boolean looping) {
 		getSource().setLooping(looping);
 		this.looping = looping;
+	}
+
+	public SoundCategory getCategory() {
+		return category;
+	}
+
+	public void setCategory(SoundCategory category) {
+		this.category = category;
 	}
 
 }

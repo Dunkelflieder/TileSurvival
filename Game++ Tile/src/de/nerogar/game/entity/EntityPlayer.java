@@ -20,7 +20,8 @@ public class EntityPlayer extends Entity {
 	public EntityPlayer(Map map, Vector pos) {
 		super(map, pos, new Vector(1.0f), 100);
 		weapons = new ArrayList<Weapon>();
-		weapons.add(new Fireball(this, 3, 1.0f));
+		//weapons.add(new Fireball(this, 3, 1.0f));
+		weapons.add(new GuardTower(this, 3, 1.0f));
 		//weapons.add(new SlowDownArea(this, 0, 2.0f));
 		//weapons.add(new FireBlast(this, 10, 2.0f));
 		//weapons.add(new Heal(this, 20, 2.0f));
@@ -28,6 +29,7 @@ public class EntityPlayer extends Entity {
 		maxEnergy = 100;
 		energy = maxEnergy;
 		moveSpeed = 3.0f;
+		faction = FACTION_PLAYER;
 
 		//light = new Light(0, 0, 5f,2.0f);
 	}

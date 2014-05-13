@@ -25,13 +25,16 @@ public class ALBufferBank {
 		buffers = new HashMap<String, ALBuffer>();
 	}
 
+	/** reads a sound file into a buffer and adds it to the buffer bank */
 	public static void addSound(String filename) throws IOException, LWJGLException, OpenALException {
-		if (!SoundManager.alCreated) SoundManager.createAL();
+		// create OpenAL context, if not already done
+		SoundManager.createAL();
+		
 		File file = new File("res/sound/" + filename);
 
-		int id = ALHelper.genBuffers();
+		int id = ALHelper.genBuffer();
 
-		// Datei in den Buffer laden
+		// read file into buffer
 		String format = getExtension(file);
 		switch (format) {
 		case "wav":
@@ -41,7 +44,7 @@ public class ALBufferBank {
 			setVorbisFile(id, file);
 			break;
 		default:
-			System.out.println("did not recognize extension for: " + file.getName());
+			System.out.println("did not recognize extension for: " + file.getName() + ", allowed extensions: .wav .ogg");
 			throw new IOException();
 		}
 
@@ -50,6 +53,7 @@ public class ALBufferBank {
 		buffers.put(file.getName(), new ALBuffer(id, size, channels));
 	}
 
+	/** Returns the ALBuffer for the corresponding file. If it hasn't been loaded yet, it gets loaded. */
 	public static ALBuffer getSound(String filename) throws OpenALException, IOException, LWJGLException {
 		if (!buffers.containsKey(filename))
 			addSound(filename);
@@ -64,12 +68,14 @@ public class ALBufferBank {
 		return buffers;
 	}
 
+	/** reads given .wav wave file into given buffer */
 	private static void setWaveFile(int bufferID, File file) throws FileNotFoundException {
 		WaveData waveFile = WaveData.create(new BufferedInputStream(new FileInputStream(file)));
 		ALHelper.setBuffer(bufferID, waveFile.format, waveFile.data, waveFile.samplerate);
 		waveFile.dispose();
 	}
 
+	/** reads given .ogg vorbis file into given buffer */
 	private static void setVorbisFile(int bufferID, File file) throws IOException {
 		// Decode OGG into PCM
 		InputStream inputStream = new FileInputStream(file);
@@ -81,16 +87,7 @@ public class ALBufferBank {
 		inputStream.close();
 	}
 
-	/*
-	 * private static void setVorbisFile3(int bufferID, File file) throws IOException {
-	 * 
-	 * FileInputStream vorbisStream = new FileInputStream(file); byte[] data = new byte[(int) file.length()]; vorbisStream.read(data); vorbisStream.close(); ByteBuffer buffer = BufferUtils.createByteBuffer(data.length); buffer.put(data); buffer.flip();
-	 * 
-	 * ALHelper.setBuffer(bufferID, AL10.AL_FORMAT_VORBIS_EXT, buffer, buffer.capacity()); }
-	 * 
-	 * private static void setVorbisFile2(int bufferID, File file) throws IOException { FileInputStream vorbisStream = new FileInputStream(file); FileChannel channel = vorbisStream.getChannel(); ByteBuffer buffer = ByteBuffer.allocate((int) channel.size()); channel.read(buffer); channel.close(); vorbisStream.close(); buffer.flip(); ALHelper.setBuffer(bufferID, AL10.AL_FORMAT_VORBIS_EXT, buffer, buffer.capacity()); }
-	 */
-
+	/** Returns the lowercase file extension of the given File (for example "ogg")*/
 	public static String getExtension(File file) {
 		String[] parts = file.getName().split("\\.");
 		if (parts.length <= 1)
@@ -98,6 +95,7 @@ public class ALBufferBank {
 		return parts[parts.length - 1].toLowerCase();
 	}
 
+	/** Frees all buffers (unloads all data from the sound device) */
 	public static void clear() {
 		for (int i = 0; i < buffers.size(); i++) {
 			if (buffers.get(i) != null)
