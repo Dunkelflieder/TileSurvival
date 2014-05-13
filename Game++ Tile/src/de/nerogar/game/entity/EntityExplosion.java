@@ -4,22 +4,20 @@ import de.nerogar.game.Map;
 import de.nerogar.game.Vector;
 import de.nerogar.game.graphics.Light;
 
-public class EntityExplosion extends Entity {
+public class EntityExplosion extends EntityWeapon {
 
 	private boolean dealtDamage;
 	private final float MAX_LIFFETIME = 0.1f;
 	private float lifeTime;
 	private float radius;
 
-	private Entity sender;
-
 	public EntityExplosion(Map map, Vector pos) {
-		super(map, pos, new Vector(0.1f), 0);
+		super(map, pos);
 		init();
 	}
 
 	public EntityExplosion(Entity sender, Map map, Vector pos, float radius, int damage) {
-		super(map, pos, new Vector(radius * 2f), damage);
+		super(sender, map, pos, new Vector(radius * 2f), damage);
 		resistDamage = true;
 		lifeTime = MAX_LIFFETIME;
 		this.radius = radius;
@@ -44,7 +42,7 @@ public class EntityExplosion extends Entity {
 
 		if (!dealtDamage) {
 			for (Entity entity : map.getEntities()) {
-				if (entity != sender && intersects(entity.getCenter())) {
+				if (canDamage(entity) && intersects(entity.getCenter())) {
 					entity.damage(health);
 				}
 			}

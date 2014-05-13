@@ -5,7 +5,7 @@ import de.nerogar.game.Vector;
 import de.nerogar.game.graphics.Light;
 import de.nerogar.game.sound.Sound;
 
-public class EntityFireball extends Entity {
+public class EntityFireball extends EntityWeapon {
 
 	private Vector source;
 	private Vector target;
@@ -17,12 +17,13 @@ public class EntityFireball extends Entity {
 	private Sound explodeSound;
 
 	public EntityFireball(Map map, Vector pos) {
-		super(map, pos, new Vector(0.2f), 0);
+		super(map, pos);
+		dimension = new Vector(0.2f);
 		init();
 	}
 
 	public EntityFireball(Entity sender, Map map, Vector pos, Vector target, int damage) {
-		super(map, pos, new Vector(0.2f), damage);
+		super(sender, map, pos, new Vector(0.2f), damage);
 		resistDamage = true;
 
 		this.source = pos.clone();

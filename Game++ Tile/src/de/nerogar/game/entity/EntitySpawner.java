@@ -13,18 +13,32 @@ public class EntitySpawner {
 		switch (spawnID) {
 		case 0:
 			return new EntityPlayer(map, pos);
-		case 1:
-			return new EntityFireball(map, pos);
-		case 2:
-			return new EntityExplosion(map, pos);
-		case 3:
-			return new EntitySmallEnemy(map, pos);
-		case 4:
-			return new EntityGhost(map, pos);
-		case 5:
-			return new EntityEnergyDrop(map, pos);
-		}
 
+			//weapon
+		case 101:
+			return new EntityFireball(map, pos);
+		case 102:
+			return new EntityExplosion(map, pos);
+		case 103:
+			return new EntitySlowdownArea(map, pos);
+		case 104:
+			return new EntitySpeer(map, pos);
+		case 105:
+			return new EntityGuardTower(map, pos);
+
+			//enemy
+		case 201:
+			return new EntitySmallEnemy(map, pos);
+		case 202:
+			return new EntityGhost(map, pos);
+		case 203:
+			return new EntityDumpEnemy(map, pos);
+
+			//
+		case 301:
+			return new EntityEnergyDrop(map, pos);
+
+		}
 		return null;
 	}
 
@@ -35,12 +49,22 @@ public class EntitySpawner {
 	static {
 		networkIDs = new HashMap<Class<? extends Entity>, Integer>();
 
+		//player
 		networkIDs.put(EntityPlayer.class, 0);
-		networkIDs.put(EntityFireball.class, 1);
-		networkIDs.put(EntityExplosion.class, 2);
-		networkIDs.put(EntitySmallEnemy.class, 3);
-		networkIDs.put(EntityGhost.class, 4);
-		networkIDs.put(EntityEnergyDrop.class, 5);
 
+		//weapon
+		networkIDs.put(EntityFireball.class, 101);
+		networkIDs.put(EntityExplosion.class, 102);
+		networkIDs.put(EntitySlowdownArea.class, 103);
+		networkIDs.put(EntitySpeer.class, 104);
+		networkIDs.put(EntityGuardTower.class, 105);
+
+		//enemy
+		networkIDs.put(EntitySmallEnemy.class, 201);
+		networkIDs.put(EntityGhost.class, 202);
+		networkIDs.put(EntityDumpEnemy.class, 203);
+
+		//
+		networkIDs.put(EntityEnergyDrop.class, 301);
 	}
 }

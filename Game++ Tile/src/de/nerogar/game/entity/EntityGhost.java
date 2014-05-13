@@ -16,7 +16,7 @@ public class EntityGhost extends EntityEnemy {
 		moveSpeed = 3.0f;
 		textureID = 32;
 
-		fireballWeapon = new Fireball(this, 0, 3.0f);
+		fireballWeapon = new Fireball(this, 5, 3.0f);
 	}
 
 	@Override

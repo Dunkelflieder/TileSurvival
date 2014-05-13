@@ -16,6 +16,10 @@ public abstract class Entity {
 	public static int MAX_ID;
 	public int id;
 
+	public static final int FACTION_PLAYER = 1;
+	public static final int FACTION_MOB = 2;
+	public int faction;
+
 	public Map map;
 
 	public Vector pos;
@@ -101,7 +105,7 @@ public abstract class Entity {
 		if (dir.getSquaredValue() > 0.02) {
 			dir.setValue(moveSpeed * time * speedmult);
 			pos.add(dir);
-		}else{
+		} else {
 			pos.set(serverPos);
 		}
 	}

@@ -328,8 +328,8 @@ public class Map {
 		this.size = size;
 		this.spawnLocation = spawnLocation;
 
-		/*for (int i = 0; i < 10; i++)
-			spawnEntity(new EntityGhost(this, new Vector(19f, 19f)));*/
+		for (int i = 0; i < 10; i++)
+			spawnEntity(new EntityDumpEnemy(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
 	}
 
 	public void initPlayer(int playerID) {
@@ -421,6 +421,14 @@ public class Map {
 	public ArrayList<Entity> getEntities() {
 		ArrayList<Entity> entityList = new ArrayList<Entity>();
 		entityList.addAll(entities.values());
+		return entityList;
+	}
+
+	public ArrayList<Entity> getIntersectingEntities(Entity entity) {
+		ArrayList<Entity> entityList = new ArrayList<Entity>();
+		for (Entity targetEntity : entities.values()) {
+			if (entity != targetEntity && entity.intersects(targetEntity)) entityList.add(targetEntity);
+		}
 		return entityList;
 	}
 

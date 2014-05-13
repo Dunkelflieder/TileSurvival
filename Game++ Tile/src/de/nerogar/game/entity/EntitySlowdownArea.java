@@ -3,7 +3,7 @@ package de.nerogar.game.entity;
 import de.nerogar.game.Map;
 import de.nerogar.game.Vector;
 
-public class EntitySlowdownArea extends Entity {
+public class EntitySlowdownArea extends EntityWeapon {
 
 	private final float MAX_LIFFETIME = 0.1f;
 	private float lifeTime;
@@ -11,8 +11,13 @@ public class EntitySlowdownArea extends Entity {
 
 	private Entity sender;
 
+	public EntitySlowdownArea(Map map, Vector pos) {
+		super(map, pos);
+		init();
+	}
+
 	public EntitySlowdownArea(Entity sender, Map map, Vector pos, float radius, int damage) {
-		super(map, pos, new Vector(radius * 2f), damage);
+		super(sender, map, pos, new Vector(radius * 2f), damage);
 		resistDamage = true;
 
 		lifeTime = MAX_LIFFETIME;
@@ -20,7 +25,6 @@ public class EntitySlowdownArea extends Entity {
 		this.sender = sender;
 
 		this.health = damage;
-		textureID = 16 * 15 + 1;
 		pos.addX(-radius).addY(-radius);
 
 		for (Entity entity : map.getEntities()) {
@@ -29,6 +33,12 @@ public class EntitySlowdownArea extends Entity {
 				entity.speedmultTime = 6f;
 			}
 		}
+
+		init();
+	}
+
+	private void init() {
+		textureID = 16 * 15 + 1;
 	}
 
 	public boolean intersects(Vector entityPos) {
@@ -37,6 +47,8 @@ public class EntitySlowdownArea extends Entity {
 
 	@Override
 	public void update(float time) {
+		super.update(time);
+
 		lifeTime -= time;
 		if (lifeTime < 0) {
 			kill();
