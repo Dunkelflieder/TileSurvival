@@ -87,10 +87,6 @@ public class EntityPlayer extends Entity {
 		}
 		selectedWeapon = (selectedWeapon - Integer.signum(Mouse.getDWheel()) + weapons.size()) % weapons.size();
 
-		for (Weapon weapon : weapons) {
-			weapon.update(time);
-		}
-
 		if (Mouse.isButtonDown(0)) {
 
 			Vector target = new Vector();
@@ -120,6 +116,13 @@ public class EntityPlayer extends Entity {
 				weapon.maxCooldown = 0;
 				weapon.energyCost = 0;
 			}
+		}
+
+	}
+
+	public void updateStats(float time) {
+		for (Weapon weapon : weapons) {
+			weapon.update(time);
 		}
 
 		if (nextEnergyRestore <= 0 && energy < maxEnergy) {
