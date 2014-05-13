@@ -6,7 +6,7 @@ import de.nerogar.game.Map;
 import de.nerogar.game.Vector;
 import de.nerogar.game.graphics.Light;
 
-public class EntitySpeer extends EntityWeapon {
+public class EntitySpear extends EntityWeapon {
 
 	private Vector source;
 	private Vector direction;
@@ -15,13 +15,13 @@ public class EntitySpeer extends EntityWeapon {
 	private int maxHitcount = 2;
 	private ArrayList<Entity> hitEntities;
 
-	public EntitySpeer(Map map, Vector pos) {
+	public EntitySpear(Map map, Vector pos) {
 		super(map, pos);
 		dimension = new Vector(1f);
 		init();
 	}
 
-	public EntitySpeer(Entity sender, Map map, Vector pos, Vector target, int damage) {
+	public EntitySpear(Entity sender, Map map, Vector pos, Vector target, int damage) {
 		super(sender, map, pos, new Vector(1f), damage);
 		resistDamage = true;
 
