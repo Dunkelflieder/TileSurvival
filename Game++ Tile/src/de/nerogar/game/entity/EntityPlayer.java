@@ -99,7 +99,7 @@ public class EntityPlayer extends Entity {
 			Weapon weapon = weapons.get(selectedWeapon);
 
 			if (weapon.cooldown <= 0f && energy >= weapon.energyCost && weapon.canActivate()) {
-				weapons.get(selectedWeapon).start(target);
+				if (client == null) weapons.get(selectedWeapon).start(target);
 				energy -= weapons.get(selectedWeapon).energyCost;
 				weapon.cooldown = weapon.maxCooldown;
 

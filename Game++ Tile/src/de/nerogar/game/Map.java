@@ -150,7 +150,12 @@ public class Map {
 					}
 				}
 			}
-
+		} else {
+			for (Entity entity : entities.values()) {
+				if (entity != player) {
+					entity.interpolatePosition(time);
+				}
+			}
 		}
 
 		player.updateInput(time, Game.game.client);
@@ -212,8 +217,8 @@ public class Map {
 				Entity entity = entities.get(id);
 				if (entity != null) {
 					if (entity != player) {
-						entity.pos.setX(entityPositionsPacket.entityPositions[i * 2]);
-						entity.pos.setY(entityPositionsPacket.entityPositions[i * 2 + 1]);
+						entity.serverPos.setX(entityPositionsPacket.entityPositions[i * 2]);
+						entity.serverPos.setY(entityPositionsPacket.entityPositions[i * 2 + 1]);
 					}
 					entity.moveSpeed = entityPositionsPacket.entityMoveSpeeds[i];
 					entity.speedmult = entityPositionsPacket.entitySpeedMults[i];
@@ -222,7 +227,7 @@ public class Map {
 
 		} else if (packet instanceof PacketSpawnEntity) {
 			PacketSpawnEntity entitySpawnPacket = (PacketSpawnEntity) packet;
-			Entity entity = EntitySpawner.spawnEntity(this, new Vector(), entitySpawnPacket.spawnID);
+			Entity entity = EntitySpawner.spawnEntity(this, new Vector(entitySpawnPacket.pos[0], entitySpawnPacket.pos[1]), entitySpawnPacket.spawnID);
 			entity.id = entitySpawnPacket.entityID;
 			spawnEntity(entity);
 		} else if (packet instanceof PacketDespawnEntity) {

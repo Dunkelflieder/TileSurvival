@@ -19,6 +19,7 @@ public abstract class Entity {
 	public Map map;
 
 	public Vector pos;
+	public Vector serverPos;
 	public int facingDir;
 
 	public Vector dimension;
@@ -48,6 +49,7 @@ public abstract class Entity {
 
 		this.map = map;
 		this.pos = pos;
+		this.serverPos = pos.clone();
 		this.dimension = dimension;
 		this.maxHealth = health;
 		this.health = health;
@@ -92,6 +94,16 @@ public abstract class Entity {
 		if (health <= 0) kill();
 		if (speedmultTime < 0) speedmult = 1.0f;
 		speedmultTime -= time;
+	}
+
+	public void interpolatePosition(float time) {
+		Vector dir = serverPos.subtracted(pos);
+		if (dir.getSquaredValue() > 0.02) {
+			dir.setValue(moveSpeed * time * speedmult);
+			pos.add(dir);
+		}else{
+			pos.set(serverPos);
+		}
 	}
 
 	public void render() {
