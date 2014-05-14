@@ -17,8 +17,10 @@ public abstract class PlayerClass {
 		this.player = player;
 		this.maxHealth = maxHealth;
 		player.energy = maxEnergy;
+		player.maxEnergy = maxEnergy;
 		this.maxEnergy = maxEnergy;
 		player.health = maxHealth;
+		player.maxHealth = maxHealth;
 		player.moveSpeed = moveSpeed;
 		this.weaponUpgrades = new Weapon[3][3];//3 weapons, 3 level
 		initWeaponsUpgrades();
