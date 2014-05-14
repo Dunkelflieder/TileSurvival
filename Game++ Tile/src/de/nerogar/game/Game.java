@@ -2,7 +2,6 @@ package de.nerogar.game;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.graphics.gui.*;
@@ -20,9 +19,9 @@ public class Game {
 	private RenderEngine renderEngine;
 	public Map map;
 
-	final int WIDTH = 1280;
-	final int HEIGHT = 720;
-	final int FRAMERATE = 60;
+	public final int WIDTH = 1280;
+	public final int HEIGHT = 720;
+	public final int FRAMERATE = 60;
 
 	//server
 	public Server server;
@@ -56,10 +55,6 @@ public class Game {
 		InputHandler.update(this);
 		GuiBank.update();
 
-		if (map == null) {
-			startUpGui();
-		}
-
 		if (map != null && map.ready) {
 			map.update(1f / FRAMERATE);
 			float listenerX = (float) map.getOffsX() + 0.5f * WIDTH / Map.TILE_RENDER_SIZE;
@@ -67,24 +62,6 @@ public class Game {
 			SoundManager.recalculateListener(new Vector(listenerX, listenerY));
 		}
 
-	}
-
-	private void startUpGui() {
-		if (InputHandler.isKeyPressed(Keyboard.KEY_H)) {
-			server = new Server(Game.port);
-			GuiBank.selectGui(GuiBank.GUI_LOBBY_HOST);
-
-			//guiIngame = new GuiIngame(map.getPlayer());
-			//GuiBank.selectGui(GuiBank.GUI_INGAME);
-			//GuiBank.setPlayer(map.getPlayer());
-		} else if (InputHandler.isKeyPressed(Keyboard.KEY_C)) {
-			client = new Client(Game.host, Game.port);
-			GuiBank.selectGui(GuiBank.GUI_LOBBY_CLIENT);
-
-			//guiIngame = new GuiIngame(map.getPlayer());
-			//GuiBank.selectGui(GuiBank.GUI_INGAME);
-			//GuiBank.setPlayer(map.getPlayer());
-		}
 	}
 
 	private void render() {

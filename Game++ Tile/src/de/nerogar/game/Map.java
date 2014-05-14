@@ -12,6 +12,7 @@ import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.entity.*;
 import de.nerogar.game.graphics.*;
+import de.nerogar.game.graphics.gui.GuiBank;
 import de.nerogar.game.network.*;
 
 public class Map {
@@ -158,7 +159,8 @@ public class Map {
 			}
 		}
 
-		player.updateInput(time, Game.game.client);
+		if (!GuiBank.interceptsInput()) player.updateInput(time, Game.game.client);
+		player.updateStats(time);
 
 		offsX = player.pos.getX() - (((Display.getWidth() / TILE_RENDER_SIZE) - player.dimension.getX()) / 2f);
 		offsY = player.pos.getY() - (((Display.getHeight() / TILE_RENDER_SIZE) - player.dimension.getY()) / 2f);

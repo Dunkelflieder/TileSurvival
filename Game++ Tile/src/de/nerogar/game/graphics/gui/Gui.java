@@ -2,11 +2,21 @@ package de.nerogar.game.graphics.gui;
 
 import java.util.ArrayList;
 
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
+
+import de.nerogar.game.InputHandler;
 import de.nerogar.game.Vector;
 
 public abstract class Gui {
 
 	private ArrayList<GuiElement> guiElements = new ArrayList<GuiElement>();
+	private boolean interceptsInput;
+	private GuiElement selectedElement = null;
+
+	public Gui(boolean interceptsInput) {
+		this.setInterceptsInput(interceptsInput);
+	}
 
 	protected void addGuiElements(GuiElement... elements) {
 		for (GuiElement element : elements) {
@@ -21,18 +31,61 @@ public abstract class Gui {
 			guiElement.render();
 	}
 
-	public void clickAt(Vector at, int which) {
+	public void click(int id, int which) {
+	};
+
+	public void keyPressed(char key) {
+	};
+
+	public void renderBackground() {
+	};
+
+	public void update() {
+		updateInput();
+		for (int i = 0; i < guiElements.size(); i++) {
+			guiElements.get(i).update();
+		}
+	};
+
+	public void updateInput() {
+		Vector mousePos = new Vector(Mouse.getX(), Display.getHeight() - Mouse.getY());
 		for (int i = guiElements.size() - 1; i >= 0; i--) {
-			if (guiElements.get(i).isClicked(at)) {
-				click(i, which);
+			GuiElement element = guiElements.get(i);
+			if (element.hoveredBy(mousePos)) {
+				if (InputHandler.isMouseButtonPressed(0)) {
+					click(i, 0);
+					element.click(0);
+				}
+				if (InputHandler.isMouseButtonPressed(1)) {
+					click(i, 1);
+					element.click(1);
+				}
+				if (InputHandler.isMouseButtonPressed(2)) {
+					click(i, 2);
+					element.click(2);
+				}
+				break;
 			}
 		}
+		char key = InputHandler.getPressedKey();
+		if (key > 0)
+			keyPressed(key);
 	}
 
-	public abstract void click(int id, int which);
+	public boolean interceptsInput() {
+		return interceptsInput;
+	}
 
-	public abstract void renderBackground();
+	public void setInterceptsInput(boolean interceptsInput) {
+		this.interceptsInput = interceptsInput;
+	}
 
-	public abstract void update();
+	public GuiElement getSelectedElement() {
+		return selectedElement;
+	}
+
+	public void selectElement(GuiElement selectedElement) {
+		this.selectedElement = selectedElement;
+	}
 
 }

@@ -24,11 +24,13 @@ public class InputHandler {
 	public static void updateOns(Game game) {
 		onPressedMouseButtons.clear();
 		for (Integer button : pressedMouseButtonsNext) {
-			if (pressedMouseButtons.indexOf(button) == -1) onPressedMouseButtons.add(button);
+			if (pressedMouseButtons.indexOf(button) == -1)
+				onPressedMouseButtons.add(button);
 		}
 		onReleasedMouseButtons.clear();
 		for (Integer button : pressedMouseButtons) {
-			if (pressedMouseButtonsNext.indexOf(button) == -1) onReleasedMouseButtons.add(button);
+			if (pressedMouseButtonsNext.indexOf(button) == -1)
+				onReleasedMouseButtons.add(button);
 		}
 	}
 
@@ -40,33 +42,32 @@ public class InputHandler {
 		}
 	}
 
-	public static boolean isKeyDown(String name) {
-		int index = -1;
-
+	public static int getKeyByName(String name) {
 		for (int i = 0; i < registeredKeys.size(); i++) {
-			if (registeredKeys.get(i).name.equals(name)) index = i;
+			if (registeredKeys.get(i).name.equals(name))
+				return i;
 		}
-		if (index != -1) return isKeyDown(registeredKeys.get(index).button);
+		return -1;
+	}
+
+	public static boolean isKeyDown(String name) {
+		int index = getKeyByName(name);
+		if (index != -1)
+			return isKeyDown(registeredKeys.get(index).button);
 		return false;
 	}
 
 	public static boolean isKeyPressed(String name) {
-		int index = -1;
-
-		for (int i = 0; i < registeredKeys.size(); i++) {
-			if (registeredKeys.get(i).name.equals(name)) index = i;
-		}
-		if (index != -1) return isKeyPressed(registeredKeys.get(index).button);
+		int index = getKeyByName(name);
+		if (index != -1)
+			return isKeyPressed(registeredKeys.get(index).button);
 		return false;
 	}
 
 	public static boolean isKeyReleased(String name) {
-		int index = -1;
-
-		for (int i = 0; i < registeredKeys.size(); i++) {
-			if (registeredKeys.get(i).name.equals(name)) index = i;
-		}
-		if (index != -1) return isKeyReleased(registeredKeys.get(index).button);
+		int index = getKeyByName(name);
+		if (index != -1)
+			return isKeyReleased(registeredKeys.get(index).button);
 		return false;
 	}
 
@@ -102,16 +103,20 @@ public class InputHandler {
 	}
 
 	private static void updateKey(int key, boolean state) {
-		if (state) addKey(key);
-		else removeKey(key);
+		if (state)
+			addKey(key);
+		else
+			removeKey(key);
 	}
 
 	private static void addKey(int key) {
-		if (pressedKeysNext.indexOf(key) == -1) pressedKeysNext.add(key);
+		if (pressedKeysNext.indexOf(key) == -1)
+			pressedKeysNext.add(key);
 	}
 
 	private static void removeKey(int key) {
-		if (pressedKeysNext.indexOf(key) != -1) pressedKeysNext.remove(pressedKeysNext.indexOf(key));
+		if (pressedKeysNext.indexOf(key) != -1)
+			pressedKeysNext.remove(pressedKeysNext.indexOf(key));
 	}
 
 	//update mouse buttons
@@ -123,48 +128,33 @@ public class InputHandler {
 
 	}
 
-	/*public static boolean isMouseButtonPressed(int button) {
-	    boolean state = Mouse.isButtonDown(button);
-	    boolean lastState = pressedMouseButtons.indexOf(button) != -1;
-	    //if (state && !lastState) pressedMouseButtons.add(button);
-	    updateMouseButton(button, state);
-	    return state && !lastState;
-	}
-
-	public static boolean isMouseButtonReleased(int button) {//geht nicht :(
-		boolean state = Mouse.isButtonDown(button);
-		boolean lastState = pressedMouseButtons.indexOf(button) != -1;
-		//if (!state && lastState) pressedMouseButtons.remove(pressedMouseButtons.indexOf(button));
-		//updateMouseButton(button, state);
-		return !state && lastState;
-	}*/
-
 	public static boolean isMouseButtonPressed(int button) {
 		boolean state = Mouse.isButtonDown(button);
-		//if (state) pressedMouseButtons.add(button);
 		updateMouseButton(button, state);
 		return onPressedMouseButtons.indexOf(button) != -1;
 	}
 
 	public static boolean isMouseButtonReleased(int button) {
 		boolean state = Mouse.isButtonDown(button);
-		//boolean lastState = pressedMouseButtons.indexOf(button) != -1;
-		//if (!state && lastState) pressedMouseButtons.remove(pressedMouseButtons.indexOf(button));
 		updateMouseButton(button, state);
 		return onReleasedMouseButtons.indexOf(button) != -1;
 	}
 
 	private static void updateMouseButton(int key, boolean state) {
-		if (state) addMouseButton(key);
-		else removeMouseButton(key);
+		if (state)
+			addMouseButton(key);
+		else
+			removeMouseButton(key);
 	}
 
 	private static void addMouseButton(int key) {
-		if (pressedMouseButtonsNext.indexOf(key) == -1) pressedMouseButtonsNext.add(key);
+		if (pressedMouseButtonsNext.indexOf(key) == -1)
+			pressedMouseButtonsNext.add(key);
 	}
 
 	private static void removeMouseButton(int key) {
-		if (pressedMouseButtonsNext.indexOf(key) != -1) pressedMouseButtonsNext.remove(pressedMouseButtonsNext.indexOf(key));
+		if (pressedMouseButtonsNext.indexOf(key) != -1)
+			pressedMouseButtonsNext.remove(pressedMouseButtonsNext.indexOf(key));
 	}
 
 	public static class Key {
@@ -178,7 +168,8 @@ public class InputHandler {
 
 		public boolean equals(Object o) {
 			if (o instanceof Key) {
-				if (((Key) o).name.equals(name)) return true;
+				if (((Key) o).name.equals(name))
+					return true;
 			}
 			return false;
 		}
@@ -197,7 +188,8 @@ public class InputHandler {
 
 		public boolean equals(GamepadButton o) {
 			if (o instanceof GamepadButton) {
-				if (((GamepadButton) o).name.equals(name)) return true;
+				if (((GamepadButton) o).name.equals(name))
+					return true;
 			}
 			return false;
 		}

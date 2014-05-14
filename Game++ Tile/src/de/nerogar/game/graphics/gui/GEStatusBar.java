@@ -10,18 +10,17 @@ import de.nerogar.game.RenderHelper;
 import de.nerogar.game.Vector;
 import de.nerogar.game.graphics.TextureBank;
 
-public class GuiStatusBar extends GuiElement {
+public class GEStatusBar extends GuiElement {
 
 	private float position = 1f;
 
 	private static final float TEX_OFFSET = 7f;
+	private float pixelMult = Map.TILE_RENDER_SIZE / Map.TILE_PIXEL_COUNT;
 
-	private float pixelHeight = 7f;
-	private float textureHeight = pixelHeight / Map.TEXTURE_SIZE;
 	private float texturePos;
-	
-	public GuiStatusBar(Vector position, int texturePos) {
-		super(position, new Vector(0, 0));
+
+	public GEStatusBar(Vector position, int texturePos) {
+		super(position, new Vector(Map.TILE_RENDER_SIZE * 4f, 0), false);
 		this.texturePos = texturePos;
 	}
 
@@ -35,22 +34,22 @@ public class GuiStatusBar extends GuiElement {
 	}
 
 	private void renderBar(float texturePos, float position) {
-		float posX = getPos().getX();
-		float posY = getPos().getY();
-		
+		float pixelHeight = 7f;
+		float textureHeight = pixelHeight / Map.TEXTURE_SIZE;
+
 		glBegin(GL_QUADS);
 
 		glTexCoord2f(0, Map.TILE_TEXTURE_SIZE * TEX_OFFSET + textureHeight * texturePos);
-		glVertex3f(posX * Map.TILE_RENDER_SIZE, posY * Map.TILE_RENDER_SIZE, -1f);
+		glVertex3f(getPos().getX(), getPos().getY(), -1f);
 
 		glTexCoord2f(Map.TILE_TEXTURE_SIZE * 4f * position, Map.TILE_TEXTURE_SIZE * TEX_OFFSET + textureHeight * texturePos);
-		glVertex3f((posX + 4f * position) * Map.TILE_RENDER_SIZE, posY * Map.TILE_RENDER_SIZE, -1f);
+		glVertex3f(getPos().getX() + getSize().getX() * position, getPos().getY(), -1f);
 
 		glTexCoord2f(Map.TILE_TEXTURE_SIZE * 4f * position, Map.TILE_TEXTURE_SIZE * TEX_OFFSET + textureHeight * (texturePos + 1));
-		glVertex3f((posX + 4f * position) * Map.TILE_RENDER_SIZE, (posY + (pixelHeight / Map.TILE_PIXEL_COUNT)) * Map.TILE_RENDER_SIZE, -1f);
+		glVertex3f(getPos().getX() + getSize().getX() * position, getPos().getY() + pixelHeight * pixelMult, -1f);
 
 		glTexCoord2f(0, Map.TILE_TEXTURE_SIZE * TEX_OFFSET + textureHeight * (texturePos + 1));
-		glVertex3f(posX * Map.TILE_RENDER_SIZE, (posY + (pixelHeight / Map.TILE_PIXEL_COUNT)) * Map.TILE_RENDER_SIZE, -1f);
+		glVertex3f(getPos().getX(), getPos().getY() + pixelHeight * pixelMult, -1f);
 
 		glEnd();
 	}

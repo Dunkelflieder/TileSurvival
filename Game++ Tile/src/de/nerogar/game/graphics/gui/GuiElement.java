@@ -1,6 +1,5 @@
 package de.nerogar.game.graphics.gui;
 
-import de.nerogar.game.Map;
 import de.nerogar.game.Vector;
 
 public abstract class GuiElement {
@@ -8,20 +7,18 @@ public abstract class GuiElement {
 	private Vector pos;
 	private Vector size;
 	private int id = -1;
+	private boolean selectable;
 
 	public abstract void render();
 
-	protected GuiElement(Vector pos, Vector size) {
+	protected GuiElement(Vector pos, Vector size, boolean selectable) {
 		this.pos = pos;
 		this.size = size;
+		this.selectable = selectable;
 	}
 
-	public boolean isClicked(Vector at) {
-		float ax = pos.getX() * Map.TILE_RENDER_SIZE;
-		float ay = pos.getY() * Map.TILE_RENDER_SIZE;
-		float bx = ax + size.getX() * Map.TILE_RENDER_SIZE;
-		float by = ay + size.getY() * Map.TILE_RENDER_SIZE;
-		return !(at.getX() < ax || at.getY() < ay || at.getX() > bx || at.getY() > by);
+	public boolean hoveredBy(Vector at) {
+		return !(at.getX() < pos.getX() || at.getY() < pos.getY() || at.getX() > pos.getX() + size.getX() || at.getY() > pos.getY() + size.getY());
 	}
 
 	public Vector getPos() {
@@ -46,6 +43,20 @@ public abstract class GuiElement {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public boolean isSelectable() {
+		return selectable;
+	}
+
+	public void setSelectable(boolean selectable) {
+		this.selectable = selectable;
+	}
+
+	public void click(int which) {
+	}
+
+	public void update() {
 	}
 
 }
