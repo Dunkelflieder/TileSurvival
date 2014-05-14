@@ -44,6 +44,18 @@ public class Server extends Thread {
 		}
 	}
 
+	public String getIP() {
+		InetAddress current_addr = null;
+		try {
+			current_addr = InetAddress.getLocalHost();
+		} catch (UnknownHostException e) {
+			System.out.println("Error fetching local IP");
+			e.printStackTrace();
+		}
+		if (current_addr == null) return "unknown";
+		return current_addr.getHostAddress();
+	}
+
 	public void stopAcceptingClients() {
 		try {
 			running = false;

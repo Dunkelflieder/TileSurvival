@@ -14,15 +14,55 @@ import de.nerogar.game.network.*;
 
 public class GLobbyClientConnect extends Gui {
 
+	private GEText text;
+	private GEButton buttonCancel;
+	private boolean failed = false;
+	public String host;
+	public int port;
+	public boolean selectBuffer = false;
 
 	public GLobbyClientConnect() {
 		super(true);
+
+		float posX = (Game.game.WIDTH - Map.TILE_RENDER_SIZE * 4f) * 0.5f;
+		float posY = Game.game.HEIGHT / 2f;
+
+		text = new GEText(new Vector(0, posY - 100), new Vector(Game.game.WIDTH, Map.TILE_RENDER_SIZE / 2f), "");
+		buttonCancel = new GEButton(new Vector(posX, posY), new Vector(Map.TILE_RENDER_SIZE * 4f, Map.TILE_RENDER_SIZE), "cancel");
+
+		addGuiElements(text, buttonCancel);
+	}
+
+	@Override
+	public void select() {
+		text.setText("connecting...");
+		selectBuffer = true;
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		ArrayList<Packet> packets = Game.game.client.getData(Packet.LOBBY_CHANNEL);
+		if (selectBuffer) {
+			selectBuffer = false;
+			Game.game.client = new Client(host, port);
+			text.setText("Connected! Waiting for the host to start...");
+		}
+		if (!Game.game.client.connected) {
+			Game.game.client.stopClient();
+			text.setText("No connection to given host");
+			failed = true;
+		}
+		if (failed)
+			return;
+		ArrayList<Packet> packets = null;
+		try {
+			packets = Game.game.client.getData(Packet.LOBBY_CHANNEL);
+		} catch (Exception e) {
+			System.out.println("Connection problem");
+			e.printStackTrace();
+			failed = true;
+			text.setText("Could not connect.");
+		}
 		if (packets != null) {
 			for (Packet packet : packets) {
 				if (packet instanceof PacketStartGame) {
@@ -38,6 +78,14 @@ public class GLobbyClientConnect extends Gui {
 			}
 		}
 
+	}
+
+	@Override
+	public void click(int id, int which) {
+		if (id == buttonCancel.getId()) {
+			Game.game.client.stopClient();
+			GuiBank.selectGui(GuiBank.GUI_LOBBY_CLIENT);
+		}
 	}
 
 	@Override

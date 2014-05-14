@@ -6,51 +6,60 @@ import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex3f;
 
-import java.util.ArrayList;
-
 import de.nerogar.game.*;
 import de.nerogar.game.graphics.TextureBank;
-import de.nerogar.game.network.*;
-import de.nerogar.game.weapon.Weapon;
 
 public class GLobbyClient extends Gui {
 
 	private GEInput inputIP;
 	private GEText text;
-	private GEButton buttonOK;
+	private GEButton buttonOK, buttonBack;
 
 	public GLobbyClient() {
 		super(true);
-		
+
 		float posX = (Game.game.WIDTH - Map.TILE_RENDER_SIZE * 4f) * 0.5f;
 		float posY = Game.game.HEIGHT / 2f;
-		
-		text = new GEText(new Vector(0, posY - 150), new Vector(Game.game.WIDTH, 32f), "Enter the IP:port of the host");
-		inputIP = new GEInput(new Vector(posX, posY-50), new Vector(Map.TILE_RENDER_SIZE*4f, Map.TILE_RENDER_SIZE));
-		buttonOK = new GEButton(new Vector(0, posY + 50), new Vector(Map.TILE_RENDER_SIZE*4f, Map.TILE_RENDER_SIZE), "Connect");
-		
-		addGuiElements(text, inputIP, buttonOK);
+
+		text = new GEText(new Vector(0, posY - 150), new Vector(Game.game.WIDTH, 32f), "");
+		inputIP = new GEInput(new Vector(posX, posY - 100), new Vector(Map.TILE_RENDER_SIZE * 4f, Map.TILE_RENDER_SIZE));
+		buttonOK = new GEButton(new Vector(posX, posY), new Vector(Map.TILE_RENDER_SIZE * 4f, Map.TILE_RENDER_SIZE), "Connect");
+		buttonBack = new GEButton(new Vector(posX, posY + 100), new Vector(Map.TILE_RENDER_SIZE * 4f, Map.TILE_RENDER_SIZE), "back");
+
+		addGuiElements(text, inputIP, buttonOK, buttonBack);
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		/*ArrayList<Packet> packets = Game.game.client.getData(Packet.LOBBY_CHANNEL);
-		if (packets != null) {
-			for (Packet packet : packets) {
-				if (packet instanceof PacketStartGame) {
-					PacketStartGame startgamepacket = (PacketStartGame) packet;
-					Map map = MapLoader.loadMap(Map.CLIENT_WORLD, "map.png");
-					//Game.game.client = client;
+	public void select() {
+		text.setText("Enter the IP:port of the host");
+	}
 
-					map.initPlayer(startgamepacket.playerID);
-					Game.game.map = map;
-
-					GuiBank.selectGui(GuiBank.GUI_INGAME);
-				}
+	@Override
+	public void click(int id, int which) {
+		if (id == buttonOK.getId()) {
+			String input = inputIP.getText();
+			String[] args = input.split(":");
+			if (args.length != 2) {
+				text.setText("Your input is invalid");
+				return;
 			}
-		}*/
 
+			//Game.game.client = new Client(Game.host, Game.port);
+			String host = args[0];
+			int port = -1;
+			try {
+				port = Integer.parseInt(args[1]);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+				text.setText("Your port is invalid");
+				return;
+			}
+			GuiBank.GUI_LOBBY_CLIENT_CONNECT.host = host;
+			GuiBank.GUI_LOBBY_CLIENT_CONNECT.port = port;		
+			GuiBank.selectGui(GuiBank.GUI_LOBBY_CLIENT_CONNECT);
+		} else if (id == buttonBack.getId()) {
+			GuiBank.selectGui(GuiBank.GUI_TITLE);
+		}
 	}
 
 	@Override

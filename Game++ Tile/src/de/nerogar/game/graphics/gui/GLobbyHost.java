@@ -16,7 +16,7 @@ import de.nerogar.game.network.*;
 public class GLobbyHost extends Gui {
 
 	private GEButton buttonStart;
-	private GEText text;
+	private GEText text, textPlayers, info1, info2, info3;
 
 	public GLobbyHost() {
 		super(true);
@@ -24,11 +24,31 @@ public class GLobbyHost extends Gui {
 		float posX = (Game.game.WIDTH - Map.TILE_RENDER_SIZE * 4f) * 0.5f;
 		float posY = (Game.game.HEIGHT - Map.TILE_RENDER_SIZE) * 0.5f;
 
-		text = new GEText(new Vector(0, posY), new Vector(Game.game.WIDTH, 32), "Clients can now connect");
-		buttonStart = new GEButton(new Vector(posX, posY + 100), new Vector(Map.TILE_RENDER_SIZE * 4f, Map.TILE_RENDER_SIZE), "start");
+		text = new GEText(new Vector(0, posY - 100), new Vector(Game.game.WIDTH, 32), "Clients can now connect");
+		textPlayers = new GEText(new Vector(0, posY - 50), new Vector(Game.game.WIDTH, 32), "0 players connected");
 
-		addGuiElements(buttonStart, text);
+		buttonStart = new GEButton(new Vector(posX, posY), new Vector(Map.TILE_RENDER_SIZE * 4f, Map.TILE_RENDER_SIZE), "start");
 
+		info1 = new GEText(new Vector(0, posY + 100), new Vector(Game.game.WIDTH, 32), "");
+		info2 = new GEText(new Vector(0, posY + 150), new Vector(Game.game.WIDTH, 32), "");
+		info3 = new GEText(new Vector(0, posY + 200), new Vector(Game.game.WIDTH, 32), "(host must forward port in router)");
+
+		addGuiElements(buttonStart, text, textPlayers, info1, info2, info3);
+
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		textPlayers.setText(Game.game.server.getClients().size() + " players connected");
+	}
+
+	@Override
+	public void select() {
+		Server server = new Server(Game.port);
+		Game.game.server = server;
+		info1.setText("via LAN: " + server.getIP() + ":" + server.port);
+		info2.setText("via Internet: yourIP:" + server.port);
 	}
 
 	@Override
