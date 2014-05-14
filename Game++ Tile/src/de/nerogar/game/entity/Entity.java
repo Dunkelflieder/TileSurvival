@@ -34,6 +34,7 @@ public abstract class Entity {
 	public int maxHealth;
 	public int health;
 	public boolean resistDamage;
+	public boolean ignoreWalls;
 
 	public float speedmult;
 	public float speedmultTime;
@@ -61,13 +62,13 @@ public abstract class Entity {
 	}
 
 	public void moveX(float distance) {
-		if (!map.isColliding(pos.clone().addX(distance), dimension)) {
+		if (!map.isColliding(pos.clone().addX(distance), dimension, ignoreWalls)) {
 			pos.addX(distance);
 		}
 	}
 
 	public void moveY(float distance) {
-		if (!map.isColliding(pos.clone().addY(distance), dimension)) {
+		if (!map.isColliding(pos.clone().addY(distance), dimension, ignoreWalls)) {
 			pos.addY(distance);
 		}
 	}

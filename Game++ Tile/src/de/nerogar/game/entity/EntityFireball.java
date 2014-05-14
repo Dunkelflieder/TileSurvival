@@ -57,7 +57,7 @@ public class EntityFireball extends EntityWeapon {
 	public void update(float time) {
 		hitTime -= time;
 
-		if (map.isColliding(direction.multiplied(time).add(pos), dimension)) {
+		if (map.isColliding(direction.multiplied(time).add(pos), dimension, false)) {
 			kill();
 		} else if (hitTime < 0) {
 			pos = target;

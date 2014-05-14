@@ -6,22 +6,22 @@ import de.nerogar.game.Map;
 import de.nerogar.game.Vector;
 import de.nerogar.game.graphics.Light;
 
-public class EntitySpear extends EntityWeapon {
+public class EntityIceSpike extends EntityWeapon {
 
 	private Vector source;
 	private Vector direction;
 
 	private int hitCount;
-	private int maxHitcount = 3;
+	private int maxHitcount = 2;
 	private ArrayList<Entity> hitEntities;
 
-	public EntitySpear(Map map, Vector pos) {
+	public EntityIceSpike(Map map, Vector pos) {
 		super(map, pos);
 		dimension = new Vector(1f);
 		init();
 	}
 
-	public EntitySpear(Entity sender, Map map, Vector pos, Vector target, int damage) {
+	public EntityIceSpike(Entity sender, Map map, Vector pos, Vector target, int damage) {
 		super(sender, map, pos, new Vector(1f), damage);
 		resistDamage = true;
 
@@ -40,7 +40,7 @@ public class EntitySpear extends EntityWeapon {
 	}
 
 	private void init() {
-		textureID = 16 * 15 + 3;
+		textureID = 16 * 15 + 4;
 
 		light = new Light(new Vector(), 2, 0.8f);
 	}
@@ -55,6 +55,8 @@ public class EntitySpear extends EntityWeapon {
 				hitCount++;
 				hitEntities.add(entity);
 				entity.damage(health);
+				entity.speedmult = 0.3f;
+				entity.speedmultTime = 4f;
 			}
 
 			if (hitCount == maxHitcount) {
