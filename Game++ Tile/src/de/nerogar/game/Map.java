@@ -107,8 +107,9 @@ public class Map {
 
 	}
 
-	public boolean isColliding(Vector pos, Vector dimension) {
+	public boolean isColliding(Vector pos, Vector dimension, boolean ignoreWalls) {
 		if (pos.getX() < 0 || pos.getY() < 0 || pos.getX() + dimension.getX() >= size || pos.getY() + dimension.getY() >= size) return true;
+		if (ignoreWalls) return false;
 
 		for (int i = Math.max((int) pos.getX(), 0); i <= Math.min((int) (pos.getX() + dimension.getX()), size - 1); i++) {
 			for (int j = Math.max((int) pos.getY(), 0); j <= Math.min((int) (pos.getY() + dimension.getY()), size - 1); j++) {
@@ -159,7 +160,11 @@ public class Map {
 			}
 		}
 
+<<<<<<< HEAD
 		if (!GuiBank.interceptsInput()) player.updateInput(time, Game.game.client);
+=======
+		player.updateInput(time, Game.game.client);
+>>>>>>> refs/remotes/origin/master
 		player.updateStats(time);
 
 		offsX = player.pos.getX() - (((Display.getWidth() / TILE_RENDER_SIZE) - player.dimension.getX()) / 2f);
@@ -205,7 +210,7 @@ public class Map {
 
 			if (entity != null && entity instanceof EntityPlayer) {
 				EntityPlayer playerEntity = (EntityPlayer) entity;
-				playerEntity.weapons.get(playerEntity.selectedWeapon).start(new Vector(activateWeaponPacket.targetPosition[0], activateWeaponPacket.targetPosition[1]));
+				playerEntity.getSelectedWeapon().start(new Vector(activateWeaponPacket.targetPosition[0], activateWeaponPacket.targetPosition[1]));
 			}
 
 		}
@@ -331,7 +336,7 @@ public class Map {
 		this.spawnLocation = spawnLocation;
 
 		for (int i = 0; i < 10; i++)
-			spawnEntity(new EntityDumpEnemy(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
+			spawnEntity(new EntityGhost(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
 	}
 
 	public void initPlayer(int playerID) {

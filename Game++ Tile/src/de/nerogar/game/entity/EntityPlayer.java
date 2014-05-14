@@ -1,34 +1,24 @@
 package de.nerogar.game.entity;
 
-import java.util.ArrayList;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.*;
+import de.nerogar.game.entity.playerClass.Engineer;
+import de.nerogar.game.entity.playerClass.PlayerClass;
 import de.nerogar.game.network.*;
-import de.nerogar.game.weapon.*;
+import de.nerogar.game.weapon.Weapon;
 
 public class EntityPlayer extends Entity {
 
-	public ArrayList<Weapon> weapons;
-	public int selectedWeapon;
+	public PlayerClass playerClass;
 
 	private float nextEnergyRestore;
 
 	public EntityPlayer(Map map, Vector pos) {
 		super(map, pos, new Vector(1.0f), 100);
-		weapons = new ArrayList<Weapon>();
-		//weapons.add(new Fireball(this, 3, 1.0f));
-		weapons.add(new GuardTower(this, 3, 1.0f));
-		//weapons.add(new SlowDownArea(this, 0, 2.0f));
-		//weapons.add(new FireBlast(this, 10, 2.0f));
-		//weapons.add(new Heal(this, 20, 2.0f));
-
-		maxEnergy = 100;
-		energy = maxEnergy;
-		moveSpeed = 3.0f;
+		playerClass = new Engineer(this);
 		faction = FACTION_PLAYER;
 
 		//light = new Light(0, 0, 5f,2.0f);
@@ -40,7 +30,7 @@ public class EntityPlayer extends Entity {
 	}
 
 	public Weapon getSelectedWeapon() {
-		return weapons.get(selectedWeapon);
+		return playerClass.getSelectedWeapon();
 	}
 
 	public void updateInput(float time, Client client) {
@@ -74,18 +64,15 @@ public class EntityPlayer extends Entity {
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
-			selectedWeapon = 0;
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_2) && weapons.size() > 1) {
-			selectedWeapon = 1;
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_3) && weapons.size() > 2) {
-			selectedWeapon = 2;
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_4) && weapons.size() > 3) {
-			selectedWeapon = 3;
+			playerClass.selectWeapon(0);
+		} else if (Keyboard.isKeyDown(Keyboard.KEY_2)) {
+			playerClass.selectWeapon(1);
+		} else if (Keyboard.isKeyDown(Keyboard.KEY_3)) {
+			playerClass.selectWeapon(2);
 		}
 		if (InputHandler.isMouseButtonPressed(1)) {
-			selectedWeapon = (selectedWeapon + 1) % weapons.size();
+			playerClass.selectNextWeapon();
 		}
-		selectedWeapon = (selectedWeapon - Integer.signum(Mouse.getDWheel()) + weapons.size()) % weapons.size();
 
 		if (Mouse.isButtonDown(0)) {
 
@@ -94,36 +81,31 @@ public class EntityPlayer extends Entity {
 			target.setX(((float) Mouse.getX()) / Map.TILE_RENDER_SIZE + map.getOffsX());
 			target.setY((float) (Display.getHeight() - Mouse.getY()) / Map.TILE_RENDER_SIZE + map.getOffsY());
 
-			Weapon weapon = weapons.get(selectedWeapon);
+			Weapon weapon = playerClass.getSelectedWeapon();
 
 			if (weapon.cooldown <= 0f && energy >= weapon.energyCost && weapon.canActivate()) {
-				if (client == null) weapons.get(selectedWeapon).start(target);
-				energy -= weapons.get(selectedWeapon).energyCost;
+				if (client == null) playerClass.getSelectedWeapon().start(target);
+				energy -= playerClass.getSelectedWeapon().energyCost;
 				weapon.cooldown = weapon.maxCooldown;
 
 				if (client != null) {
 					PacketActivateWeapon activateWeaponPacket = new PacketActivateWeapon();
 					activateWeaponPacket.targetPosition = new float[] { target.getX(), target.getY() };
 					activateWeaponPacket.playerID = id;
-					activateWeaponPacket.selectedWeapon = selectedWeapon;
+					activateWeaponPacket.selectedWeapon = playerClass.selectedWeapon;
 					Game.game.client.sendPacket(activateWeaponPacket);
 				}
 			}
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
-			for (Weapon weapon : weapons) {
-				weapon.maxCooldown = 0;
-				weapon.energyCost = 0;
-			}
+			playerClass.activateWeaponDebugTimes();
 		}
 
 	}
 
 	public void updateStats(float time) {
-		for (Weapon weapon : weapons) {
-			weapon.update(time);
-		}
+		playerClass.updateWeapons(time);
 
 		if (nextEnergyRestore <= 0 && energy < maxEnergy) {
 			nextEnergyRestore = 0.5f;

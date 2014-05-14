@@ -15,6 +15,7 @@ public class EntityGhost extends EntityEnemy {
 		super(map, pos, new Vector(1.0f), 10, 1f);
 		moveSpeed = 3.0f;
 		textureID = 32;
+		ignoreWalls = true;
 
 		fireballWeapon = new Fireball(this, 5, 3.0f);
 	}
