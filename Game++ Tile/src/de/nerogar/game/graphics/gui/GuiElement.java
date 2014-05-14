@@ -58,5 +58,9 @@ public abstract class GuiElement {
 
 	public void update() {
 	}
+	
+	public boolean keyPressed(char c) {
+		return false;
+	}
 
 }

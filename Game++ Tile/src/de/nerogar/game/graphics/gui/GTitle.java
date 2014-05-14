@@ -60,7 +60,7 @@ public class GTitle extends Gui {
 			Game.game.server = new Server(Game.port);
 			GuiBank.selectGui(GuiBank.GUI_LOBBY_HOST);
 		} else if (id == buttonClient.getId()) {
-			Game.game.client = new Client(Game.host, Game.port);
+			//Game.game.client = new Client(Game.host, Game.port);
 			GuiBank.selectGui(GuiBank.GUI_LOBBY_CLIENT);
 		} else if (id == buttonSettings.getId()) {
 			GuiBank.selectGui(GuiBank.GUI_SETTINGS);
@@ -73,7 +73,7 @@ public class GTitle extends Gui {
 			Game.game.server = new Server(Game.port);
 			GuiBank.selectGui(GuiBank.GUI_LOBBY_HOST);
 		} else if (key == 'c') {
-			Game.game.client = new Client(Game.host, Game.port);
+			//Game.game.client = new Client(Game.host, Game.port);
 			GuiBank.selectGui(GuiBank.GUI_LOBBY_CLIENT);
 		}
 	}
