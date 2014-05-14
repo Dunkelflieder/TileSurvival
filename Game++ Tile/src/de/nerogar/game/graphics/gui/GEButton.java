@@ -6,8 +6,6 @@ import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex3f;
 
-import org.lwjgl.opengl.GL11;
-
 import de.nerogar.game.Map;
 import de.nerogar.game.RenderHelper;
 import de.nerogar.game.Vector;

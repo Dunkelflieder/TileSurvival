@@ -1,11 +1,5 @@
 package de.nerogar.game.graphics.gui;
 
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glColor3f;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glVertex3f;
-
 import org.lwjgl.opengl.GL11;
 
 import de.nerogar.game.*;
@@ -50,7 +44,7 @@ public class GEscMenu extends Gui {
 		RenderHelper.enableAlphaMask();
 		GL11.glColor4f(0f, 0f, 0f, 0.8f);
 		RenderHelper.renderQuad(0, 0, Game.game.WIDTH, Game.game.HEIGHT);
-		glColor3f(1.0f, 1.0f, 1.0f);
+		GL11.glColor3f(1.0f, 1.0f, 1.0f);
 
 	}
 
