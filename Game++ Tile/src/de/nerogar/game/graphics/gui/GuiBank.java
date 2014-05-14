@@ -6,6 +6,7 @@ public class GuiBank {
 	public static final Gui GUI_NONE = new GNone();
 	public static final Gui GUI_TITLE = new GTitle();
 	public static final Gui GUI_LOBBY_HOST = new GLobbyHost();
+	public static final Gui GUI_LOBBY_CLIENT_CONNECT = new GLobbyClientConnect();
 	public static final Gui GUI_LOBBY_CLIENT = new GLobbyClient();
 	public static final Gui GUI_INGAME = new GIngame();
 	public static final Gui GUI_SETTINGS = new GSettings();

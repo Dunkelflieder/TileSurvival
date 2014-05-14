@@ -20,15 +20,16 @@ public class GESlider extends GuiElement {
 
 	private boolean dragging = false;
 	private float min, max;
-	private float position = 0.5f;
+	private float position;
 	private String text = String.valueOf(position);
 	private float sliderWidth = 8f;
 	private boolean allowFloat = true;
 
-	protected GESlider(Vector pos, Vector size, String text, float min, float max) {
+	protected GESlider(Vector pos, Vector size, String text, float min, float max, float position) {
 		super(pos, size, false);
 		this.min = min;
 		this.max = max;
+		this.position = position;
 	}
 
 	@Override

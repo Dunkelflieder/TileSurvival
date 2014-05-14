@@ -249,21 +249,21 @@ public class ALHelper {
 		for (int i = 0; i + 1 < buffer.limit(); i += 2) {
 			if (buffer.get(i) == ALC_MONO_SOURCES) {
 				ALHelper.MONO_SOURCES = buffer.get(i + 1);
-				System.out.println("ALC_MONO_SOURCES: " + buffer.get(i + 1));
+				//System.out.println("ALC_MONO_SOURCES: " + buffer.get(i + 1));
 			} else if (buffer.get(i) == ALC_STEREO_SOURCES) {
 				ALHelper.STEREO_SOURCES = buffer.get(i + 1);
-				System.out.println("ALC_STEREO_SOURCES: " + buffer.get(i + 1));
+				//System.out.println("ALC_STEREO_SOURCES: " + buffer.get(i + 1));
 			} else if (buffer.get(i) == ALC_FREQUENCY) {
 				ALHelper.FREQUENCY = buffer.get(i + 1);
-				System.out.println("ALC_FREQUENCY: " + buffer.get(i + 1));
+				//System.out.println("ALC_FREQUENCY: " + buffer.get(i + 1));
 			} else if (buffer.get(i) == AL_BUFFER) {
-				System.out.println("AL_BUFFER: " + buffer.get(i + 1));
+				//System.out.println("AL_BUFFER: " + buffer.get(i + 1));
 			} else if (buffer.get(i) == ALC_REFRESH) {
-				System.out.println("ALC_REFRESH: " + buffer.get(i + 1));
+				//System.out.println("ALC_REFRESH: " + buffer.get(i + 1));
 			} else if (buffer.get(i) == EFX10.ALC_MAX_AUXILIARY_SENDS) {
-				System.out.println("ALC_MAX_AUXILIARY_SENDS: " + buffer.get(i + 1));
+				//System.out.println("ALC_MAX_AUXILIARY_SENDS: " + buffer.get(i + 1));
 			} else {
-				System.out.println("unspecified: " + buffer.get(i) + " > " + buffer.get(i + 1));
+				//System.out.println("unspecified: " + buffer.get(i) + " > " + buffer.get(i + 1));
 			}
 
 		}

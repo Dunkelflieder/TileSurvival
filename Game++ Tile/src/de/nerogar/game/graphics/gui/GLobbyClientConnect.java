@@ -11,31 +11,18 @@ import java.util.ArrayList;
 import de.nerogar.game.*;
 import de.nerogar.game.graphics.TextureBank;
 import de.nerogar.game.network.*;
-import de.nerogar.game.weapon.Weapon;
 
-public class GLobbyClient extends Gui {
+public class GLobbyClientConnect extends Gui {
 
-	private GEInput inputIP;
-	private GEText text;
-	private GEButton buttonOK;
 
-	public GLobbyClient() {
+	public GLobbyClientConnect() {
 		super(true);
-		
-		float posX = (Game.game.WIDTH - Map.TILE_RENDER_SIZE * 4f) * 0.5f;
-		float posY = Game.game.HEIGHT / 2f;
-		
-		text = new GEText(new Vector(0, posY - 150), new Vector(Game.game.WIDTH, 32f), "Enter the IP:port of the host");
-		inputIP = new GEInput(new Vector(posX, posY-50), new Vector(Map.TILE_RENDER_SIZE*4f, Map.TILE_RENDER_SIZE));
-		buttonOK = new GEButton(new Vector(0, posY + 50), new Vector(Map.TILE_RENDER_SIZE*4f, Map.TILE_RENDER_SIZE), "Connect");
-		
-		addGuiElements(text, inputIP, buttonOK);
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		/*ArrayList<Packet> packets = Game.game.client.getData(Packet.LOBBY_CHANNEL);
+		ArrayList<Packet> packets = Game.game.client.getData(Packet.LOBBY_CHANNEL);
 		if (packets != null) {
 			for (Packet packet : packets) {
 				if (packet instanceof PacketStartGame) {
@@ -49,7 +36,7 @@ public class GLobbyClient extends Gui {
 					GuiBank.selectGui(GuiBank.GUI_INGAME);
 				}
 			}
-		}*/
+		}
 
 	}
 

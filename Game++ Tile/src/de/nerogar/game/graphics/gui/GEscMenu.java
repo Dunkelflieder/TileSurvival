@@ -34,18 +34,20 @@ public class GEscMenu extends Gui {
 	}
 
 	@Override
-	public void update() {
-		super.update();
-
-	}
-
-	@Override
 	public void renderBackground() {
 		RenderHelper.enableAlphaMask();
-		GL11.glColor4f(0f, 0f, 0f, 0.8f);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glColor4f(0f, 0f, 0f, 0.6f);
 		RenderHelper.renderQuad(0, 0, Game.game.WIDTH, Game.game.HEIGHT);
 		GL11.glColor3f(1.0f, 1.0f, 1.0f);
-
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+	}
+	
+	@Override
+	public void keyPressed(char key) {
+		if (key == 27) {
+			GuiBank.selectGui(GuiBank.GUI_INGAME);
+		}
 	}
 
 }

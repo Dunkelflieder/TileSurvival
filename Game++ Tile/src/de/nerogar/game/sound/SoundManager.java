@@ -29,7 +29,7 @@ public class SoundManager {
 		// Checks if the local implementation of OpenAL supports direct .ogg input
 		// This sound API converts ogg vorbis files to PCM data via JOrbis anyway,
 		// because OpenAL dropped the support on this
-		System.out.println(".ogg sound extension available: " + ALHelper.initVorbisExtension());
+		//System.out.println(".ogg sound extension available: " + ALHelper.initVorbisExtension());
 
 		// Gets some attributes from the current sound device
 		ALHelper.readDeviceAttributes();

@@ -55,21 +55,29 @@ public abstract class Gui {
 				if (InputHandler.isMouseButtonPressed(0)) {
 					click(i, 0);
 					element.click(0);
+					selectedElement = element;
 				}
 				if (InputHandler.isMouseButtonPressed(1)) {
 					click(i, 1);
 					element.click(1);
+					selectedElement = element;
 				}
 				if (InputHandler.isMouseButtonPressed(2)) {
 					click(i, 2);
 					element.click(2);
+					selectedElement = element;
 				}
 				break;
 			}
 		}
 		char key = InputHandler.getPressedKey();
-		if (key > 0)
-			keyPressed(key);
+		if (key > 0) {
+			boolean prohibited = false;
+			if (selectedElement != null)
+				prohibited = selectedElement.keyPressed(key);
+			if (!prohibited)
+				keyPressed(key);
+		}
 	}
 
 	public boolean interceptsInput() {

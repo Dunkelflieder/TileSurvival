@@ -11,15 +11,14 @@ import de.nerogar.game.RenderHelper;
 import de.nerogar.game.Vector;
 import de.nerogar.game.graphics.TextureBank;
 
-public class GEButton extends GuiElement {
+public class GEInput extends GuiElement {
 
-	private String text;
+	private String text = "";
 
-	private static final float TEX_OFFSET = 6f;
+	private static final float TEX_OFFSET = 4f;
 
-	protected GEButton(Vector pos, Vector size, String text) {
+	protected GEInput(Vector pos, Vector size) {
 		super(pos, size, false);
-		this.text = text;
 	}
 
 	public void setText(String text) {
@@ -48,6 +47,17 @@ public class GEButton extends GuiElement {
 		glEnd();
 
 		FontRenderer.drawString(text, getPos().getX() + getSize().getX() / 16f, getPos().getY(), getSize().getX() - getSize().getX() / 8f, getSize().getY(), FontRenderer.CENTERED);
+	}
+
+	@Override
+	public boolean keyPressed(char key) {
+		if (key == 8) {
+			// backspace
+			text = text.substring(0, text.length() == 0 ? 0 : text.length() - 1);
+		}
+		if (key >= 32)
+			text += key;
+		return true;
 	}
 
 }
