@@ -40,6 +40,9 @@ public abstract class Gui {
 	public void renderBackground() {
 	};
 
+	public void select() {	
+	}
+	
 	public void update() {
 		updateInput();
 		for (int i = 0; i < guiElements.size(); i++) {

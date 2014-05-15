@@ -75,17 +75,21 @@ public abstract class Weapon {
 		glTexCoord2f(tilePosX * Map.TILE_TEXTURE_SIZE, (tilePosY + 1) * Map.TILE_TEXTURE_SIZE);
 		glVertex3f(posX, posY + renderSize, -1f);
 
-		// render cooldown
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glColor4f(0f, 0f, 0f, 0.8f);
-		glVertex3f(posX, posY + Weapon.renderSize * cooldown, -1);
-		glVertex3f(posX, posY + Weapon.renderSize, -1);
-		glVertex3f(posX + Weapon.renderSize, posY + Weapon.renderSize, -1);
-		glVertex3f(posX + Weapon.renderSize, posY + Weapon.renderSize * cooldown, -1);
-		GL11.glColor3f(1.0f, 1.0f, 1.0f);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-
 		glEnd();
+		
+		// cooldown
+		glDisable(GL11.GL_TEXTURE_2D);
+		
+		glBegin(GL_QUADS);
+		glColor4f(0f, 0f, 0f, 0.7f);
+		glVertex3f(posX, posY + renderSize * cooldown, -1);
+		glVertex3f(posX + renderSize, posY + renderSize * cooldown, -1);
+		glVertex3f(posX + renderSize, posY + renderSize, -1);
+		glVertex3f(posX, posY + renderSize, -1);
+		glEnd();
+		
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glEnable(GL11.GL_TEXTURE_2D);
 
 	}
 

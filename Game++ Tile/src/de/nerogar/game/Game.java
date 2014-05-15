@@ -28,9 +28,9 @@ public class Game {
 	//server
 	public Server server;
 	public Client client;
-	
+
 	private Sound bgMusic = new Sound(SoundCategory.MUSIC, "music1.ogg");
-	
+
 	public Game() {
 		renderEngine = new RenderEngine();
 		renderEngine.init(WIDTH, HEIGHT);
@@ -69,6 +69,10 @@ public class Game {
 
 	}
 
+	public void closeMap() {
+		map = null;
+	}
+
 	private void render() {
 		if (map != null && map.ready) {
 			map.render();
@@ -85,10 +89,12 @@ public class Game {
 		game = new Game();
 		game.run();
 	}
-	
+
 	public void cleanup() {
-		if (server != null) server.stopServer();
-		if (client != null) client.stopClient();
+		if (server != null)
+			server.stopServer();
+		if (client != null)
+			client.stopClient();
 	}
 
 }

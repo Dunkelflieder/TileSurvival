@@ -29,7 +29,8 @@ public class GEscMenu extends Gui {
 		} else if (id == buttonSettings.getId()) {
 			GuiBank.selectGui(GuiBank.GUI_SETTINGS);
 		} else if (id == buttonClose.getId()) {
-			// TODO end game
+			Game.game.closeMap();
+			GuiBank.selectGui(GuiBank.GUI_TITLE);
 		}
 	}
 
