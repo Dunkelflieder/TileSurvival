@@ -15,7 +15,7 @@ import de.nerogar.game.network.*;
 
 public class GLobbyHost extends Gui {
 
-	private GEButton buttonStart;
+	private GEButton buttonStart, buttonCancel;
 	private GEText text, textPlayers, info1, info2, info3;
 
 	public GLobbyHost() {
@@ -27,13 +27,14 @@ public class GLobbyHost extends Gui {
 		text = new GEText(new Vector(0, posY - 100), new Vector(Game.game.WIDTH, 32), "Clients can now connect");
 		textPlayers = new GEText(new Vector(0, posY - 50), new Vector(Game.game.WIDTH, 32), "0 players connected");
 
-		buttonStart = new GEButton(new Vector(posX, posY), new Vector(Map.TILE_RENDER_SIZE * 4f, Map.TILE_RENDER_SIZE), "start");
+		buttonStart = new GEButton(new Vector(posX + (Map.TILE_RENDER_SIZE * 2f + 16f), posY), new Vector(Map.TILE_RENDER_SIZE * 4f, Map.TILE_RENDER_SIZE), "start");
+		buttonCancel = new GEButton(new Vector(posX - (Map.TILE_RENDER_SIZE * 2f + 16f), posY), new Vector(Map.TILE_RENDER_SIZE * 4f, Map.TILE_RENDER_SIZE), "cancel");
 
 		info1 = new GEText(new Vector(0, posY + 100), new Vector(Game.game.WIDTH, 32), "");
 		info2 = new GEText(new Vector(0, posY + 150), new Vector(Game.game.WIDTH, 32), "");
 		info3 = new GEText(new Vector(0, posY + 200), new Vector(Game.game.WIDTH, 32), "(host must forward port in router)");
 
-		addGuiElements(buttonStart, text, textPlayers, info1, info2, info3);
+		addGuiElements(buttonStart, buttonCancel, text, textPlayers, info1, info2, info3);
 
 	}
 
@@ -75,6 +76,10 @@ public class GLobbyHost extends Gui {
 			Game.game.map = map;
 
 			GuiBank.selectGui(GuiBank.GUI_INGAME);
+		} else if (id == buttonCancel.getId()) {
+			Game.game.server.stopServer();
+			Game.game.closeMap();
+			GuiBank.selectGui(GuiBank.GUI_TITLE);
 		}
 	}
 

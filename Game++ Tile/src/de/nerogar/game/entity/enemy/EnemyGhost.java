@@ -1,17 +1,20 @@
-package de.nerogar.game.entity;
+package de.nerogar.game.entity.enemy;
 
 import de.nerogar.game.Map;
 import de.nerogar.game.Vector;
+import de.nerogar.game.entity.EntityEnemy;
+import de.nerogar.game.entity.EntityEnergyDrop;
+import de.nerogar.game.entity.EntityPlayer;
 import de.nerogar.game.weapon.Fireball;
 
-public class EntityGhost extends EntityEnemy {
+public class EnemyGhost extends EntityEnemy {
 
 	private static final float MAX_FIGHT_DISTANCE = 8.0f;
 	private Vector walkPos;
 
 	private Fireball fireballWeapon;
 
-	public EntityGhost(Map map, Vector pos) {
+	public EnemyGhost(Map map, Vector pos) {
 		super(map, pos, new Vector(1.0f), 10, 1f);
 		moveSpeed = 3.0f;
 		textureID = 32;

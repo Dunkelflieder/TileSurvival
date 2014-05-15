@@ -1,11 +1,13 @@
-package de.nerogar.game.entity;
+package de.nerogar.game.entity.enemy;
 
 import de.nerogar.game.Map;
 import de.nerogar.game.Vector;
+import de.nerogar.game.entity.EntityEnemy;
+import de.nerogar.game.entity.EntityEnergyDrop;
 
-public class EntityDumpEnemy extends EntityEnemy {
+public class EnemyDump extends EntityEnemy {
 
-	public EntityDumpEnemy(Map map, Vector pos) {
+	public EnemyDump(Map map, Vector pos) {
 		super(map, pos, new Vector(1.0f), 5, 1f);
 		moveSpeed = 1.0f;
 		textureID = 16;

@@ -11,6 +11,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.entity.*;
+import de.nerogar.game.entity.enemy.EnemyGhost;
 import de.nerogar.game.graphics.*;
 import de.nerogar.game.graphics.gui.GuiBank;
 import de.nerogar.game.network.*;
@@ -332,7 +333,7 @@ public class Map {
 		this.spawnLocation = spawnLocation;
 
 		for (int i = 0; i < 10; i++)
-			spawnEntity(new EntityGhost(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
+			spawnEntity(new EnemyGhost(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
 	}
 
 	public void initPlayer(int playerID) {

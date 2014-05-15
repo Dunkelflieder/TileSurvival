@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import de.nerogar.game.Map;
 import de.nerogar.game.Vector;
+import de.nerogar.game.entity.enemy.EnemyDump;
+import de.nerogar.game.entity.enemy.EnemyGhost;
 
 public class EntitySpawner {
 
@@ -34,9 +36,9 @@ public class EntitySpawner {
 		case 201:
 			return new EntitySmallEnemy(map, pos);
 		case 202:
-			return new EntityGhost(map, pos);
+			return new EnemyGhost(map, pos);
 		case 203:
-			return new EntityDumpEnemy(map, pos);
+			return new EnemyDump(map, pos);
 
 			//
 		case 301:
@@ -67,8 +69,8 @@ public class EntitySpawner {
 
 		//enemy
 		networkIDs.put(EntitySmallEnemy.class, 201);
-		networkIDs.put(EntityGhost.class, 202);
-		networkIDs.put(EntityDumpEnemy.class, 203);
+		networkIDs.put(EnemyGhost.class, 202);
+		networkIDs.put(EnemyDump.class, 203);
 
 		//
 		networkIDs.put(EntityEnergyDrop.class, 301);
