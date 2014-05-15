@@ -34,7 +34,7 @@ public class EntityTeamRestore extends EntityWeapon {
 			nextRestore = 3f;
 
 			for (Entity entity : map.getEntities()) {
-				if (entity.faction == faction && !entity.resistDamage) {
+				if (entity.faction == faction && !(entity instanceof EntityWeapon)) {
 					float entityDist = getCenter().subtract(entity.getCenter()).getValue();
 					if (entityDist <= MAX_RESTORE_DISTANCE) {
 						if (entity.health < entity.maxHealth) entity.health += 5;

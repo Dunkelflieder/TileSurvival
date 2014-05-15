@@ -7,7 +7,7 @@ public class IceSpikes extends Weapon {
 
 	public IceSpikes(Entity owner, int damage, float cooldown) {
 		super(owner, damage, cooldown, 5);
-		textureID = 0;
+		textureID = 8 * 2 + 1;
 	}
 
 	@Override

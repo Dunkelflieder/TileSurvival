@@ -7,7 +7,7 @@ public class GuardTower extends Weapon {
 
 	public GuardTower(Entity owner, int damage, float cooldown) {
 		super(owner, damage, cooldown, 5);
-		textureID = 0;
+		textureID = 8 * 1 + 0;
 	}
 
 	@Override

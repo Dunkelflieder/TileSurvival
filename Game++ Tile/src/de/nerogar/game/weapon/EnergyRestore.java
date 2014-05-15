@@ -3,11 +3,11 @@ package de.nerogar.game.weapon;
 import de.nerogar.game.Vector;
 import de.nerogar.game.entity.*;
 
-public class Heal extends Weapon {
+public class EnergyRestore extends Weapon {
 
 	public float MAX_RESTORE_DISTANCE = 5.0f;
 
-	public Heal(Entity owner, int damage, float cooldown) {
+	public EnergyRestore(Entity owner, int damage, float cooldown) {
 		super(owner, damage, cooldown, 20);
 		textureID = 8 * 3 + 0;
 	}
@@ -18,9 +18,9 @@ public class Heal extends Weapon {
 			if (entity.faction == owner.faction && !(entity instanceof EntityWeapon)) {
 				float entityDist = owner.getCenter().subtract(entity.getCenter()).getValue();
 				if (entityDist <= MAX_RESTORE_DISTANCE) {
-					if (entity.health < entity.maxHealth) entity.health += damage;
+					if (entity.energy < entity.maxEnergy) entity.energy += damage;
 
-					if (entity.health > entity.maxHealth) entity.health = entity.maxHealth;
+					if (entity.energy > entity.maxEnergy) entity.energy = entity.maxEnergy;
 				}
 			}
 		}

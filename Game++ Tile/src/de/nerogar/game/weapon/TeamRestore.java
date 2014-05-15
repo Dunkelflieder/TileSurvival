@@ -7,7 +7,7 @@ public class TeamRestore extends Weapon {
 
 	public TeamRestore(Entity owner, int damage, float cooldown) {
 		super(owner, damage, cooldown, 5);
-		textureID = 0;
+		textureID = 8 * 1 + 2;
 	}
 
 	@Override

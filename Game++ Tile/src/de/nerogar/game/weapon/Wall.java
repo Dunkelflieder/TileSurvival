@@ -7,7 +7,7 @@ public class Wall extends Weapon {
 
 	public Wall(Entity owner, int damage, float cooldown) {
 		super(owner, damage, cooldown, 5);
-		textureID = 0;
+		textureID = 8 * 0 + 0;
 	}
 
 	@Override
