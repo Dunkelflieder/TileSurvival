@@ -32,4 +32,9 @@ public class Heal extends Weapon {
 		return owner.health != owner.maxEnergy;
 	}
 
+	@Override
+	public void processEffect(Entity target) {
+		target.health = Math.min(target.health + damage, target.maxHealth);
+	}
+
 }

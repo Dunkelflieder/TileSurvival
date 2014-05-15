@@ -22,6 +22,6 @@ public abstract class EntityWeapon extends Entity {
 	}
 
 	public boolean canDamage(Entity entity) {
-		return entity.faction != faction;
+		return (entity.faction != faction) && !entity.resistDamage;
 	}
 }

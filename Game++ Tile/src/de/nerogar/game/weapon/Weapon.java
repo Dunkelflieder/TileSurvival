@@ -4,10 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.opengl.GL11;
 
-import de.nerogar.game.Game;
-import de.nerogar.game.Map;
-import de.nerogar.game.RenderHelper;
-import de.nerogar.game.Vector;
+import de.nerogar.game.*;
 import de.nerogar.game.entity.Entity;
 import de.nerogar.game.entity.EntityPlayer;
 import de.nerogar.game.graphics.TextureBank;
@@ -39,6 +36,8 @@ public abstract class Weapon {
 		cooldown -= time;
 	}
 
+	public abstract void processEffect(Entity target);
+
 	public void render(float posX, float posY) {
 		RenderHelper.enableAlphaMask();
 		TextureBank.instance.bindTexture("gui.png");
@@ -63,8 +62,7 @@ public abstract class Weapon {
 
 		tilePosX = (int) Map.TILES_ON_TEXTURE - 1;
 		tilePosY = (int) Map.TILES_ON_TEXTURE - 1;
-		if (player.getSelectedWeapon() == this)
-			tilePosX--;
+		if (player.getSelectedWeapon() == this) tilePosX--;
 
 		glTexCoord2f(tilePosX * Map.TILE_TEXTURE_SIZE, tilePosY * Map.TILE_TEXTURE_SIZE);
 		glVertex3f(posX, posY, -1f);
@@ -76,10 +74,10 @@ public abstract class Weapon {
 		glVertex3f(posX, posY + renderSize, -1f);
 
 		glEnd();
-		
+
 		// cooldown
 		glDisable(GL11.GL_TEXTURE_2D);
-		
+
 		glBegin(GL_QUADS);
 		glColor4f(0f, 0f, 0f, 0.7f);
 		glVertex3f(posX, posY + renderSize * cooldown, -1);
@@ -87,7 +85,7 @@ public abstract class Weapon {
 		glVertex3f(posX + renderSize, posY + renderSize, -1);
 		glVertex3f(posX, posY + renderSize, -1);
 		glEnd();
-		
+
 		glColor3f(1.0f, 1.0f, 1.0f);
 		glEnable(GL11.GL_TEXTURE_2D);
 

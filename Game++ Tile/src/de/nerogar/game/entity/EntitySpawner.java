@@ -31,6 +31,8 @@ public class EntitySpawner {
 			return new EntityIceSpike(map, pos);
 		case 107:
 			return new EntityTeamRestore(map, pos);
+		case 108:
+			return new EntityTrap(map, pos);
 
 			//enemy
 		case 201:
@@ -66,6 +68,7 @@ public class EntitySpawner {
 		networkIDs.put(EntityGuardTower.class, 105);
 		networkIDs.put(EntityIceSpike.class, 106);
 		networkIDs.put(EntityTeamRestore.class, 107);
+		networkIDs.put(EntityTrap.class, 108);
 
 		//enemy
 		networkIDs.put(EntitySmallEnemy.class, 201);

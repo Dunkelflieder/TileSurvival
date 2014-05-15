@@ -9,7 +9,7 @@ public class EnergyRestore extends Weapon {
 
 	public EnergyRestore(Entity owner, int damage, float cooldown) {
 		super(owner, damage, cooldown, 20);
-		textureID = 8 * 3 + 0;
+		textureID = 8 * 3 + 1;
 	}
 
 	@Override
@@ -18,9 +18,7 @@ public class EnergyRestore extends Weapon {
 			if (entity.faction == owner.faction && !(entity instanceof EntityWeapon)) {
 				float entityDist = owner.getCenter().subtract(entity.getCenter()).getValue();
 				if (entityDist <= MAX_RESTORE_DISTANCE) {
-					if (entity.energy < entity.maxEnergy) entity.energy += damage;
-
-					if (entity.energy > entity.maxEnergy) entity.energy = entity.maxEnergy;
+					processEffect(entity);
 				}
 			}
 		}
@@ -30,6 +28,11 @@ public class EnergyRestore extends Weapon {
 	@Override
 	public boolean canActivate() {
 		return owner.health != owner.maxEnergy;
+	}
+
+	@Override
+	public void processEffect(Entity target) {
+		target.energy = Math.min(target.energy + damage, target.maxEnergy);
 	}
 
 }

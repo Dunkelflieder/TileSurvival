@@ -207,6 +207,7 @@ public class Map {
 
 			if (entity != null && entity instanceof EntityPlayer) {
 				EntityPlayer playerEntity = (EntityPlayer) entity;
+				playerEntity.playerClass.selectWeapon(activateWeaponPacket.selectedWeapon);
 				playerEntity.getSelectedWeapon().start(new Vector(activateWeaponPacket.targetPosition[0], activateWeaponPacket.targetPosition[1]));
 			}
 

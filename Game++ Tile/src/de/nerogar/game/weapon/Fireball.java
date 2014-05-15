@@ -21,4 +21,9 @@ public class Fireball extends Weapon {
 		return true;
 	}
 
+	@Override
+	public void processEffect(Entity target) {
+		target.damage(damage);
+	}
+
 }

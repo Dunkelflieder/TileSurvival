@@ -21,4 +21,9 @@ public class Wall extends Weapon {
 		return true;
 	}
 
+	@Override
+	public void processEffect(Entity target) {
+		// TODO Auto-generated method stub
+	}
+
 }

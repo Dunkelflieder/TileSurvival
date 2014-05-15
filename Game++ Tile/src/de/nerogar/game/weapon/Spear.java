@@ -20,4 +20,9 @@ public class Spear extends Weapon {
 	public boolean canActivate() {
 		return true;
 	}
+
+	@Override
+	public void processEffect(Entity target) {
+		target.damage(damage);
+	}
 }

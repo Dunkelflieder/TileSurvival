@@ -21,4 +21,10 @@ public class TeamRestore extends Weapon {
 		return true;
 	}
 
+	@Override
+	public void processEffect(Entity target) {
+		target.health = Math.min(target.health + damage, target.maxHealth);
+		target.energy = Math.min(target.energy + damage, target.maxEnergy);
+	}
+
 }

@@ -24,4 +24,10 @@ public class IceSpikes extends Weapon {
 		return true;
 	}
 
+	@Override
+	public void processEffect(Entity target) {
+		target.speedmult = 0.3f;
+		target.speedmultTime = 4f;
+	}
+
 }

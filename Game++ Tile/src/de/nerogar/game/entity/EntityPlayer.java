@@ -5,8 +5,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.*;
-import de.nerogar.game.entity.playerClass.Engineer;
-import de.nerogar.game.entity.playerClass.PlayerClass;
+import de.nerogar.game.entity.playerClass.*;
 import de.nerogar.game.network.*;
 import de.nerogar.game.weapon.Weapon;
 
@@ -18,7 +17,7 @@ public class EntityPlayer extends Entity {
 
 	public EntityPlayer(Map map, Vector pos) {
 		super(map, pos, new Vector(1.0f), 100);
-		playerClass = new Engineer(this);
+		playerClass = new Mage(this);
 		faction = FACTION_PLAYER;
 
 		//light = new Light(0, 0, 5f,2.0f);

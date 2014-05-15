@@ -11,17 +11,21 @@ public class EntityExplosion extends EntityWeapon {
 	private float lifeTime;
 	private float radius;
 
+	//private Weapon weapon;
+
 	public EntityExplosion(Map map, Vector pos) {
 		super(map, pos);
 		init();
 	}
 
+	//public EntityExplosion(Entity sender, Map map, Vector pos, float radius, int damageWeapon weapon) {
 	public EntityExplosion(Entity sender, Map map, Vector pos, float radius, int damage) {
 		super(sender, map, pos, new Vector(radius * 2f), damage);
 		resistDamage = true;
 		lifeTime = MAX_LIFFETIME;
 		this.radius = radius;
 		this.sender = sender;
+		//this.weapon = weapon;
 
 		pos.addX(-radius).addY(-radius);
 		init();
@@ -44,6 +48,7 @@ public class EntityExplosion extends EntityWeapon {
 			for (Entity entity : map.getEntities()) {
 				if (canDamage(entity) && intersects(entity.getCenter())) {
 					entity.damage(health);
+					//weapon.processEffect(entity);
 				}
 			}
 

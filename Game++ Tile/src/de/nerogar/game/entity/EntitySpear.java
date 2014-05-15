@@ -13,7 +13,7 @@ public class EntitySpear extends EntityProjectile {
 	}
 
 	public EntitySpear(Entity sender, Map map, Vector pos, Vector target, int damage) {
-		super(sender, map, pos, new Vector(1f), damage, 3, 30);
+		super(sender, map, pos, target, damage, 3, 30);
 	}
 
 	@Override

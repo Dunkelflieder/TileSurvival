@@ -3,17 +3,17 @@ package de.nerogar.game.weapon;
 import de.nerogar.game.Vector;
 import de.nerogar.game.entity.*;
 
-public class GuardTower extends Weapon {
+public class Trap extends Weapon {
 
-	public GuardTower(Entity owner, int damage, float cooldown) {
+	public Trap(Entity owner, int damage, float cooldown) {
 		super(owner, damage, cooldown, 5);
-		textureID = 8 * 1 + 0;
+		textureID = 8 * 2 + 0;
 	}
 
 	@Override
 	public void start(Vector target) {
-		EntityGuardTower guardTowerEntity = new EntityGuardTower(owner, owner.map, target, damage);
-		owner.map.spawnEntity(guardTowerEntity);
+		EntityTrap trapEntity = new EntityTrap(owner, owner.map, target, damage);
+		owner.map.spawnEntity(trapEntity);
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public class GuardTower extends Weapon {
 
 	@Override
 	public void processEffect(Entity target) {
-		//no effect on entities
+		target.damage(damage);
 	}
 
 }
