@@ -104,6 +104,7 @@ public class GLobbyHost extends Gui {
 			for (Client client : clients) {
 				EntityPlayer playerEntityClient = new EntityPlayer(map, map.getSpawnLocation());
 				int pClass = playerClassSelection.get(client);
+				playerEntityClient.pClass = pClass;
 				playerEntityClient.setPlayerClass(PlayerClass.getInstanceByID(pClass, playerEntityClient));
 
 				PacketStartGame gameStartPacket = new PacketStartGame();

@@ -26,9 +26,9 @@ public class GCredits extends Gui {
 		float posX = (Game.game.WIDTH - Map.TILE_RENDER_SIZE * 4f) * 0.5f;
 
 
-		textNerogar1 = new GEText(new Vector(64, 240), new Vector(160, 24), "Nerogar:");
-		textFelk1 = new GEText(new Vector(64, 300), new Vector(160, 24), "Felk:");
-		textGurke1 = new GEText(new Vector(64, 360), new Vector(160, 24), "Gurke:");
+		textNerogar1 = new GEText(new Vector(64, 240), new Vector(180, 24), "Nerogar:");
+		textFelk1 = new GEText(new Vector(64, 300), new Vector(180, 24), "Felk:");
+		textGurke1 = new GEText(new Vector(64, 360), new Vector(180, 24), "Gurke:");
 
 		textNerogar2 = new GEText(new Vector(280, 240), new Vector(Game.game.WIDTH - 300, 24), "lead programming, artwork");
 		textFelk2 = new GEText(new Vector(280, 300), new Vector(Game.game.WIDTH - 300, 24), "additional programming, music & sound");

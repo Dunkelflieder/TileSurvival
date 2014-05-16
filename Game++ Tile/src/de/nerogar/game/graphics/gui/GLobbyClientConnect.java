@@ -61,11 +61,11 @@ public class GLobbyClientConnect extends Gui {
 					//EntityPlayer player = (EntityPlayer) map.getEntities().get(startgamepacket.playerID);//startgamepacket.playerClass
 					//player.playerClass = PlayerClass.getInstanceByID(startgamepacket.playerClass, player);
 					map.initPlayer(startgamepacket.playerID);
+					map.getPlayer().pClass = startgamepacket.playerClass;
 					map.getPlayer().setPlayerClass(PlayerClass.getInstanceByID(startgamepacket.playerClass, map.getPlayer()));
 					Game.game.map = map;
 
 					GuiBank.selectGui(GuiBank.INGAME);
-					System.out.println("Starting done.");
 				}
 			}
 		}

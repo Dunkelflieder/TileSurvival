@@ -12,6 +12,7 @@ import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.entity.*;
 import de.nerogar.game.entity.enemy.EnemyGhost;
+import de.nerogar.game.entity.playerClass.PlayerClass;
 import de.nerogar.game.graphics.*;
 import de.nerogar.game.graphics.gui.GuiBank;
 import de.nerogar.game.network.*;
@@ -87,7 +88,8 @@ public class Map {
 		if (entity.id == playerID) {
 			// TODO find a proper way to set the players position instead of sending him as regular entity
 			EntityPlayer player = (EntityPlayer) entity;
-			player.setPlayerClass(getPlayer().getPlayerClass());
+			player.setPlayerClass(PlayerClass.getInstanceByID(getPlayer().pClass, player));
+			
 			setPlayer(player);
 			playerID = -1;
 		}

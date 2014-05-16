@@ -13,6 +13,7 @@ import de.nerogar.game.weapon.Weapon;
 public class EntityPlayer extends Entity {
 
 	private PlayerClass playerClass = null;
+	public int pClass;
 
 	private float nextEnergyRestore;
 
