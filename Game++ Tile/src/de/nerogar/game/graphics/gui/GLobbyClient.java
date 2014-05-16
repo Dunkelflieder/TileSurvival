@@ -34,6 +34,7 @@ public class GLobbyClient extends Gui {
 
 	@Override
 	public void select() {
+		selectElement(inputIP);
 		text.setText("Enter the IP:port of the host");
 	}
 
