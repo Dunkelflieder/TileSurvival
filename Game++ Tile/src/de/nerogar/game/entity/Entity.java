@@ -45,9 +45,9 @@ public abstract class Entity {
 	public boolean removed;
 	public int textureID = 0;
 
-	private float textureSize = 512f;
-	private float tileTextureSize = 1f / textureSize * 32f;
-	private int tilesOnTexture = 16;
+	public static float textureSize = 512f;
+	public static float tileTextureSize = 1f / textureSize * 32f;
+	public static int tilesOnTexture = 16;
 
 	public Entity(Map map, Vector pos, Vector dimension, int health) {
 		id = getNewID();

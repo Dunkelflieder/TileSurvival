@@ -12,6 +12,11 @@ public abstract class PlayerClass {
 	public int maxHealth;
 	public int maxEnergy;
 
+	public static final int ENGINEER = 1;
+	public static final int HEALER = 2;
+	public static final int MAGE = 3;
+	public static final int WARRIOR = 4;
+
 	public PlayerClass(EntityPlayer player, int maxHealth, int maxEnergy, float moveSpeed) {
 		weapons = new Weapon[3];
 		this.player = player;
@@ -59,5 +64,19 @@ public abstract class PlayerClass {
 			weapon.maxCooldown = 0.2f;
 			weapon.energyCost = 0;
 		}
+	}
+
+	public static PlayerClass getInstanceByID(int id, EntityPlayer player) {
+		switch (id) {
+		case ENGINEER:
+			return new Engineer(player);
+		case HEALER:
+			return new Healer(player);
+		case MAGE:
+			return new Mage(player);
+		case WARRIOR:
+			return new Warrior(player);
+		}
+		return null;
 	}
 }

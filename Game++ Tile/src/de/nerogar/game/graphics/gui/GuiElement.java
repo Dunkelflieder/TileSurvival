@@ -8,6 +8,7 @@ public abstract class GuiElement {
 	private Vector size;
 	private int id = -1;
 	private boolean selectable;
+	private boolean disabled = false;
 
 	public abstract void render();
 
@@ -58,9 +59,17 @@ public abstract class GuiElement {
 
 	public void update() {
 	}
-	
+
 	public boolean keyPressed(char c) {
 		return false;
+	}
+
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(boolean disabled) {
+		this.disabled = disabled;
 	}
 
 }

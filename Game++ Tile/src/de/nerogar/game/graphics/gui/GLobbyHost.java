@@ -7,9 +7,11 @@ import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex3f;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.nerogar.game.*;
 import de.nerogar.game.entity.EntityPlayer;
+import de.nerogar.game.entity.playerClass.PlayerClass;
 import de.nerogar.game.graphics.TextureBank;
 import de.nerogar.game.network.*;
 
@@ -17,6 +19,7 @@ public class GLobbyHost extends Gui {
 
 	private GEButton buttonStart, buttonCancel;
 	private GEText text, textPlayers, info1, info2, info3;
+	private HashMap<Client, Integer> playerClassSelection = new HashMap<Client, Integer>();
 
 	public GLobbyHost() {
 		super(true);
@@ -41,11 +44,43 @@ public class GLobbyHost extends Gui {
 	@Override
 	public void update() {
 		super.update();
-		textPlayers.setText(Game.game.server.getClients().size() + " players connected");
+
+		HashMap<Client, Integer> playerClassSelection2 = new HashMap<Client, Integer>();
+		ArrayList<Client> clients = Game.game.server.getClients();
+		for (Client client : clients) {
+			playerClassSelection2.put(client, playerClassSelection.get(client));
+			ArrayList<Packet> packets = null;
+			packets = client.getData(Packet.LOBBY_CHANNEL);
+			if (packets != null) {
+				for (Packet packet : packets) {
+					if (packet instanceof PacketSelectPlayerClass) {
+						int pClass = ((PacketSelectPlayerClass) packet).playerClass;
+						if (pClass >= 0) {
+							playerClassSelection2.put(client, pClass);
+						}
+					}
+				}
+			}
+		}
+		playerClassSelection = playerClassSelection2;
+
+		int chosen = 0;
+		for (Integer i : playerClassSelection.values())
+			if (i != null)
+				chosen++;
+
+		textPlayers.setText(chosen + "/" + clients.size() + " players chose their class");
+		if (clients.size() == chosen) {
+			buttonStart.setDisabled(false);
+		} else {
+			buttonStart.setDisabled(true);
+		}
 	}
 
 	@Override
 	public void select() {
+		buttonStart.setDisabled(true);
+
 		Server server = new Server(Game.port);
 		Game.game.server = server;
 		info1.setText("via LAN: " + server.getIP() + ":" + server.port);
@@ -61,25 +96,30 @@ public class GLobbyHost extends Gui {
 			//Game.game.server = server;
 
 			EntityPlayer playerEntity = new EntityPlayer(map, map.getSpawnLocation());
+			playerEntity.setPlayerClass(PlayerClass.getInstanceByID(GuiBank.CLASS_SELECTION.getPlayerClass(), playerEntity));
 			map.spawnEntity(playerEntity);
 			map.initPlayer(playerEntity.id);
 
 			ArrayList<Client> clients = Game.game.server.getClients();
 			for (Client client : clients) {
 				EntityPlayer playerEntityClient = new EntityPlayer(map, map.getSpawnLocation());
+				int pClass = playerClassSelection.get(client);
+				playerEntityClient.setPlayerClass(PlayerClass.getInstanceByID(pClass, playerEntityClient));
+
 				PacketStartGame gameStartPacket = new PacketStartGame();
 				gameStartPacket.playerID = playerEntityClient.id;
+				gameStartPacket.playerClass = pClass;
 				map.spawnEntity(playerEntityClient);
 				client.sendPacket(gameStartPacket);
 			}
 
 			Game.game.map = map;
 
-			GuiBank.selectGui(GuiBank.GUI_INGAME);
+			GuiBank.selectGui(GuiBank.INGAME);
 		} else if (id == buttonCancel.getId()) {
 			Game.game.server.stopServer();
 			Game.game.closeMap();
-			GuiBank.selectGui(GuiBank.GUI_TITLE);
+			GuiBank.selectGui(GuiBank.TITLE);
 		}
 	}
 

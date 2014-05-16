@@ -89,13 +89,7 @@ public class GSettings extends Gui {
 	}
 
 	public void leaveMenu() {
-		if (Game.game.map == null)
-			GuiBank.selectGui(GuiBank.GUI_TITLE);
-		else if (!Game.game.map.ready) {
-			GuiBank.selectGui(GuiBank.GUI_TITLE);
-		} else {
-			GuiBank.selectGui(GuiBank.GUI_ESCMENU);
-		}
+		GuiBank.selectGui(referrer);
 	}
 
 }

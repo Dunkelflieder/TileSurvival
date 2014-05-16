@@ -25,12 +25,12 @@ public class GEscMenu extends Gui {
 	@Override
 	public void click(int id, int which) {
 		if (id == buttonResume.getId()) {
-			GuiBank.selectGui(GuiBank.GUI_INGAME);
+			GuiBank.selectGui(GuiBank.INGAME);
 		} else if (id == buttonSettings.getId()) {
-			GuiBank.selectGui(GuiBank.GUI_SETTINGS);
+			GuiBank.selectGui(GuiBank.SETTINGS);
 		} else if (id == buttonClose.getId()) {
 			Game.game.closeMap();
-			GuiBank.selectGui(GuiBank.GUI_TITLE);
+			GuiBank.selectGui(GuiBank.TITLE);
 		}
 	}
 
@@ -47,7 +47,7 @@ public class GEscMenu extends Gui {
 	@Override
 	public void keyPressed(char key) {
 		if (key == 27) {
-			GuiBank.selectGui(GuiBank.GUI_INGAME);
+			GuiBank.selectGui(GuiBank.INGAME);
 		}
 	}
 

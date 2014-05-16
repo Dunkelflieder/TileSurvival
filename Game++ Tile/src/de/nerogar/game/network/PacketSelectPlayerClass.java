@@ -4,11 +4,10 @@ import java.io.IOException;
 
 import de.nerogar.DNFileSystem.DNFile;
 
-public class PacketStartGame extends Packet {
-	public int playerID;
+public class PacketSelectPlayerClass extends Packet {
 	public int playerClass;
 
-	public PacketStartGame() {
+	public PacketSelectPlayerClass() {
 		channel = LOBBY_CHANNEL;
 	}
 
@@ -16,7 +15,6 @@ public class PacketStartGame extends Packet {
 	public void pack() {
 		data = new DNFile();
 
-		data.addInt("pID", playerID);
 		data.addInt("pC", playerClass);
 
 		packedData = data.toByteArray();
@@ -31,17 +29,11 @@ public class PacketStartGame extends Packet {
 			e.printStackTrace();
 		}
 
-		playerID = data.getInt("pID");
 		playerClass = data.getInt("pC");
 	}
 
 	@Override
 	public String getName() {
-		return "entityPositions";
-	}
-
-	@Override
-	public String toString() {
-		return "PacketStartGame(playerID: " + playerID + ", playerClass: " + playerClass + ")";
+		return "selectPlayerClass";
 	}
 }

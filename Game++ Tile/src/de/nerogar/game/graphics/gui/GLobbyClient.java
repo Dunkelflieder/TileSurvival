@@ -5,15 +5,18 @@ import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex3f;
-
 import de.nerogar.game.*;
 import de.nerogar.game.graphics.TextureBank;
+import de.nerogar.game.network.Client;
 
 public class GLobbyClient extends Gui {
 
 	private GEInput inputIP;
 	private GEText text;
 	private GEButton buttonOK, buttonBack;
+	private boolean tryConnection = false;
+	private String host;
+	private int port;
 
 	public GLobbyClient() {
 		super(true);
@@ -54,11 +57,12 @@ public class GLobbyClient extends Gui {
 				text.setText("Your port is invalid");
 				return;
 			}
-			GuiBank.GUI_LOBBY_CLIENT_CONNECT.host = host;
-			GuiBank.GUI_LOBBY_CLIENT_CONNECT.port = port;		
-			GuiBank.selectGui(GuiBank.GUI_LOBBY_CLIENT_CONNECT);
+			text.setText("Connecting...");
+			this.host = host;
+			this.port = port;
+			tryConnection = true;
 		} else if (id == buttonBack.getId()) {
-			GuiBank.selectGui(GuiBank.GUI_TITLE);
+			GuiBank.selectGui(GuiBank.TITLE);
 		}
 	}
 
@@ -81,5 +85,21 @@ public class GLobbyClient extends Gui {
 		glVertex3f(0, Game.game.HEIGHT, -1f);
 
 		glEnd();
+	}
+
+	@Override
+	public void update() {
+		if (tryConnection) {
+			tryConnection = false;
+			Client client = new Client(host, port);
+			if (client.connected) {
+				GuiBank.selectGui(GuiBank.CLASS_SELECTION);
+				Game.game.client = client;
+			} else {
+				text.setText("No connection possible");
+				client.stopClient();
+			}
+		}
+		super.update();
 	}
 }

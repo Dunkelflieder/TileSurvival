@@ -1,5 +1,6 @@
 package de.nerogar.game.entity;
 
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -11,13 +12,13 @@ import de.nerogar.game.weapon.Weapon;
 
 public class EntityPlayer extends Entity {
 
-	public PlayerClass playerClass;
+	private PlayerClass playerClass = null;
 
 	private float nextEnergyRestore;
 
 	public EntityPlayer(Map map, Vector pos) {
 		super(map, pos, new Vector(1.0f), 100);
-		playerClass = new Mage(this);
+		//playerClass = new Mage(this);
 		faction = FACTION_PLAYER;
 
 		//light = new Light(0, 0, 5f,2.0f);
@@ -29,7 +30,7 @@ public class EntityPlayer extends Entity {
 	}
 
 	public Weapon getSelectedWeapon() {
-		return playerClass.getSelectedWeapon();
+		return getPlayerClass().getSelectedWeapon();
 	}
 
 	public void updateInput(float time, Client client) {
@@ -63,14 +64,14 @@ public class EntityPlayer extends Entity {
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
-			playerClass.selectWeapon(0);
+			getPlayerClass().selectWeapon(0);
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_2)) {
-			playerClass.selectWeapon(1);
+			getPlayerClass().selectWeapon(1);
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_3)) {
-			playerClass.selectWeapon(2);
+			getPlayerClass().selectWeapon(2);
 		}
 		if (InputHandler.isMouseButtonPressed(1)) {
-			playerClass.selectNextWeapon();
+			getPlayerClass().selectNextWeapon();
 		}
 
 		if (Mouse.isButtonDown(0)) {
@@ -80,31 +81,31 @@ public class EntityPlayer extends Entity {
 			target.setX(((float) Mouse.getX()) / Map.TILE_RENDER_SIZE + map.getOffsX());
 			target.setY((float) (Display.getHeight() - Mouse.getY()) / Map.TILE_RENDER_SIZE + map.getOffsY());
 
-			Weapon weapon = playerClass.getSelectedWeapon();
+			Weapon weapon = getPlayerClass().getSelectedWeapon();
 
 			if (weapon.cooldown <= 0f && energy >= weapon.energyCost && weapon.canActivate()) {
-				if (client == null) playerClass.getSelectedWeapon().start(target);
-				energy -= playerClass.getSelectedWeapon().energyCost;
+				if (client == null) getPlayerClass().getSelectedWeapon().start(target);
+				energy -= getPlayerClass().getSelectedWeapon().energyCost;
 				weapon.cooldown = weapon.maxCooldown;
 
 				if (client != null) {
 					PacketActivateWeapon activateWeaponPacket = new PacketActivateWeapon();
 					activateWeaponPacket.targetPosition = new float[] { target.getX(), target.getY() };
 					activateWeaponPacket.playerID = id;
-					activateWeaponPacket.selectedWeapon = playerClass.selectedWeapon;
+					activateWeaponPacket.selectedWeapon = getPlayerClass().selectedWeapon;
 					Game.game.client.sendPacket(activateWeaponPacket);
 				}
 			}
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
-			playerClass.activateWeaponDebugTimes();
+			getPlayerClass().activateWeaponDebugTimes();
 		}
 
 	}
 
 	public void updateStats(float time) {
-		playerClass.updateWeapons(time);
+		getPlayerClass().updateWeapons(time);
 
 		if (nextEnergyRestore <= 0 && energy < maxEnergy) {
 			nextEnergyRestore = 0.5f;
@@ -116,5 +117,13 @@ public class EntityPlayer extends Entity {
 	@Override
 	public void onDie() {
 		//TODO game end
+	}
+
+	public PlayerClass getPlayerClass() {
+		return playerClass;
+	}
+
+	public void setPlayerClass(PlayerClass playerClass) {
+		this.playerClass = playerClass;
 	}
 }

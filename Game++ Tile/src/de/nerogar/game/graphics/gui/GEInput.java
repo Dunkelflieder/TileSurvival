@@ -5,7 +5,6 @@ import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex3f;
-
 import de.nerogar.game.Map;
 import de.nerogar.game.RenderHelper;
 import de.nerogar.game.Vector;
@@ -18,7 +17,7 @@ public class GEInput extends GuiElement {
 	private static final float TEX_OFFSET = 4f;
 
 	protected GEInput(Vector pos, Vector size) {
-		super(pos, size, false);
+		super(pos, size, true);
 	}
 
 	public void setText(String text) {
@@ -50,7 +49,7 @@ public class GEInput extends GuiElement {
 
 		glEnd();
 
-		FontRenderer.drawString(text, getPos().getX() + getSize().getX() / 16f, getPos().getY(), getSize().getX() - getSize().getX() / 8f, getSize().getY(), FontRenderer.CENTERED);
+		FontRenderer.drawString(text, getPos().getX() + 16, getPos().getY() + 16, getSize().getX() - 32, getSize().getY() - 32, FontRenderer.CENTERED);
 	}
 
 	@Override

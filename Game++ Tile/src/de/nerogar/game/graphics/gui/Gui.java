@@ -13,6 +13,7 @@ public abstract class Gui {
 	private ArrayList<GuiElement> guiElements = new ArrayList<GuiElement>();
 	private boolean interceptsInput;
 	private GuiElement selectedElement = null;
+	protected Gui referrer;
 
 	public Gui(boolean interceptsInput) {
 		this.setInterceptsInput(interceptsInput);
@@ -40,9 +41,9 @@ public abstract class Gui {
 	public void renderBackground() {
 	};
 
-	public void select() {	
+	public void select() {
 	}
-	
+
 	public void update() {
 		updateInput();
 		for (int i = 0; i < guiElements.size(); i++) {
@@ -54,21 +55,26 @@ public abstract class Gui {
 		Vector mousePos = new Vector(Mouse.getX(), Display.getHeight() - Mouse.getY());
 		for (int i = guiElements.size() - 1; i >= 0; i--) {
 			GuiElement element = guiElements.get(i);
+			if (element.isDisabled())
+				continue;
 			if (element.hoveredBy(mousePos)) {
 				if (InputHandler.isMouseButtonPressed(0)) {
 					click(i, 0);
 					element.click(0);
-					selectedElement = element;
+					if (element.isSelectable())
+						selectedElement = element;
 				}
 				if (InputHandler.isMouseButtonPressed(1)) {
 					click(i, 1);
 					element.click(1);
-					selectedElement = element;
+					if (element.isSelectable())
+						selectedElement = element;
 				}
 				if (InputHandler.isMouseButtonPressed(2)) {
 					click(i, 2);
 					element.click(2);
-					selectedElement = element;
+					if (element.isSelectable())
+						selectedElement = element;
 				}
 				break;
 			}

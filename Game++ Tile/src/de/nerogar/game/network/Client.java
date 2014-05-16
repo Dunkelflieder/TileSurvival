@@ -83,4 +83,17 @@ public class Client {
 			server.removeClient(this);
 		}
 	}
+	
+	@Override
+	public int hashCode() {
+		return socket.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		return o == this;
+		//if (!(o instanceof Client)) return false;
+		//Client c = (Client) o;
+		//return c.socket.equals(socket);
+	}
 }

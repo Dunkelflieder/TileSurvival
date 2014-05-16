@@ -25,7 +25,7 @@ public class GIngame extends Gui {
 	@Override
 	public void renderBackground() {
 		// render weapons
-		Weapon[] weapons = Game.game.map.getPlayer().playerClass.weapons;
+		Weapon[] weapons = Game.game.map.getPlayer().getPlayerClass().weapons;
 		float posX = 32f;
 		float posY = Game.game.HEIGHT - (32f + Weapon.renderSize);
 		for (int i = 0; i < weapons.length; i++) {
@@ -45,7 +45,7 @@ public class GIngame extends Gui {
 	@Override
 	public void keyPressed(char key) {
 		if (key == 27) {
-			GuiBank.selectGui(GuiBank.GUI_ESCMENU);
+			GuiBank.selectGui(GuiBank.ESCMENU);
 		}
 	}
 }

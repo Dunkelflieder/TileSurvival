@@ -1,10 +1,6 @@
 package de.nerogar.game.graphics.gui;
 
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glTexCoord2f;
-import static org.lwjgl.opengl.GL11.glVertex3f;
+import static org.lwjgl.opengl.GL11.*;
 
 import de.nerogar.game.Map;
 import de.nerogar.game.RenderHelper;
@@ -47,7 +43,23 @@ public class GEButton extends GuiElement {
 
 		glEnd();
 
-		FontRenderer.drawString(text, getPos().getX() + getSize().getX() / 16f, getPos().getY(), getSize().getX() - getSize().getX() / 8f, getSize().getY(), FontRenderer.CENTERED);
+		FontRenderer.drawString(text, getPos().getX() + 16, getPos().getY() + 16, getSize().getX() - 32, getSize().getY() - 32, FontRenderer.CENTERED);
+
+		if (isDisabled()) {
+
+			glColor4f(0, 0, 0, 0.7f);
+			glDisable(GL_TEXTURE_2D);
+			glBegin(GL_QUADS);
+			glVertex3f(getPos().getX(), getPos().getY(), -1f);
+			glVertex3f(getPos().getX() + getSize().getX(), getPos().getY(), -1f);
+			glVertex3f(getPos().getX() + getSize().getX(), getPos().getY() + getSize().getY(), -1f);
+			glVertex3f(getPos().getX(), getPos().getY() + getSize().getY(), -1f);
+			glEnd();
+			glEnable(GL_TEXTURE_2D);
+			glColor3f(1, 1, 1);
+
+		}
+
 	}
 
 }

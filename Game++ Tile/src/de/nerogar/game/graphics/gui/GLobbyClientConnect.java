@@ -9,6 +9,7 @@ import static org.lwjgl.opengl.GL11.glVertex3f;
 import java.util.ArrayList;
 
 import de.nerogar.game.*;
+import de.nerogar.game.entity.playerClass.PlayerClass;
 import de.nerogar.game.graphics.TextureBank;
 import de.nerogar.game.network.*;
 
@@ -17,9 +18,6 @@ public class GLobbyClientConnect extends Gui {
 	private GEText text;
 	private GEButton buttonCancel;
 	private boolean failed = false;
-	public String host;
-	public int port;
-	public boolean selectBuffer = false;
 
 	public GLobbyClientConnect() {
 		super(true);
@@ -28,52 +26,46 @@ public class GLobbyClientConnect extends Gui {
 		float posY = Game.game.HEIGHT / 2f;
 
 		text = new GEText(new Vector(0, posY - 100), new Vector(Game.game.WIDTH, Map.TILE_RENDER_SIZE / 2f), "");
-		buttonCancel = new GEButton(new Vector(posX, posY), new Vector(Map.TILE_RENDER_SIZE * 4f, Map.TILE_RENDER_SIZE), "cancel");
+		buttonCancel = new GEButton(new Vector(posX, posY), new Vector(Map.TILE_RENDER_SIZE * 4f, Map.TILE_RENDER_SIZE), "disconnect");
 
 		addGuiElements(text, buttonCancel);
 	}
 
 	@Override
 	public void select() {
-		text.setText("connecting...");
-		selectBuffer = true;
+		text.setText("Waiting for host to start game");
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		if (selectBuffer) {
-			selectBuffer = false;
-			Game.game.client = new Client(host, port);
-			text.setText("Connected! Waiting for the host to start...");
-		}
-		if (!Game.game.client.connected) {
-			Game.game.client.stopClient();
-			text.setText("No connection to given host");
-			failed = true;
-		}
 		if (failed)
 			return;
-		ArrayList<Packet> packets = null;
-		try {
-			packets = Game.game.client.getData(Packet.LOBBY_CHANNEL);
-		} catch (Exception e) {
+		if (!Game.game.client.connected) {
 			System.out.println("Connection problem");
-			e.printStackTrace();
 			failed = true;
-			text.setText("Could not connect.");
+			text.setText("Connection Lost.");
 		}
+		ArrayList<Packet> packets = null;
+		packets = Game.game.client.getData(Packet.LOBBY_CHANNEL);
 		if (packets != null) {
+			if (packets.size() > 0)
+				System.out.println(packets.size() + " packets");
 			for (Packet packet : packets) {
 				if (packet instanceof PacketStartGame) {
+					System.out.println("PacketStartGame!!!!!!!!!!!!!!!!!!");
 					PacketStartGame startgamepacket = (PacketStartGame) packet;
 					Map map = MapLoader.loadMap(Map.CLIENT_WORLD, "map.png");
 					//Game.game.client = client;
 
+					//EntityPlayer player = (EntityPlayer) map.getEntities().get(startgamepacket.playerID);//startgamepacket.playerClass
+					//player.playerClass = PlayerClass.getInstanceByID(startgamepacket.playerClass, player);
 					map.initPlayer(startgamepacket.playerID);
+					map.getPlayer().setPlayerClass(PlayerClass.getInstanceByID(startgamepacket.playerClass, map.getPlayer()));
 					Game.game.map = map;
 
-					GuiBank.selectGui(GuiBank.GUI_INGAME);
+					GuiBank.selectGui(GuiBank.INGAME);
+					System.out.println("Starting done.");
 				}
 			}
 		}
@@ -84,7 +76,7 @@ public class GLobbyClientConnect extends Gui {
 	public void click(int id, int which) {
 		if (id == buttonCancel.getId()) {
 			Game.game.client.stopClient();
-			GuiBank.selectGui(GuiBank.GUI_LOBBY_CLIENT);
+			GuiBank.selectGui(GuiBank.LOBBY_CLIENT);
 		}
 	}
 

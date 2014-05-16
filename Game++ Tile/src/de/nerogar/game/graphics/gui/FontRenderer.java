@@ -21,7 +21,7 @@ public class FontRenderer {
 		
 		if (textString == null)
 			return;
-		textureBank.bindTexture("font.png");
+		textureBank.bindTexture("font2.png");
 
 		float texSize = 1 / 16f;
 		char[] text = textString.toCharArray();

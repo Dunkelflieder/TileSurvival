@@ -85,7 +85,10 @@ public class Map {
 
 	public void spawnEntity(Entity entity) {
 		if (entity.id == playerID) {
-			setPlayer((EntityPlayer) entity);
+			// TODO find a proper way to set the players position instead of sending him as regular entity
+			EntityPlayer player = (EntityPlayer) entity;
+			player.setPlayerClass(getPlayer().getPlayerClass());
+			setPlayer(player);
 			playerID = -1;
 		}
 
@@ -109,12 +112,15 @@ public class Map {
 	}
 
 	public boolean isColliding(Vector pos, Vector dimension, boolean ignoreWalls) {
-		if (pos.getX() < 0 || pos.getY() < 0 || pos.getX() + dimension.getX() >= size || pos.getY() + dimension.getY() >= size) return true;
-		if (ignoreWalls) return false;
+		if (pos.getX() < 0 || pos.getY() < 0 || pos.getX() + dimension.getX() >= size || pos.getY() + dimension.getY() >= size)
+			return true;
+		if (ignoreWalls)
+			return false;
 
 		for (int i = Math.max((int) pos.getX(), 0); i <= Math.min((int) (pos.getX() + dimension.getX()), size - 1); i++) {
 			for (int j = Math.max((int) pos.getY(), 0); j <= Math.min((int) (pos.getY() + dimension.getY()), size - 1); j++) {
-				if (TILES[tileIDs[i + j * size]].collide) return true;
+				if (TILES[tileIDs[i + j * size]].collide)
+					return true;
 			}
 		}
 
@@ -161,7 +167,8 @@ public class Map {
 			}
 		}
 
-		if (!GuiBank.interceptsInput()) player.updateInput(time, Game.game.client);
+		if (!GuiBank.interceptsInput())
+			player.updateInput(time, Game.game.client);
 		player.updateStats(time);
 
 		offsX = player.pos.getX() - (((Display.getWidth() / TILE_RENDER_SIZE) - player.dimension.getX()) / 2f);
@@ -207,7 +214,7 @@ public class Map {
 
 			if (entity != null && entity instanceof EntityPlayer) {
 				EntityPlayer playerEntity = (EntityPlayer) entity;
-				playerEntity.playerClass.selectWeapon(activateWeaponPacket.selectedWeapon);
+				playerEntity.getPlayerClass().selectWeapon(activateWeaponPacket.selectedWeapon);
 				playerEntity.getSelectedWeapon().start(new Vector(activateWeaponPacket.targetPosition[0], activateWeaponPacket.targetPosition[1]));
 			}
 
@@ -381,7 +388,8 @@ public class Map {
 				lightBufferIntensityArray[index] = light.intensity;
 				index++;
 			}
-			if (index >= MAX_LIGHTS) break;
+			if (index >= MAX_LIGHTS)
+				break;
 		}
 
 		//System.out.println("lights:" + index);
@@ -432,7 +440,8 @@ public class Map {
 	public ArrayList<Entity> getIntersectingEntities(Entity entity) {
 		ArrayList<Entity> entityList = new ArrayList<Entity>();
 		for (Entity targetEntity : entities.values()) {
-			if (entity != targetEntity && entity.intersects(targetEntity)) entityList.add(targetEntity);
+			if (entity != targetEntity && entity.intersects(targetEntity))
+				entityList.add(targetEntity);
 		}
 		return entityList;
 	}

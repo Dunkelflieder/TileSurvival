@@ -5,7 +5,6 @@ import de.nerogar.game.Vector;
 import de.nerogar.game.graphics.Light;
 import de.nerogar.game.sound.Sound;
 import de.nerogar.game.sound.SoundCategory;
-import de.nerogar.game.weapon.Weapon;
 
 public class EntityFireball extends EntityWeapon {
 

@@ -9,13 +9,10 @@ import de.nerogar.game.Game;
 import de.nerogar.game.Map;
 import de.nerogar.game.Vector;
 import de.nerogar.game.graphics.TextureBank;
-import de.nerogar.game.network.Client;
-import de.nerogar.game.network.Server;
 
 public class GTitle extends Gui {
 
-	private GEText textTitle;
-	private GEButton buttonHost, buttonClient, buttonSettings;
+	private GEButton buttonHost, buttonClient, buttonSettings, buttonCredits;
 
 	public GTitle() {
 		super(true);
@@ -23,13 +20,12 @@ public class GTitle extends Gui {
 		float posX = (Game.game.WIDTH - Map.TILE_RENDER_SIZE * 4) * 0.5f;
 		float posY = Game.game.HEIGHT / 3f;
 
-		textTitle = new GEText(new Vector(0, 2), new Vector(20, 1), "Startbildschirm");
-
 		buttonHost = new GEButton(new Vector(posX, posY), new Vector(Map.TILE_RENDER_SIZE * 4, Map.TILE_RENDER_SIZE), "Host a game");
-		buttonClient = new GEButton(new Vector(posX, posY + 100), new Vector(Map.TILE_RENDER_SIZE * 4, Map.TILE_RENDER_SIZE), "Join a game");
-		buttonSettings = new GEButton(new Vector(posX, posY + 200), new Vector(Map.TILE_RENDER_SIZE * 4, Map.TILE_RENDER_SIZE), "Settings");
+		buttonClient = new GEButton(new Vector(posX, posY + 80), new Vector(Map.TILE_RENDER_SIZE * 4, Map.TILE_RENDER_SIZE), "Join a game");
+		buttonSettings = new GEButton(new Vector(posX, posY + 160), new Vector(Map.TILE_RENDER_SIZE * 4, Map.TILE_RENDER_SIZE), "Settings");
+		buttonCredits = new GEButton(new Vector(posX, posY + 240), new Vector(Map.TILE_RENDER_SIZE * 4, Map.TILE_RENDER_SIZE), "Credits");
 
-		addGuiElements(textTitle, buttonHost, buttonClient, buttonSettings);
+		addGuiElements(buttonHost, buttonClient, buttonSettings, buttonCredits);
 
 	}
 
@@ -57,20 +53,22 @@ public class GTitle extends Gui {
 	@Override
 	public void click(int id, int which) {
 		if (id == buttonHost.getId()) {
-			GuiBank.selectGui(GuiBank.GUI_LOBBY_HOST);
+			GuiBank.selectGui(GuiBank.CLASS_SELECTION);
 		} else if (id == buttonClient.getId()) {
-			GuiBank.selectGui(GuiBank.GUI_LOBBY_CLIENT);
+			GuiBank.selectGui(GuiBank.LOBBY_CLIENT);
 		} else if (id == buttonSettings.getId()) {
-			GuiBank.selectGui(GuiBank.GUI_SETTINGS);
+			GuiBank.selectGui(GuiBank.SETTINGS);
+		} else if(id == buttonCredits.getId()) {
+			GuiBank.selectGui(GuiBank.CREDITS);
 		}
 	}
 
 	@Override
 	public void keyPressed(char key) {
 		if (key == 'h') {
-			GuiBank.selectGui(GuiBank.GUI_LOBBY_HOST);
+			GuiBank.selectGui(GuiBank.CLASS_SELECTION);
 		} else if (key == 'c') {
-			GuiBank.selectGui(GuiBank.GUI_LOBBY_CLIENT);
+			GuiBank.selectGui(GuiBank.LOBBY_CLIENT);
 		}
 	}
 
