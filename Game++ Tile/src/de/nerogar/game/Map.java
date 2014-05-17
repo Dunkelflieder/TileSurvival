@@ -12,10 +12,12 @@ import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.entity.*;
 import de.nerogar.game.entity.enemy.EnemyGhost;
+import de.nerogar.game.entity.enemy.EnemySkeleton;
 import de.nerogar.game.entity.playerClass.PlayerClass;
 import de.nerogar.game.graphics.*;
 import de.nerogar.game.graphics.gui.GuiBank;
 import de.nerogar.game.network.*;
+import de.nerogar.game.pathfinder.Pathfinder;
 
 public class Map {
 
@@ -362,8 +364,10 @@ public class Map {
 		this.size = size;
 		this.spawnLocation = spawnLocation;
 
+		Pathfinder.init(this);
+
 		for (int i = 0; i < 10; i++)
-			spawnEntity(new EnemyGhost(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
+			spawnEntity(new EnemySkeleton(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
 	}
 
 	public void initPlayer(int playerID) {
@@ -450,6 +454,35 @@ public class Map {
 
 	public EntityPlayer getPlayer() {
 		return player;
+	}
+
+	public ArrayList<EntityPlayer> getPlayers() {
+		ArrayList<EntityPlayer> players = new ArrayList<EntityPlayer>();
+		for (Entity entity : entities.values()) {
+			if (entity instanceof EntityPlayer) {
+				players.add((EntityPlayer) entity);
+			}
+		}
+
+		return players;
+	}
+
+	public EntityPlayer getNearestPlayer(Vector pos) {
+		EntityPlayer retPlayer = null;
+		float dist = Float.MAX_VALUE;
+		ArrayList<EntityPlayer> players = getPlayers();
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).pos.subtracted(pos).getSquaredValue() < dist) {
+				retPlayer = players.get(i);
+			}
+		}
+		return retPlayer;
+	}
+
+	public EntityPlayer getRandomPlayer() {
+		ArrayList<EntityPlayer> players = getPlayers();
+		int index = (int) (Math.random() * players.size());
+		return players.get(index);
 	}
 
 	public ArrayList<Entity> getEntities() {
