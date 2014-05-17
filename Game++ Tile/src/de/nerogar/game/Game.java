@@ -53,12 +53,12 @@ public class Game {
 			if (map != null && map.ready) {
 				if (!Pathfinder.init)
 					Pathfinder.init(map);
-				long time1 = System.nanoTime();
-				Node node = Pathfinder.getPath(map, new Position(42, 9), new Position(32, 31));
+				//long time1 = System.nanoTime();
+				Node node = Pathfinder.getPath(map, new Position(42, 9), new Position(34, 31));
 				if (node != null) {
 					node.render();
 				}
-				System.out.println("pathfinding took " + ((System.nanoTime()-time1)/1000000f) + "ms");
+				//System.out.println("pathfinding took " + ((System.nanoTime()-time1)/1000000f) + "ms");
 			}
 
 			Display.sync(FRAMERATE);
