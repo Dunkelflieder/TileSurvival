@@ -42,6 +42,8 @@ public class MapLoader {
 			return Map.TREE.id;// +
 			//old
 
+		case 0x00a000:
+			return Map.FLOOR.id;
 			/*case 0x00a000:
 				return Map.FLOOR.id;
 			case 0x000000:

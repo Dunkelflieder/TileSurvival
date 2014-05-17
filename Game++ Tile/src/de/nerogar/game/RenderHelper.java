@@ -25,13 +25,14 @@ public class RenderHelper {
 		enableAlphaMask();
 		glDisable(GL_TEXTURE_2D);
 		glLineWidth(width);
-		glColor3f(1, 1, 1);
+		glColor4f(1, 0.5f, 0, 0.2f);
 		glBegin(GL_LINES);
 
 		glVertex3f(x1, y1, -1);
 		glVertex3f(x2, y2, -1);
 
 		glEnd();
+		glColor3f(1, 1, 1);
 		glEnable(GL_TEXTURE_2D);
 	}
 

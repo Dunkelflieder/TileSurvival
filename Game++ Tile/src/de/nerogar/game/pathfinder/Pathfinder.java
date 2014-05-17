@@ -37,7 +37,7 @@ public class Pathfinder {
 		}
 	}
 
-	public static Node getPath(Map map, Position from, Position goal) {
+	public static ArrayList<Position> getPath(Map map, Position from, Position goal) {
 
 		reset();
 
@@ -59,6 +59,9 @@ public class Pathfinder {
 
 			// cheapest open node is always at 0
 			current = openList.get(0);
+			
+			// goal reached
+			if (current.position.equals(goal)) return nodeToArraylist(current);
 
 			Position[] newPos = new Position[8];
 			newPos[0] = new Position(current.position.getX(), current.position.getY() - 1); // up
@@ -86,9 +89,6 @@ public class Pathfinder {
 				node.setPointer(current);
 				if (j > 3) node.setDiagonal(true);
 
-				// goal reached
-				if (pos.equals(goal)) return node;
-
 				// add to openList at the correct place (openList stays sorted)
 				addNodeSorted(openList, node, goal);
 				node.setState(Node.STATE_OPEN);
@@ -103,6 +103,16 @@ public class Pathfinder {
 		}
 
 		return null;
+	}
+	
+	private static ArrayList<Position> nodeToArraylist(Node node) {
+		ArrayList<Position> a = new ArrayList<Position>();
+		a.add(node.position);
+		while (node.getPointer() != null) {
+			node = node.getPointer();
+			a.add(0, node.position);
+		}
+		return a;
 	}
 
 	private static void addNodeSorted(ArrayList<Node> list, Node node, Position goal) {

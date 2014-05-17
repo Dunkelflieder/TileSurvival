@@ -30,11 +30,9 @@ public class Node {
 	public float getTotalCost(Position goal) {
 		if (costCalc < 0) {
 			Position diff = goal.subtracted(position);
-			if (pointer == null) {
-				costCalc = cost * (isDiagonal() ? 1.41421356f : 1) + diff.getValue() + random.nextFloat();
-			} else {
-				costCalc = pointer.getTotalCost(goal) + cost * (isDiagonal() ? 1.41421356f : 1) + diff.getValue() + random.nextFloat();
-			}
+			float pointerCost = (pointer == null) ? 0 : pointer.getTotalCost(goal);
+			//         recursion      base   pythagoras        path varying                              sqrt(2)
+			costCalc = pointerCost + (cost + diff.getValue() + random.nextFloat() * 5) * (isDiagonal() ? 1.41421356f : 1);
 		}
 		return costCalc;
 	}
@@ -43,7 +41,7 @@ public class Node {
 		if (pointer != null) {
 			float offsetX = Game.game.map.getOffsX();
 			float offsetY = Game.game.map.getOffsY();
-			RenderHelper.renderLine((position.getX() - offsetX + 0.5f) * Map.TILE_RENDER_SIZE, (position.getY() - offsetY + 0.5f) * Map.TILE_RENDER_SIZE, (pointer.position.getX() - offsetX + 0.5f) * Map.TILE_RENDER_SIZE, (pointer.position.getY() - offsetY + 0.5f) * Map.TILE_RENDER_SIZE, 5);
+			RenderHelper.renderLine((position.getX() - offsetX + 0.5f) * Map.TILE_RENDER_SIZE, (position.getY() - offsetY + 0.5f) * Map.TILE_RENDER_SIZE, (pointer.position.getX() - offsetX + 0.5f) * Map.TILE_RENDER_SIZE, (pointer.position.getY() - offsetY + 0.5f) * Map.TILE_RENDER_SIZE, 10);
 			pointer.render();
 		}
 	}
@@ -55,8 +53,7 @@ public class Node {
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof Node))
-			return false;
+		if (!(o instanceof Node)) return false;
 		return position.equals(((Node) o).position);
 	}
 

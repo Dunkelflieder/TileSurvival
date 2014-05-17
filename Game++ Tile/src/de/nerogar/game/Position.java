@@ -21,7 +21,7 @@ public class Position {
 
 	public Position subtract(Position p) {
 		addX(-p.getX());
-		addY(-p.getX());
+		addY(-p.getY());
 		return this;
 	}
 
