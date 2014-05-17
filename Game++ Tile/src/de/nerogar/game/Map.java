@@ -28,8 +28,21 @@ public class Map {
 	public static final Tile OPEN_CHEST = new Tile(5, true);
 	public static final Tile DOOR = new Tile(6, false, 1);
 	public static final Tile DOOR_OPEN = new Tile(7, false, 1);
+	//tiles new
+	public static final Tile WALL_V = new Tile(8, true);
+	public static final Tile WALL_H = new Tile(9, true);
+	public static final Tile WALL_TR = new Tile(10, true);
+	public static final Tile WALL_TU = new Tile(11, true);
+	public static final Tile WALL_TD = new Tile(12, true);
+	public static final Tile WALL_TL = new Tile(13, true);
+	public static final Tile WALL_RU = new Tile(14, true);
+	public static final Tile WALL_RD = new Tile(15, true);
+	public static final Tile WALL_LU = new Tile(16, true);
+	public static final Tile WALL_LD = new Tile(17, true);
+	public static final Tile WALL_CROSS = new Tile(18, true);
 
-	public static final Tile[] TILES = new Tile[] { FLOOR, ROCK, TREE, TORCH, CHEST, OPEN_CHEST, DOOR, DOOR_OPEN };
+	public static final Tile[] TILES = new Tile[] { FLOOR, ROCK, TREE, TORCH, CHEST, OPEN_CHEST, DOOR, DOOR_OPEN, //
+	WALL_V, WALL_H, WALL_TR, WALL_TU, WALL_TD, WALL_TL, WALL_RU, WALL_RD, WALL_LU, WALL_LD, WALL_CROSS };
 
 	//texture
 	public static final float TILE_RENDER_SIZE = 64f;
@@ -114,15 +127,12 @@ public class Map {
 	}
 
 	public boolean isColliding(Vector pos, Vector dimension, boolean ignoreWalls) {
-		if (pos.getX() < 0 || pos.getY() < 0 || pos.getX() + dimension.getX() >= size || pos.getY() + dimension.getY() >= size)
-			return true;
-		if (ignoreWalls)
-			return false;
+		if (pos.getX() < 0 || pos.getY() < 0 || pos.getX() + dimension.getX() >= size || pos.getY() + dimension.getY() >= size) return true;
+		if (ignoreWalls) return false;
 
 		for (int i = Math.max((int) pos.getX(), 0); i <= Math.min((int) (pos.getX() + dimension.getX()), size - 1); i++) {
 			for (int j = Math.max((int) pos.getY(), 0); j <= Math.min((int) (pos.getY() + dimension.getY()), size - 1); j++) {
-				if (TILES[tileIDs[i + j * size]].collide)
-					return true;
+				if (TILES[tileIDs[i + j * size]].collide) return true;
 			}
 		}
 
@@ -169,8 +179,7 @@ public class Map {
 			}
 		}
 
-		if (!GuiBank.interceptsInput())
-			player.updateInput(time, Game.game.client);
+		if (!GuiBank.interceptsInput()) player.updateInput(time, Game.game.client);
 		player.updateStats(time);
 
 		offsX = player.pos.getX() - (((Display.getWidth() / TILE_RENDER_SIZE) - player.dimension.getX()) / 2f);
@@ -338,15 +347,13 @@ public class Map {
 	}
 
 	public Tile getTileAt(int x, int y) {
-		if (x < 0 || y < 0 || x >= size || y >= size)
-			return null;
+		if (x < 0 || y < 0 || x >= size || y >= size) return null;
 		return getTile(tileIDs[x + y * size]);
 	}
 
 	public Tile getTile(int id) {
 		for (Tile t : TILES)
-			if (t.id == id)
-				return t;
+			if (t.id == id) return t;
 		return null;
 	}
 
@@ -403,8 +410,7 @@ public class Map {
 				lightBufferIntensityArray[index] = light.intensity;
 				index++;
 			}
-			if (index >= MAX_LIGHTS)
-				break;
+			if (index >= MAX_LIGHTS) break;
 		}
 
 		//System.out.println("lights:" + index);
@@ -455,8 +461,7 @@ public class Map {
 	public ArrayList<Entity> getIntersectingEntities(Entity entity) {
 		ArrayList<Entity> entityList = new ArrayList<Entity>();
 		for (Entity targetEntity : entities.values()) {
-			if (entity != targetEntity && entity.intersects(targetEntity))
-				entityList.add(targetEntity);
+			if (entity != targetEntity && entity.intersects(targetEntity)) entityList.add(targetEntity);
 		}
 		return entityList;
 	}

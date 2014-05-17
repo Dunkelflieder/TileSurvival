@@ -28,7 +28,7 @@ public class EntitySlowdownArea extends EntityWeapon {
 		pos.addX(-radius).addY(-radius);
 
 		for (Entity entity : map.getEntities()) {
-			if (intersects(entity.getCenter()) && entity != this.sender) {
+			if (intersects(entity.getCenter()) && entity.faction != this.sender.faction) {
 				entity.speedmult = 0.1f;
 				entity.speedmultTime = 6f;
 			}
