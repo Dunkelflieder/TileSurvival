@@ -8,14 +8,14 @@ import de.nerogar.game.pathfinder.Pathfinder;
 
 public class EnemySkeleton extends EntityEnemy {
 
-	private EntityPlayer targetPlayer;
+	private Entity targetPlayer;
 	private ArrayList<Position> path;
 	private int pathProgress;
 
 	private float nextRandomUpdate = 0f;
 
 	public EnemySkeleton(Map map, Vector pos) {
-		super(map, pos, new Vector(1.0f), 5, 1f);
+		super(map, pos, new Vector(1.0f), 1000, 1f);
 		moveSpeed = 1.0f;
 		textureID = 16;
 	}

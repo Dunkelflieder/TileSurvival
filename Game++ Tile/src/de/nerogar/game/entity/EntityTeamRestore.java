@@ -22,6 +22,7 @@ public class EntityTeamRestore extends EntityWeapon {
 
 	private void init() {
 		textureID = 16 * 14 + 1;
+		resistDamage = false;
 	}
 
 	@Override

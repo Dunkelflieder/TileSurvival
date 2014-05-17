@@ -24,6 +24,7 @@ public class EntityGuardTower extends EntityWeapon {
 	private void init() {
 		textureID = 16 * 14;
 		fireballWeapon = new Fireball(this, 5, 1.0f);
+		resistDamage = false;
 	}
 
 	@Override

@@ -11,7 +11,6 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.entity.*;
-import de.nerogar.game.entity.enemy.EnemyGhost;
 import de.nerogar.game.entity.enemy.EnemySkeleton;
 import de.nerogar.game.entity.playerClass.PlayerClass;
 import de.nerogar.game.graphics.*;
@@ -456,31 +455,33 @@ public class Map {
 		return player;
 	}
 
-	public ArrayList<EntityPlayer> getPlayers() {
-		ArrayList<EntityPlayer> players = new ArrayList<EntityPlayer>();
+	public ArrayList<Entity> getPlayers() {
+		ArrayList<Entity> players = new ArrayList<Entity>();
 		for (Entity entity : entities.values()) {
-			if (entity instanceof EntityPlayer) {
-				players.add((EntityPlayer) entity);
+			if (entity.faction == Entity.FACTION_PLAYER) {
+				players.add(entity);
 			}
 		}
 
 		return players;
 	}
 
-	public EntityPlayer getNearestPlayer(Vector pos) {
-		EntityPlayer retPlayer = null;
+	public Entity getNearestPlayer(Vector pos) {
+		Entity retPlayer = null;
 		float dist = Float.MAX_VALUE;
-		ArrayList<EntityPlayer> players = getPlayers();
+		ArrayList<Entity> players = getPlayers();
 		for (int i = 0; i < players.size(); i++) {
-			if (players.get(i).pos.subtracted(pos).getSquaredValue() < dist) {
+			float newDist = players.get(i).pos.subtracted(pos).getSquaredValue();
+			if (newDist < dist) {
 				retPlayer = players.get(i);
+				dist = newDist;
 			}
 		}
 		return retPlayer;
 	}
 
-	public EntityPlayer getRandomPlayer() {
-		ArrayList<EntityPlayer> players = getPlayers();
+	public Entity getRandomPlayer() {
+		ArrayList<Entity> players = getPlayers();
 		int index = (int) (Math.random() * players.size());
 		return players.get(index);
 	}
