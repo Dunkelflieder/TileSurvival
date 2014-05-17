@@ -103,7 +103,8 @@ public class Vector {
 	}
 
 	public float getValue() {
-		if (valueDirty) recalculateValue();
+		if (valueDirty)
+			recalculateValue();
 		return value;
 	}
 
@@ -130,6 +131,10 @@ public class Vector {
 	@Override
 	public String toString() {
 		return "(" + x + "|" + y + ")";
+	}
+
+	public Position toPosition() {
+		return new Position((int) getX(), (int) getY());
 	}
 
 }

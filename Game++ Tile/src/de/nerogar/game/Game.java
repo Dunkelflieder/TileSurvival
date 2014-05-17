@@ -7,6 +7,8 @@ import org.lwjgl.opengl.Display;
 import de.nerogar.game.graphics.gui.*;
 import de.nerogar.game.network.Client;
 import de.nerogar.game.network.Server;
+import de.nerogar.game.pathfinder.Node;
+import de.nerogar.game.pathfinder.Pathfinder;
 import de.nerogar.game.sound.Sound;
 import de.nerogar.game.sound.SoundCategory;
 import de.nerogar.game.sound.SoundManager;
@@ -38,6 +40,7 @@ public class Game {
 		bgMusic.play();
 		SoundCategory.MUSIC.setGain(1f);
 		SoundCategory.EFFECT.setGain(0.3f);
+
 	}
 
 	public void run() {
@@ -45,11 +48,25 @@ public class Game {
 			//long time1 = System.nanoTime();
 			update();
 			render();
+
+			// testing pathfinding
+			if (map != null && map.ready) {
+				if (!Pathfinder.init)
+					Pathfinder.init(map);
+				long time1 = System.nanoTime();
+				Node node = Pathfinder.getPath(map, new Position(42, 9), new Position(32, 31));
+				if (node != null) {
+					node.render();
+				}
+				System.out.println("pathfinding took " + ((System.nanoTime()-time1)/1000000f) + "ms");
+			}
+
 			Display.sync(FRAMERATE);
 			Display.update();
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			//long time2 = System.nanoTime();
 			//System.out.println("time: " + ((time2 - time1) / 1000000d));
+
 		}
 		SoundManager.shutdown();
 		cleanup();

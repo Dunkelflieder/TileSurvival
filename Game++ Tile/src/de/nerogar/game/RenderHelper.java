@@ -21,6 +21,20 @@ public class RenderHelper {
 
 	}
 
+	public static void renderLine(float x1, float y1, float x2, float y2, float width) {
+		enableAlphaMask();
+		glDisable(GL_TEXTURE_2D);
+		glLineWidth(width);
+		glColor3f(1, 1, 1);
+		glBegin(GL_LINES);
+
+		glVertex3f(x1, y1, -1);
+		glVertex3f(x2, y2, -1);
+
+		glEnd();
+		glEnable(GL_TEXTURE_2D);
+	}
+
 	public static void enableAlphaAdd() {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ONE);
@@ -34,5 +48,4 @@ public class RenderHelper {
 	public static void disableAlpha() {
 		glDisable(GL_BLEND);
 	}
-
 }

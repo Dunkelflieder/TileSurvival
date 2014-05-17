@@ -20,14 +20,14 @@ import de.nerogar.game.network.*;
 public class Map {
 
 	//tiles
-	public static final Tile FLOOR = new Tile(0, false);
+	public static final Tile FLOOR = new Tile(0, false, 1);
 	public static final Tile ROCK = new Tile(1, true);
 	public static final Tile TREE = new Tile(2, true);
-	public static final Tile TORCH = new Tile(3, false);
+	public static final Tile TORCH = new Tile(3, false, 1);
 	public static final Tile CHEST = new Tile(4, true);
 	public static final Tile OPEN_CHEST = new Tile(5, true);
-	public static final Tile DOOR = new Tile(6, false);
-	public static final Tile DOOR_OPEN = new Tile(7, false);
+	public static final Tile DOOR = new Tile(6, false, 1);
+	public static final Tile DOOR_OPEN = new Tile(7, false, 1);
 
 	public static final Tile[] TILES = new Tile[] { FLOOR, ROCK, TREE, TORCH, CHEST, OPEN_CHEST, DOOR, DOOR_OPEN };
 
@@ -89,7 +89,7 @@ public class Map {
 			// TODO find a proper way to set the players position instead of sending him as regular entity
 			EntityPlayer player = (EntityPlayer) entity;
 			player.setPlayerClass(PlayerClass.getInstanceByID(getPlayer().pClass, player));
-			
+
 			setPlayer(player);
 			playerID = -1;
 		}
@@ -335,6 +335,19 @@ public class Map {
 
 	public void setTile(int x, int y, Tile tile) {
 		tileIDs[x + y * size] = tile.id;
+	}
+
+	public Tile getTileAt(int x, int y) {
+		if (x < 0 || y < 0 || x >= size || y >= size)
+			return null;
+		return getTile(tileIDs[x + y * size]);
+	}
+
+	public Tile getTile(int id) {
+		for (Tile t : TILES)
+			if (t.id == id)
+				return t;
+		return null;
 	}
 
 	public void load(int[] tileIDs, int size, Vector spawnLocation) {
