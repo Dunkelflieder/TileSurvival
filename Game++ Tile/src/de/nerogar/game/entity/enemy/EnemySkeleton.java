@@ -27,7 +27,12 @@ public class EnemySkeleton extends EntityEnemy {
 
 		if (nextRandomUpdate < 0f) {
 			targetPlayer = map.getNearestPlayer(getCenter());
+			if (targetPlayer == null) return;
 			path = Pathfinder.getPath(map, getCenter().toPosition(), targetPlayer.getCenter().toPosition());
+			if (path == null) {
+				targetPlayer = map.getRandomPlayer();
+				path = Pathfinder.getPath(map, getCenter().toPosition(), targetPlayer.getCenter().toPosition());
+			}
 			pathProgress = -1;
 			nextRandomUpdate = (float) (Math.random() * 10.0);
 		}
@@ -35,8 +40,8 @@ public class EnemySkeleton extends EntityEnemy {
 		if (path != null && pathProgress < path.size() - 1) {
 			Vector dir = path.get(pathProgress + 1).toVector().subtracted(pos);
 			float targetDist = dir.getValue();
-			dir.setValue(moveSpeed*time);
-			
+			dir.setValue(moveSpeed * time);
+
 			if (targetDist < dir.getValue()) {
 				pathProgress++;
 			}
