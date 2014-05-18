@@ -75,7 +75,7 @@ public class EntityPlayer extends Entity {
 			getPlayerClass().selectNextWeapon();
 		}
 
-		if (Mouse.isButtonDown(0)) {
+		if (Mouse.isButtonDown(0) && health > 0) {
 
 			Vector target = new Vector();
 

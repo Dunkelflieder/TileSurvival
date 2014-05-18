@@ -372,7 +372,8 @@ public class Map {
 
 		for (int i = 0; i < 10; i++) {
 			//spawnEntity(new EnemySkeleton(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
-			spawnEntity(new EnemyRat(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
+			//spawnEntity(new EnemyRat(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
+			spawnEntity(new EnemyNekro(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
 			//spawnEntity(new EnemyBigSkeleton(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
 		}
 	}

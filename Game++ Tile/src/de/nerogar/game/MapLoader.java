@@ -6,6 +6,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import de.nerogar.game.entity.EntityBone;
+
 public class MapLoader {
 
 	private static int getID(int color) {
@@ -36,7 +38,7 @@ public class MapLoader {
 			return Map.WALL_CROSS.id;// +
 
 		case 0xf00000:
-			return Map.TORCH.id;// +,
+			return Map.FLOOR.id;//bones
 
 		case 0x000000:
 			return Map.TREE.id;// +
@@ -68,6 +70,10 @@ public class MapLoader {
 
 	private static boolean isSpawn(int color) {
 		return (color & 0xffffff) == 0xffff;
+	}
+
+	private static boolean isBone(int color) {
+		return (color & 0xffffff) == 0xf00000;
 	}
 
 	public static Map loadMap(int worldType, String filename) {
@@ -104,6 +110,8 @@ public class MapLoader {
 
 			if (isSpawn(pixels[i])) {
 				playerPos.setX(i % mapSize).setY(i / mapSize);
+			} else if (isBone(pixels[i])) {
+				map.spawnEntity(new EntityBone(map, new Vector(i % mapSize, i / mapSize)));
 			}
 		}
 

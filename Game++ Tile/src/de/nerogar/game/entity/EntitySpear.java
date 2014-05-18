@@ -19,6 +19,7 @@ public class EntitySpear extends EntityProjectile {
 	@Override
 	protected void init() {
 		textureID = 16 * 15 + 3;
+		
 
 		light = new Light(new Vector(), 2, 0.8f);
 	}
