@@ -32,7 +32,7 @@ public class Node {
 			Position diff = goal.subtracted(position);
 			float pointerCost = (pointer == null) ? 0 : pointer.getTotalCost(goal);
 			//         recursion      base   pythagoras        path varying                              sqrt(2)
-			costCalc = pointerCost + (cost + diff.getValue() + random.nextFloat() * 5) * (isDiagonal() ? 1.41421356f : 1);
+			costCalc = pointerCost + (cost + diff.getValue() + random.nextFloat() * 50) * (isDiagonal() ? 1.41421356f : 1);
 		}
 		return costCalc;
 	}

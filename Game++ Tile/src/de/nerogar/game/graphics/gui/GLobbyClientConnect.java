@@ -53,7 +53,6 @@ public class GLobbyClientConnect extends Gui {
 				System.out.println(packets.size() + " packets");
 			for (Packet packet : packets) {
 				if (packet instanceof PacketStartGame) {
-					System.out.println("PacketStartGame!!!!!!!!!!!!!!!!!!");
 					PacketStartGame startgamepacket = (PacketStartGame) packet;
 					Map map = MapLoader.loadMap(Map.CLIENT_WORLD, "map.png");
 					//Game.game.client = client;

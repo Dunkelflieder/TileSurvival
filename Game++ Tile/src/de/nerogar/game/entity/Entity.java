@@ -143,4 +143,8 @@ public abstract class Entity {
 		MAX_ID++;
 		return MAX_ID;
 	}
+
+	public void renderAfterShader() {
+		
+	}
 }

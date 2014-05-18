@@ -340,6 +340,11 @@ public class Map {
 		RenderHelper.disableAlpha();
 
 		shader.deactivate();
+		
+		// render additionals without shader
+		for (Entity entity : entities.values()) {
+			entity.renderAfterShader();
+		}
 
 	}
 
