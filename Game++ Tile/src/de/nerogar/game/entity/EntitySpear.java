@@ -9,7 +9,6 @@ public class EntitySpear extends EntityProjectile {
 	public EntitySpear(Map map, Vector pos) {
 		super(map, pos, 3);
 		dimension = new Vector(1f);
-		init();
 	}
 
 	public EntitySpear(Entity sender, Map map, Vector pos, Vector target, int damage) {
@@ -18,10 +17,9 @@ public class EntitySpear extends EntityProjectile {
 
 	@Override
 	protected void init() {
-		textureID = 16 * 15 + 3;
-		
-
+		textureID = 16 * 13;
 		light = new Light(new Vector(), 2, 0.8f);
+		turnable = true;
 	}
 
 }

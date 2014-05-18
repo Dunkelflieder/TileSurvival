@@ -38,22 +38,24 @@ public class EntityPlayer extends Entity {
 		float[] sendPos = new float[2];
 		boolean newPos = false;
 
+		Vector dir = new Vector();
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-			moveX(moveSpeed * time * speedmult);
+			dir.addX(moveSpeed * time * speedmult);
 			newPos = true;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-			moveX(-moveSpeed * time * speedmult);
+			dir.addX(-moveSpeed * time * speedmult);
 			newPos = true;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-			moveY(-moveSpeed * time * speedmult);
+			dir.addY(-moveSpeed * time * speedmult);
 			newPos = true;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			moveY(moveSpeed * time * speedmult);
+			dir.addY(moveSpeed * time * speedmult);
 			newPos = true;
 		}
+		if (dir.getX() != 0 || dir.getY() != 0) move(dir);
 
 		if (client != null && newPos) {
 			PacketPlayerPosition playerPositionPacket = new PacketPlayerPosition();

@@ -12,8 +12,8 @@ public abstract class Entity {
 	public static final int DIR_RIGHT = 1;
 	public static final int DIR_DOWN = 2;
 	public static final int DIR_LEFT = 3;
-	private int facingDir;
-	private boolean turnable;
+	public int facingDir;
+	public boolean turnable;
 
 	public static int MAX_ID;
 	public int id;
@@ -67,17 +67,25 @@ public abstract class Entity {
 		this.speedmult = 1.0f;
 	}
 
-	public void moveX(float distance) {
-		if (!map.isColliding(pos.clone().addX(distance), dimension, ignoreWalls)) {
-			pos.addX(distance);
-			facingDir = (distance > 0) ? DIR_RIGHT : DIR_LEFT;
+	public void move(Vector distance) {
+		moveX(distance.getX());
+		moveY(distance.getY());
+		if (Math.abs(distance.getX()) < Math.abs(distance.getY())) {
+			facingDir = (distance.getY() > 0) ? DIR_DOWN : DIR_UP;
+		} else {
+			facingDir = (distance.getX() > 0) ? DIR_RIGHT : DIR_LEFT;
 		}
 	}
 
-	public void moveY(float distance) {
+	private void moveX(float distance) {
+		if (!map.isColliding(pos.clone().addX(distance), dimension, ignoreWalls)) {
+			pos.addX(distance);
+		}
+	}
+
+	private void moveY(float distance) {
 		if (!map.isColliding(pos.clone().addY(distance), dimension, ignoreWalls)) {
 			pos.addY(distance);
-			facingDir = (distance > 0) ? DIR_DOWN : DIR_UP;
 		}
 	}
 

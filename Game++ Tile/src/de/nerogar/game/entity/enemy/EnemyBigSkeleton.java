@@ -48,14 +48,12 @@ public class EnemyBigSkeleton extends EntityEnemy {
 				pathProgress++;
 			}
 
-			moveX(dir.getX() * speedmult);
-			moveY(dir.getY() * speedmult);
+			move(dir.multiplied(speedmult));
 		} else if (path == null && targetPlayer != null) {
 			Vector dir = targetPlayer.pos.subtracted(pos);
 			dir.setValue(moveSpeed * time);
 
-			moveX(dir.getX() * speedmult);
-			moveY(dir.getY() * speedmult);
+			move(dir.multiplied(speedmult));
 		}
 
 		if (intersects(targetPlayer)) {

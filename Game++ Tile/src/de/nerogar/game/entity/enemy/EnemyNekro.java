@@ -62,8 +62,7 @@ public class EnemyNekro extends EntityEnemy {
 				pathProgress++;
 			}
 
-			moveX(dir.getX() * speedmult);
-			moveY(dir.getY() * speedmult);
+			move(dir.multiplied(speedmult));
 		}
 
 		if (intersects(targetBones)) {

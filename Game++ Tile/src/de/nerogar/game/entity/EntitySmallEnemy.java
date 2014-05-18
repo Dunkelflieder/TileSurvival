@@ -17,8 +17,7 @@ public class EntitySmallEnemy extends EntityEnemy {
 
 		EntityPlayer player = map.getPlayer();
 		Vector direction = player.getCenter().subtract(getCenter()).setValue(moveSpeed * time * speedmult);
-		moveX(direction.getX());
-		moveY(direction.getY());
+		move(direction);
 
 		if (intersects(map.getPlayer())) {
 			damageEntity(map.getPlayer(), 1);

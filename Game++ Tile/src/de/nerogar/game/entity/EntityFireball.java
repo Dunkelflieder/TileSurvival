@@ -63,8 +63,7 @@ public class EntityFireball extends EntityWeapon {
 			pos = target;
 			kill();
 		} else {
-			moveX(direction.getX() * time);
-			moveY(direction.getY() * time);
+			move(direction.multiplied(time));
 		}
 	}
 

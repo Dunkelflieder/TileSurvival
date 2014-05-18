@@ -77,8 +77,7 @@ public class EntityIceSpike extends EntityWeapon {
 		if (map.isColliding(direction.multiplied(time).add(pos), dimension, false)) {
 			kill();
 		} else {
-			moveX(direction.getX() * time);
-			moveY(direction.getY() * time);
+			move(direction.multiplied(time));
 		}
 	}
 

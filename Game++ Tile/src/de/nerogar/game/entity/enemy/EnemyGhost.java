@@ -37,8 +37,7 @@ public class EnemyGhost extends EntityEnemy {
 
 		if (!idle) { //move
 			Vector direction = walkPos.subtracted(getCenter()).setValue(moveSpeed * time * speedmult);
-			moveX(direction.getX());
-			moveY(direction.getY());
+			move(direction);
 		} else { //shoot
 			if (fireballWeapon.cooldown <= 0f) {
 				fireballWeapon.start(player.getCenter());
