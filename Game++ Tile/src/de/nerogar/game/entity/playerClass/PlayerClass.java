@@ -17,7 +17,7 @@ public abstract class PlayerClass {
 	public static final int MAGE = 3;
 	public static final int WARRIOR = 4;
 
-	public PlayerClass(EntityPlayer player, int maxHealth, int maxEnergy, float moveSpeed) {
+	public PlayerClass(EntityPlayer player, int maxHealth, int maxEnergy, float moveSpeed, int textureID) {
 		weapons = new Weapon[3];
 		this.player = player;
 		this.maxHealth = maxHealth;
@@ -28,6 +28,7 @@ public abstract class PlayerClass {
 		player.maxHealth = maxHealth;
 		player.moveSpeed = moveSpeed;
 		this.weaponUpgrades = new Weapon[3][3];//3 weapons, 3 level
+		player.textureID = textureID;
 		initWeaponsUpgrades();
 
 		setWeaponLevel(0, 0);

@@ -8,11 +8,11 @@ public abstract class EntityWeapon extends Entity {
 	public Entity sender;
 
 	public EntityWeapon(Map map, Vector pos) {
-		super(map, pos, new Vector(), 0);
+		super(map, pos, new Vector(), 0, false);
 	}
 
 	public EntityWeapon(Entity sender, Map map, Vector pos, Vector dimension, int damage) {
-		super(map, pos, dimension, damage);
+		super(map, pos, dimension, damage, false);
 		faction = sender.faction;
 		resistDamage = true;
 

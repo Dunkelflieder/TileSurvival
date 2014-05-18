@@ -6,7 +6,7 @@ import de.nerogar.game.weapon.*;
 public class Healer extends PlayerClass {
 
 	public Healer(EntityPlayer player) {
-		super(player, 100, 100, 3.0f);
+		super(player, 100, 100, 3.0f, 4);
 	}
 
 	@Override

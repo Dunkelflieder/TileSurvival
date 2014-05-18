@@ -6,7 +6,7 @@ import de.nerogar.game.weapon.*;
 public class Warrior extends PlayerClass {
 
 	public Warrior(EntityPlayer player) {
-		super(player, 100, 100, 3.0f);
+		super(player, 100, 100, 3.0f, 12);
 	}
 
 	@Override

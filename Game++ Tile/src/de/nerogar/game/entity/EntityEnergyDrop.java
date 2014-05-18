@@ -6,7 +6,7 @@ import de.nerogar.game.Vector;
 public class EntityEnergyDrop extends Entity {
 
 	public EntityEnergyDrop(Map map, Vector pos) {
-		super(map, pos, new Vector(0.3f), 0);
+		super(map, pos, new Vector(0.3f), 0, false);
 		resistDamage = true;
 		moveSpeed = 1.0f;
 		textureID = 16 * 15 + 2;

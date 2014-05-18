@@ -6,7 +6,7 @@ import de.nerogar.game.weapon.*;
 public class Mage extends PlayerClass {
 
 	public Mage(EntityPlayer player) {
-		super(player, 100, 100, 3.0f);
+		super(player, 100, 100, 3.0f, 8);
 	}
 
 	@Override

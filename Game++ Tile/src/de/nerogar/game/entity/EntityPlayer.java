@@ -1,12 +1,12 @@
 package de.nerogar.game.entity;
 
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.*;
 import de.nerogar.game.entity.playerClass.*;
+import de.nerogar.game.graphics.Light;
 import de.nerogar.game.network.*;
 import de.nerogar.game.weapon.Weapon;
 
@@ -18,11 +18,11 @@ public class EntityPlayer extends Entity {
 	private float nextEnergyRestore;
 
 	public EntityPlayer(Map map, Vector pos) {
-		super(map, pos, new Vector(1.0f), 100);
+		super(map, pos, new Vector(1.0f), 100, true);
 		//playerClass = new Mage(this);
 		faction = FACTION_PLAYER;
 
-		//light = new Light(0, 0, 5f,2.0f);
+		light = new Light(new Vector(), 4f, 1.0f);
 	}
 
 	@Override

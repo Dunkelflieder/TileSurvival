@@ -9,9 +9,11 @@ import de.nerogar.game.graphics.TextureBank;
 public abstract class Entity {
 
 	public static final int DIR_UP = 0;
-	public static final int DIR_DOWN = 1;
-	public static final int DIR_LEFT = 2;
-	public static final int DIR_RIGHT = 4;
+	public static final int DIR_RIGHT = 1;
+	public static final int DIR_DOWN = 2;
+	public static final int DIR_LEFT = 3;
+	private int facingDir;
+	private boolean turnable;
 
 	public static int MAX_ID;
 	public int id;
@@ -24,7 +26,6 @@ public abstract class Entity {
 
 	public Vector pos;
 	public Vector serverPos;
-	public int facingDir;
 
 	public Vector dimension;
 
@@ -49,7 +50,7 @@ public abstract class Entity {
 	public static float tileTextureSize = 1f / textureSize * 32f;
 	public static int tilesOnTexture = 16;
 
-	public Entity(Map map, Vector pos, Vector dimension, int health) {
+	public Entity(Map map, Vector pos, Vector dimension, int health, boolean turnable) {
 		id = getNewID();
 
 		this.map = map;
@@ -58,18 +59,21 @@ public abstract class Entity {
 		this.dimension = dimension;
 		this.maxHealth = health;
 		this.health = health;
+		this.turnable = turnable;
 		this.speedmult = 1.0f;
 	}
 
 	public void moveX(float distance) {
 		if (!map.isColliding(pos.clone().addX(distance), dimension, ignoreWalls)) {
 			pos.addX(distance);
+			facingDir = (distance > 0) ? DIR_RIGHT : DIR_LEFT;
 		}
 	}
 
 	public void moveY(float distance) {
 		if (!map.isColliding(pos.clone().addY(distance), dimension, ignoreWalls)) {
 			pos.addY(distance);
+			facingDir = (distance > 0) ? DIR_DOWN : DIR_UP;
 		}
 	}
 
@@ -115,8 +119,9 @@ public abstract class Entity {
 		TextureBank.instance.bindTexture("entity.png", 0);
 		TextureBank.instance.bindTexture("entity normal.png", 1);
 
-		int tilePosX = textureID % tilesOnTexture;
-		int tilePosY = textureID / tilesOnTexture;
+		int tId = turnable ? textureID + facingDir : textureID;
+		int tilePosX = tId % tilesOnTexture;
+		int tilePosY = tId / tilesOnTexture;
 
 		glBegin(GL_QUADS);
 
@@ -147,4 +152,5 @@ public abstract class Entity {
 	public void renderAfterShader() {
 		
 	}
+
 }

@@ -38,9 +38,9 @@ public class GClassSelection extends Gui {
 		buttonCancel = new GEButton(new Vector(posX - (Map.TILE_RENDER_SIZE * 4 + 16f), posY + 150), new Vector(Map.TILE_RENDER_SIZE * 4, Map.TILE_RENDER_SIZE), "Abort");
 
 		image1 = new GEImage(new Vector(posX - 304, posY - 50), new Vector(128, 128), "entity.png", new Vector(0, 0), new Vector(1, 1));
-		image2 = new GEImage(new Vector(posX - 144, posY - 50), new Vector(128, 128), "entity.png", new Vector(0, 1), new Vector(1, 1));
-		image3 = new GEImage(new Vector(posX + 16, posY - 50), new Vector(128, 128), "entity.png", new Vector(1, 0), new Vector(1, 1));
-		image4 = new GEImage(new Vector(posX + 160, posY - 50), new Vector(128, 128), "entity.png", new Vector(1, 1), new Vector(1, 1));
+		image2 = new GEImage(new Vector(posX - 144, posY - 50), new Vector(128, 128), "entity.png", new Vector(4, 0), new Vector(1, 1));
+		image3 = new GEImage(new Vector(posX + 16, posY - 50), new Vector(128, 128), "entity.png", new Vector(8, 0), new Vector(1, 1));
+		image4 = new GEImage(new Vector(posX + 160, posY - 50), new Vector(128, 128), "entity.png", new Vector(12, 0), new Vector(1, 1));
 
 		text1 = new GEText(new Vector(posX - 304, posY + 86), new Vector(128, 16), "Engineer");
 		text2 = new GEText(new Vector(posX - 144, posY + 86), new Vector(128, 16), "Healer");
