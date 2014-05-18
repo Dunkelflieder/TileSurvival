@@ -11,7 +11,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.entity.*;
-import de.nerogar.game.entity.enemy.EnemySkeleton;
+import de.nerogar.game.entity.enemy.*;
 import de.nerogar.game.entity.playerClass.PlayerClass;
 import de.nerogar.game.graphics.*;
 import de.nerogar.game.graphics.gui.GuiBank;
@@ -340,7 +340,7 @@ public class Map {
 		RenderHelper.disableAlpha();
 
 		shader.deactivate();
-		
+
 		// render additionals without shader
 		for (Entity entity : entities.values()) {
 			entity.renderAfterShader();
@@ -370,8 +370,11 @@ public class Map {
 
 		Pathfinder.init(this);
 
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 10; i++) {
 			spawnEntity(new EnemySkeleton(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
+			spawnEntity(new EnemyRat(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
+			spawnEntity(new EnemyBigSkeleton(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
+		}
 	}
 
 	public void initPlayer(int playerID) {

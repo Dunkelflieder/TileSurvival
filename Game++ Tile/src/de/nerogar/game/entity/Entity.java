@@ -40,6 +40,10 @@ public abstract class Entity {
 	public float speedmult;
 	public float speedmultTime;
 
+	public int poison;
+	public float poisonTime;
+	public float poisonCooldown;
+
 	public int energy;
 	public int maxEnergy;
 
@@ -103,6 +107,14 @@ public abstract class Entity {
 		if (health <= 0) kill();
 		if (speedmultTime < 0) speedmult = 1.0f;
 		speedmultTime -= time;
+
+		if (poisonTime < 0) poison = 0;
+		poisonTime -= time;
+		poisonCooldown -= time;
+		if (poisonCooldown < 0) {
+			poisonCooldown = 0.5f;
+			damage(poison);
+		}
 	}
 
 	public void interpolatePosition(float time) {
@@ -150,7 +162,7 @@ public abstract class Entity {
 	}
 
 	public void renderAfterShader() {
-		
+
 	}
 
 }

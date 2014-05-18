@@ -6,7 +6,7 @@ import de.nerogar.game.*;
 import de.nerogar.game.entity.*;
 import de.nerogar.game.pathfinder.Pathfinder;
 
-public class EnemySkeleton extends EntityEnemy {
+public class EnemyBigSkeleton extends EntityEnemy {
 
 	private Entity targetPlayer;
 	private ArrayList<Position> path;
@@ -14,9 +14,9 @@ public class EnemySkeleton extends EntityEnemy {
 
 	private float nextRandomUpdate = 0f;
 
-	public EnemySkeleton(Map map, Vector pos) {
-		super(map, pos, new Vector(1.0f), 20, 1f);
-		moveSpeed = 2.0f;
+	public EnemyBigSkeleton(Map map, Vector pos) {
+		super(map, pos, new Vector(1.5f), 100, 1f);
+		moveSpeed = 1.0f;
 		textureID = 16;
 	}
 
@@ -35,6 +35,8 @@ public class EnemySkeleton extends EntityEnemy {
 			}
 			pathProgress = -1;
 			nextRandomUpdate = (float) (Math.random() * 10.0);
+
+			if (targetPlayer.pos.subtracted(pos).getValue() < 5f) path = null;
 		}
 
 		if (path != null && pathProgress < path.size() - 1) {
@@ -48,10 +50,16 @@ public class EnemySkeleton extends EntityEnemy {
 
 			moveX(dir.getX() * speedmult);
 			moveY(dir.getY() * speedmult);
+		} else if (path == null && targetPlayer != null) {
+			Vector dir = targetPlayer.pos.subtracted(pos);
+			dir.setValue(moveSpeed * time);
+
+			moveX(dir.getX() * speedmult);
+			moveY(dir.getY() * speedmult);
 		}
 
 		if (intersects(targetPlayer)) {
-			damageEntity(targetPlayer, 3);
+			damageEntity(targetPlayer, 10);
 		}
 	}
 

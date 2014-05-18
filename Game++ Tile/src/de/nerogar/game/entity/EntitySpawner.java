@@ -42,6 +42,10 @@ public class EntitySpawner {
 			return new EnemyDump(map, pos);
 		case 204:
 			return new EnemySkeleton(map, pos);
+		case 205:
+			return new EnemyRat(map, pos);
+		case 206:
+			return new EnemyBigSkeleton(map, pos);
 
 			//
 		case 301:
@@ -76,6 +80,8 @@ public class EntitySpawner {
 		networkIDs.put(EnemyGhost.class, 202);
 		networkIDs.put(EnemyDump.class, 203);
 		networkIDs.put(EnemySkeleton.class, 204);
+		networkIDs.put(EnemyRat.class, 205);
+		networkIDs.put(EnemyBigSkeleton.class, 206);
 
 		//
 		networkIDs.put(EntityEnergyDrop.class, 301);
