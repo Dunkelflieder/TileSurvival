@@ -63,6 +63,7 @@ public class EntityPlayer extends Entity {
 			sendPos[0] = pos.getX();
 			sendPos[1] = pos.getY();
 			playerPositionPacket.playerPosition = sendPos;
+			playerPositionPacket.playerDirection = facingDir;
 			Game.game.client.sendPacket(playerPositionPacket);
 		}
 

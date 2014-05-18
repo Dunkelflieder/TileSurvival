@@ -43,7 +43,7 @@ public class Map {
 	public static final Tile WALL_CROSS = new Tile(18, true);
 
 	public static final Tile[] TILES = new Tile[] { FLOOR, ROCK, TREE, TORCH, CHEST, OPEN_CHEST, DOOR, DOOR_OPEN, //
-	WALL_V, WALL_H, WALL_TR, WALL_TU, WALL_TD, WALL_TL, WALL_RU, WALL_RD, WALL_LU, WALL_LD, WALL_CROSS };
+			WALL_V, WALL_H, WALL_TR, WALL_TU, WALL_TD, WALL_TL, WALL_RU, WALL_RD, WALL_LU, WALL_LD, WALL_CROSS };
 
 	//texture
 	public static final float TILE_RENDER_SIZE = 64f;
@@ -55,7 +55,7 @@ public class Map {
 	//attribs
 	private Shader shader;
 	private EntityPlayer player;
-	private int playerID;
+	private int playerID = -1;
 	private Vector spawnLocation;
 	private HashMap<Integer, Entity> entities;
 	private ArrayList<Entity> newEntities;
@@ -99,13 +99,14 @@ public class Map {
 	}
 
 	public void spawnEntity(Entity entity) {
-		if (entity.id == playerID) {
-			// TODO find a proper way to set the players position instead of sending him as regular entity
+		if (entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entity;
-			player.setPlayerClass(PlayerClass.getInstanceByID(getPlayer().pClass, player));
-
-			setPlayer(player);
-			playerID = -1;
+			if (entity.id == playerID) {
+				player.setPlayerClass(PlayerClass.getInstanceByID(getPlayer().pClass, player));
+				setPlayer(player);
+				playerID = -1;
+			}
+			if (worldType == Map.CLIENT_WORLD) player.setPlayerClass(PlayerClass.getInstanceByID(GuiBank.LOBBY_CLIENT_CONNECT.getPlayerClass(player.id), player));
 		}
 
 		if (worldType == SERVER_WORLD) {
@@ -219,6 +220,7 @@ public class Map {
 			if (entity != null) {
 				entity.pos.setX(playerPositionPacket.playerPosition[0]);
 				entity.pos.setY(playerPositionPacket.playerPosition[1]);
+				entity.facingDir = playerPositionPacket.playerDirection;
 			}
 		} else if (packet instanceof PacketActivateWeapon) {
 			PacketActivateWeapon activateWeaponPacket = (PacketActivateWeapon) packet;
@@ -243,9 +245,12 @@ public class Map {
 					if (entity != player) {
 						entity.serverPos.setX(entityPositionsPacket.entityPositions[i * 2]);
 						entity.serverPos.setY(entityPositionsPacket.entityPositions[i * 2 + 1]);
+						entity.facingDir = entityPositionsPacket.entityDirections[i];
 					}
 					entity.moveSpeed = entityPositionsPacket.entityMoveSpeeds[i];
 					entity.speedmult = entityPositionsPacket.entitySpeedMults[i];
+					entity.maxHealth = Integer.MAX_VALUE;
+					entity.health = (int) (entityPositionsPacket.entityHealths[i] * Integer.MAX_VALUE);
 				}
 			}
 
@@ -267,6 +272,8 @@ public class Map {
 		int[] entityIDs = new int[entities.size()];
 		float[] entityMoveSpeeds = new float[entities.size()];
 		float[] entitySpeedMults = new float[entities.size()];
+		int[] entityDirections = new int[entities.size()];
+		float[] entityHealths = new float[entities.size()];
 
 		int i = 0;
 		for (Entity entity : entities.values()) {
@@ -275,6 +282,8 @@ public class Map {
 			entityPositions[i * 2 + 1] = entity.pos.getY();
 			entityMoveSpeeds[i] = entity.moveSpeed;
 			entitySpeedMults[i] = entity.speedmult;
+			entityDirections[i] = entity.facingDir;
+			entityHealths[i] = (float) entity.health / entity.maxHealth;
 			i++;
 		}
 
@@ -282,6 +291,8 @@ public class Map {
 		entityPositionsPacket.entityIDs = entityIDs;
 		entityPositionsPacket.entityMoveSpeeds = entityMoveSpeeds;
 		entityPositionsPacket.entitySpeedMults = entitySpeedMults;
+		entityPositionsPacket.entityDirections = entityDirections;
+		entityPositionsPacket.entityHealths = entityHealths;
 
 		Game.game.server.broadcastData(entityPositionsPacket);
 	}

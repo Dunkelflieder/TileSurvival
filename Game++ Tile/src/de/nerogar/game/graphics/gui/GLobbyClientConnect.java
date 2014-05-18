@@ -7,6 +7,7 @@ import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex3f;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.nerogar.game.*;
 import de.nerogar.game.entity.playerClass.PlayerClass;
@@ -18,6 +19,8 @@ public class GLobbyClientConnect extends Gui {
 	private GEText text;
 	private GEButton buttonCancel;
 	private boolean failed = false;
+	
+	private HashMap<Integer, Integer> selectedClasses;
 
 	public GLobbyClientConnect() {
 		super(true);
@@ -34,13 +37,13 @@ public class GLobbyClientConnect extends Gui {
 	@Override
 	public void select() {
 		text.setText("Waiting for host to start game");
+		selectedClasses = new HashMap<Integer, Integer>();
 	}
 
 	@Override
 	public void update() {
 		super.update();
-		if (failed)
-			return;
+		if (failed) return;
 		if (!Game.game.client.connected) {
 			System.out.println("Connection problem");
 			failed = true;
@@ -49,8 +52,7 @@ public class GLobbyClientConnect extends Gui {
 		ArrayList<Packet> packets = null;
 		packets = Game.game.client.getData(Packet.LOBBY_CHANNEL);
 		if (packets != null) {
-			if (packets.size() > 0)
-				System.out.println(packets.size() + " packets");
+			if (packets.size() > 0) System.out.println(packets.size() + " packets");
 			for (Packet packet : packets) {
 				if (packet instanceof PacketStartGame) {
 					PacketStartGame startgamepacket = (PacketStartGame) packet;
@@ -60,15 +62,22 @@ public class GLobbyClientConnect extends Gui {
 					//EntityPlayer player = (EntityPlayer) map.getEntities().get(startgamepacket.playerID);//startgamepacket.playerClass
 					//player.playerClass = PlayerClass.getInstanceByID(startgamepacket.playerClass, player);
 					map.initPlayer(startgamepacket.playerID);
-					map.getPlayer().pClass = startgamepacket.playerClass;
-					map.getPlayer().setPlayerClass(PlayerClass.getInstanceByID(startgamepacket.playerClass, map.getPlayer()));
+					map.getPlayer().setPlayerClass(PlayerClass.getInstanceByID(PlayerClass.ENGINEER, map.getPlayer())); // default
+
 					Game.game.map = map;
 
 					GuiBank.selectGui(GuiBank.INGAME);
+				} else if (packet instanceof PacketSelectPlayerClass) {
+					PacketSelectPlayerClass packetSelect = (PacketSelectPlayerClass) packet;
+					selectedClasses.put(packetSelect.playerID, packetSelect.playerClass);
 				}
 			}
 		}
 
+	}
+	
+	public int getPlayerClass(int id) {
+		return selectedClasses.get(id);
 	}
 
 	@Override

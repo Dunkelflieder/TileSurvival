@@ -6,7 +6,6 @@ import de.nerogar.DNFileSystem.DNFile;
 
 public class PacketStartGame extends Packet {
 	public int playerID;
-	public int playerClass;
 
 	public PacketStartGame() {
 		channel = LOBBY_CHANNEL;
@@ -17,7 +16,6 @@ public class PacketStartGame extends Packet {
 		data = new DNFile();
 
 		data.addInt("pID", playerID);
-		data.addInt("pC", playerClass);
 
 		packedData = data.toByteArray();
 	}
@@ -32,7 +30,6 @@ public class PacketStartGame extends Packet {
 		}
 
 		playerID = data.getInt("pID");
-		playerClass = data.getInt("pC");
 	}
 
 	@Override
@@ -42,6 +39,6 @@ public class PacketStartGame extends Packet {
 
 	@Override
 	public String toString() {
-		return "PacketStartGame(playerID: " + playerID + ", playerClass: " + playerClass + ")";
+		return "PacketStartGame(playerID: " + playerID + ")";
 	}
 }

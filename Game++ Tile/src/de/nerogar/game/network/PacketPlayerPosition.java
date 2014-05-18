@@ -7,6 +7,7 @@ import de.nerogar.DNFileSystem.DNFile;
 public class PacketPlayerPosition extends Packet {
 	public int playerID;
 	public float[] playerPosition;
+	public int playerDirection;
 
 	public PacketPlayerPosition() {
 		channel = WORLD_CHANNEL;
@@ -18,6 +19,7 @@ public class PacketPlayerPosition extends Packet {
 
 		data.addInt("pID", playerID);
 		data.addFloat("pos", playerPosition);
+		data.addInt("dir", playerDirection);
 
 		packedData = data.toByteArray();
 	}
@@ -33,6 +35,7 @@ public class PacketPlayerPosition extends Packet {
 
 		playerID = data.getInt("pID");
 		playerPosition = data.getFloatArray("pos");
+		playerDirection = data.getInt("dir");
 	}
 
 	@Override

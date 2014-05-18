@@ -58,7 +58,7 @@ public class Game {
 		SoundManager.update();
 		InputHandler.update(this);
 		GuiBank.update();
-
+		
 		if (map != null && map.ready) {
 			map.update(1f / FRAMERATE);
 			float listenerX = (float) map.getOffsX() + 0.5f * WIDTH / Map.TILE_RENDER_SIZE;
@@ -69,6 +69,7 @@ public class Game {
 	}
 
 	public void closeMap() {
+		
 		map = null;
 	}
 

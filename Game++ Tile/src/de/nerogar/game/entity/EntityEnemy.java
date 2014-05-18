@@ -11,7 +11,7 @@ public abstract class EntityEnemy extends Entity {
 	public float maxDamageCooldown;
 
 	public EntityEnemy(Map map, Vector pos, Vector dimension, int health, float damageCooldown) {
-		super(map, pos, dimension, health, false);
+		super(map, pos, dimension, health, true);
 		this.maxDamageCooldown = damageCooldown;
 		faction = FACTION_MOB;
 	}

@@ -9,6 +9,8 @@ public class PacketEntityPositions extends Packet {
 	public float[] entityPositions;
 	public float[] entityMoveSpeeds;
 	public float[] entitySpeedMults;
+	public int[] entityDirections;
+	public float[] entityHealths;
 
 	public PacketEntityPositions() {
 		channel = WORLD_CHANNEL;
@@ -22,6 +24,8 @@ public class PacketEntityPositions extends Packet {
 		data.addInt("eID", entityIDs);
 		data.addFloat("s", entityMoveSpeeds);
 		data.addFloat("sm", entitySpeedMults);
+		data.addInt("d", entityDirections);
+		data.addFloat("h", entityHealths);
 
 		packedData = data.toByteArray();
 	}
@@ -39,6 +43,9 @@ public class PacketEntityPositions extends Packet {
 		entityIDs = data.getIntArray("eID");
 		entityMoveSpeeds = data.getFloatArray("s");
 		entitySpeedMults = data.getFloatArray("sm");
+		entityDirections = data.getIntArray("d");
+		entityHealths = data.getFloatArray("h");
+		
 	}
 
 	@Override

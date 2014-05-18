@@ -5,6 +5,7 @@ import java.io.IOException;
 import de.nerogar.DNFileSystem.DNFile;
 
 public class PacketSelectPlayerClass extends Packet {
+	public int playerID;
 	public int playerClass;
 
 	public PacketSelectPlayerClass() {
@@ -15,6 +16,7 @@ public class PacketSelectPlayerClass extends Packet {
 	public void pack() {
 		data = new DNFile();
 
+		data.addInt("id", playerID);
 		data.addInt("pC", playerClass);
 
 		packedData = data.toByteArray();
@@ -29,6 +31,7 @@ public class PacketSelectPlayerClass extends Packet {
 			e.printStackTrace();
 		}
 
+		playerID = data.getInt("id");
 		playerClass = data.getInt("pC");
 	}
 

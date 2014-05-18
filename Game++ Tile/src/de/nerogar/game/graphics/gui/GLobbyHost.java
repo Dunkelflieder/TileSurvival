@@ -66,8 +66,7 @@ public class GLobbyHost extends Gui {
 
 		int chosen = 0;
 		for (Integer i : playerClassSelection.values())
-			if (i != null)
-				chosen++;
+			if (i != null) chosen++;
 
 		textPlayers.setText(chosen + "/" + clients.size() + " players chose their class");
 		if (clients.size() == chosen) {
@@ -97,22 +96,39 @@ public class GLobbyHost extends Gui {
 
 			EntityPlayer playerEntity = new EntityPlayer(map, map.getSpawnLocation());
 			playerEntity.setPlayerClass(PlayerClass.getInstanceByID(GuiBank.CLASS_SELECTION.getPlayerClass(), playerEntity));
+			playerEntity.pClass = GuiBank.CLASS_SELECTION.getPlayerClass();
 			map.spawnEntity(playerEntity);
 			map.initPlayer(playerEntity.id);
 
+			// broadcast own player class
+			PacketSelectPlayerClass selectPacket = new PacketSelectPlayerClass();
+			selectPacket.playerID = playerEntity.id;
+			selectPacket.playerClass = GuiBank.CLASS_SELECTION.getPlayerClass();
+			Game.game.server.broadcastData(selectPacket);
+			
 			ArrayList<Client> clients = Game.game.server.getClients();
-			for (Client client : clients) {
+			for (int i = 0; i < clients.size(); i++) {
+				Client client = clients.get(i);
 				EntityPlayer playerEntityClient = new EntityPlayer(map, map.getSpawnLocation());
 				int pClass = playerClassSelection.get(client);
 				playerEntityClient.pClass = pClass;
 				playerEntityClient.setPlayerClass(PlayerClass.getInstanceByID(pClass, playerEntityClient));
 
+				System.out.println("Sending client PacketStartGame with Entity id " + playerEntityClient.id);
+				
 				PacketStartGame gameStartPacket = new PacketStartGame();
 				gameStartPacket.playerID = playerEntityClient.id;
-				gameStartPacket.playerClass = pClass;
-				map.spawnEntity(playerEntityClient);
 				client.sendPacket(gameStartPacket);
+				
+				selectPacket = new PacketSelectPlayerClass();
+				selectPacket.playerID = playerEntityClient.id;
+				selectPacket.playerClass = pClass;
+				Game.game.server.broadcastData(selectPacket);
+
+				map.spawnEntity(playerEntityClient);
+				System.out.println("Spawned player id " + playerEntityClient.id);
 			}
+
 
 			Game.game.map = map;
 
