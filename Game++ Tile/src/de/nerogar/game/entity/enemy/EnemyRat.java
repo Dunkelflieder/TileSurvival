@@ -52,6 +52,11 @@ public class EnemyRat extends EntityEnemy {
 
 		if (intersects(targetPlayer)) {
 			damageEntity(targetPlayer, 1);
+			if (Math.random() < 0.2) {
+				targetPlayer.poison = 2;
+				targetPlayer.poisonTime = 5f;
+			}
+
 		}
 	}
 

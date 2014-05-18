@@ -12,12 +12,12 @@ public class Warrior extends PlayerClass {
 	@Override
 	protected void initWeaponsUpgrades() {
 		weaponUpgrades[0][0] = new Trap(player, 5, 3.0f);
-		weaponUpgrades[0][1] = new Trap(player, 5, 3.0f);
-		weaponUpgrades[0][2] = new Trap(player, 5, 3.0f);
+		weaponUpgrades[0][1] = new Trap(player, 15, 3.0f);
+		weaponUpgrades[0][2] = new Trap(player, 25, 3.0f);
 
-		weaponUpgrades[1][0] = new Spear(player, 5, 3.0f);
-		weaponUpgrades[1][1] = new Spear(player, 5, 3.0f);
-		weaponUpgrades[1][2] = new Spear(player, 5, 3.0f);
+		weaponUpgrades[1][0] = new Spear(player, 10, 1.0f);
+		weaponUpgrades[1][1] = new Spear(player, 15, 0.9f);
+		weaponUpgrades[1][2] = new Spear(player, 30, 0.8f);
 
 		weaponUpgrades[2][0] = new SlowDownArea(player, 5, 3.0f);
 		weaponUpgrades[2][1] = new SlowDownArea(player, 5, 3.0f);

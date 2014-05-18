@@ -68,5 +68,9 @@ public class EnemyBigSkeleton extends EntityEnemy {
 		if (Math.random() < 0.3) {
 			map.spawnEntity(new EntityEnergyDrop(map, getCenter()));
 		}
+
+		for (int i = 0; i < 3; i++) {
+			map.spawnEntity(new EnemySkeleton(map, pos.clone()));
+		}
 	}
 }
