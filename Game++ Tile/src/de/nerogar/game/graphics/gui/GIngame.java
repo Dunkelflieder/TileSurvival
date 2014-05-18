@@ -16,7 +16,7 @@ public class GIngame extends Gui {
 		float posY = Game.game.HEIGHT - (64 + Weapon.renderSize);
 
 		barHealth = new GEStatusBar(new Vector(32f, posY - 20f), 0);
-		barEnergy = new GEStatusBar(new Vector(32f, posY), 1);
+		barEnergy = new GEStatusBar(new Vector(32f, posY), 2);
 
 		addGuiElements(barHealth, barEnergy);
 
@@ -40,6 +40,10 @@ public class GIngame extends Gui {
 		EntityPlayer player = Game.game.map.getPlayer();
 		barHealth.setPosition((float) player.health / player.maxHealth);
 		barEnergy.setPosition((float) player.energy / player.maxEnergy);
+		if (Game.game.map.getPlayer().poisonTime > 0)
+			barHealth.setTexturePos(1);
+		else
+			barHealth.setTexturePos(0);
 	}
 
 	@Override

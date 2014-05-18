@@ -29,7 +29,7 @@ public class GEStatusBar extends GuiElement {
 		TextureBank.instance.bindTexture("gui.png");
 
 		RenderHelper.enableAlphaMask();
-		renderBar(2f, 1f);
+		renderBar(3f, 1f);
 		renderBar(texturePos, position);
 	}
 
@@ -60,6 +60,10 @@ public class GEStatusBar extends GuiElement {
 
 	public void setPosition(float position) {
 		this.position = position;
+	}
+
+	public void setTexturePos(int texturePos) {
+		this.texturePos = texturePos;
 	}
 
 }
