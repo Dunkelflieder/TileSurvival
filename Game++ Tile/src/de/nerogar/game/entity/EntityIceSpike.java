@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import de.nerogar.game.Map;
 import de.nerogar.game.Vector;
 import de.nerogar.game.graphics.Light;
+import de.nerogar.game.sound.Sound;
+import de.nerogar.game.sound.SoundCategory;
 
 public class EntityIceSpike extends EntityWeapon {
 
@@ -14,6 +16,8 @@ public class EntityIceSpike extends EntityWeapon {
 	private int hitCount;
 	private int maxHitcount = 2;
 	private ArrayList<Entity> hitEntities;
+
+	private Sound explodeSound;
 
 	public EntityIceSpike(Map map, Vector pos) {
 		super(map, pos);
@@ -43,6 +47,11 @@ public class EntityIceSpike extends EntityWeapon {
 		textureID = 16 * 15 + 4;
 
 		light = new Light(new Vector(), 2, 0.8f);
+
+		explodeSound = new Sound(SoundCategory.EFFECT, "ice-die.ogg");
+		Sound iceSpawnSound = new Sound(SoundCategory.EFFECT, "ice-start.ogg");
+		iceSpawnSound.setPosition(getCenter());
+		iceSpawnSound.play();
 	}
 
 	@Override
@@ -75,5 +84,7 @@ public class EntityIceSpike extends EntityWeapon {
 
 	@Override
 	public void onDie() {
+		explodeSound.setPosition(getCenter());
+		explodeSound.play();
 	}
 }
