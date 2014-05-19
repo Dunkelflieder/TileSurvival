@@ -2,6 +2,8 @@ package de.nerogar.game.entity;
 
 import de.nerogar.game.Map;
 import de.nerogar.game.Vector;
+import de.nerogar.game.sound.Sound;
+import de.nerogar.game.sound.SoundCategory;
 import de.nerogar.game.weapon.Fireball;
 
 public class EntityGuardTower extends EntityWeapon {
@@ -9,6 +11,7 @@ public class EntityGuardTower extends EntityWeapon {
 	private static final float MAX_FIGHT_DISTANCE = 8.0f;
 
 	private Fireball fireballWeapon;
+	private Sound buildSound = new Sound(SoundCategory.EFFECT, "build1.ogg", "build2.ogg", "build3.ogg");
 
 	public EntityGuardTower(Map map, Vector pos) {
 		super(map, pos);
@@ -25,6 +28,10 @@ public class EntityGuardTower extends EntityWeapon {
 		textureID = 16 * 14;
 		fireballWeapon = new Fireball(this, 5, 1.0f);
 		resistDamage = false;
+		
+		buildSound.setPosition(pos);
+		buildSound.randomizeBuffer();
+		buildSound.play();
 	}
 
 	@Override

@@ -42,7 +42,7 @@ public class Map {
 	public static final Tile WALL_CROSS = new Tile(18, true);
 
 	public static final Tile[] TILES = new Tile[] { FLOOR, ROCK, TREE, TORCH, CHEST, OPEN_CHEST, DOOR, DOOR_OPEN, //
-	WALL_V, WALL_H, WALL_TR, WALL_TU, WALL_TD, WALL_TL, WALL_RU, WALL_RD, WALL_LU, WALL_LD, WALL_CROSS };
+			WALL_V, WALL_H, WALL_TR, WALL_TU, WALL_TD, WALL_TL, WALL_RU, WALL_RD, WALL_LU, WALL_LD, WALL_CROSS };
 
 	//texture
 	public static final float TILE_RENDER_SIZE = 64f;
@@ -350,7 +350,10 @@ public class Map {
 
 		RenderHelper.enableAlphaMask();
 		for (Entity entity : entities.values()) {
-			entity.render();
+			if (!(entity instanceof EntityPlayer || entity instanceof EntityEnemy)) entity.render();
+		}
+		for (Entity entity : entities.values()) {
+			if (entity instanceof EntityPlayer || entity instanceof EntityEnemy) entity.render();
 		}
 		RenderHelper.disableAlpha();
 

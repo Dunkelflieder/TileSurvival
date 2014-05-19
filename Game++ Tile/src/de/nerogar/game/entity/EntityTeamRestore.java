@@ -2,12 +2,15 @@ package de.nerogar.game.entity;
 
 import de.nerogar.game.Map;
 import de.nerogar.game.Vector;
+import de.nerogar.game.sound.Sound;
+import de.nerogar.game.sound.SoundCategory;
 
 public class EntityTeamRestore extends EntityWeapon {
 
 	private static final float MAX_RESTORE_DISTANCE = 3.0f;
 
 	private float nextRestore;
+	private Sound buildSound = new Sound(SoundCategory.EFFECT, "build1.ogg", "build2.ogg", "build3.ogg");
 
 	public EntityTeamRestore(Map map, Vector pos) {
 		super(map, pos);
@@ -23,6 +26,10 @@ public class EntityTeamRestore extends EntityWeapon {
 	private void init() {
 		textureID = 16 * 14 + 1;
 		resistDamage = false;
+		
+		buildSound.setPosition(pos);
+		buildSound.randomizeBuffer();
+		buildSound.play();
 	}
 
 	@Override
