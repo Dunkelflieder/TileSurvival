@@ -17,7 +17,7 @@ public class EnemySkeleton extends EntityEnemy {
 	public EnemySkeleton(Map map, Vector pos) {
 		super(map, pos, new Vector(1.0f), 20, 1f);
 		moveSpeed = 2.0f;
-		textureID = 16;
+		textureID = 16 * 2;
 	}
 
 	@Override

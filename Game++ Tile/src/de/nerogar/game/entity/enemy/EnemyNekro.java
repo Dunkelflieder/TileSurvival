@@ -19,7 +19,7 @@ public class EnemyNekro extends EntityEnemy {
 	public EnemyNekro(Map map, Vector pos) {
 		super(map, pos, new Vector(1.0f), 50, 1f);
 		moveSpeed = 3.0f;
-		textureID = 16;
+		textureID = 16 * 3;
 
 		targetBones = getTarget();
 	}
@@ -68,7 +68,7 @@ public class EnemyNekro extends EntityEnemy {
 		if (intersects(targetBones)) {
 			if (nextSpawn < 0) {
 				map.spawnEntity(new EnemySkeleton(map, targetBones.pos.clone()));
-				nextSpawn = (float) (10f * Math.random() + 5f);
+				nextSpawn = (float) (10f * Math.random() + 15f);
 			}
 			nextSpawn -= time;
 		}

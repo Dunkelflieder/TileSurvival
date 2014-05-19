@@ -27,7 +27,7 @@ public class EnergyRestore extends Weapon {
 
 	@Override
 	public boolean canActivate() {
-		return owner.health != owner.maxEnergy;
+		return true;
 	}
 
 	@Override

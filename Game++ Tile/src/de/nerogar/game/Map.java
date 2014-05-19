@@ -11,7 +11,6 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 
 import de.nerogar.game.entity.*;
-import de.nerogar.game.entity.enemy.*;
 import de.nerogar.game.entity.playerClass.PlayerClass;
 import de.nerogar.game.graphics.*;
 import de.nerogar.game.graphics.gui.GuiBank;
@@ -43,7 +42,7 @@ public class Map {
 	public static final Tile WALL_CROSS = new Tile(18, true);
 
 	public static final Tile[] TILES = new Tile[] { FLOOR, ROCK, TREE, TORCH, CHEST, OPEN_CHEST, DOOR, DOOR_OPEN, //
-			WALL_V, WALL_H, WALL_TR, WALL_TU, WALL_TD, WALL_TL, WALL_RU, WALL_RD, WALL_LU, WALL_LD, WALL_CROSS };
+	WALL_V, WALL_H, WALL_TR, WALL_TU, WALL_TD, WALL_TL, WALL_RU, WALL_RD, WALL_LU, WALL_LD, WALL_CROSS };
 
 	//texture
 	public static final float TILE_RENDER_SIZE = 64f;
@@ -57,10 +56,12 @@ public class Map {
 	private EntityPlayer player;
 	private int playerID = -1;
 	private Vector spawnLocation;
+	private Vector[] enemySpawnLocations;
 	private HashMap<Integer, Entity> entities;
 	private ArrayList<Entity> newEntities;
 	private boolean updating;
 	private float playTime;
+	private Wave wave;
 	private ArrayList<Light> lights;
 	private final int MAX_LIGHTS = 100;
 	private FloatBuffer lightBufferX;
@@ -90,6 +91,7 @@ public class Map {
 		initShader();
 		entities = new HashMap<Integer, Entity>();
 		newEntities = new ArrayList<Entity>();
+		wave = new Wave(this);
 	}
 
 	private void initShader() {
@@ -164,6 +166,8 @@ public class Map {
 				entity.update(time);
 			}
 			updating = false;
+
+			wave.update(time);
 
 			for (Client client : Game.game.server.getClients()) {
 				ArrayList<Packet> packets = client.getData(Packet.WORLD_CHANNEL);
@@ -374,17 +378,18 @@ public class Map {
 		return null;
 	}
 
-	public void load(int[] tileIDs, int size, Vector spawnLocation) {
+	public void load(int[] tileIDs, int size, Vector spawnLocation, Vector[] enemySpawnLocations) {
 		this.tileIDs = tileIDs;
 		this.size = size;
 		this.spawnLocation = spawnLocation;
+		this.enemySpawnLocations = enemySpawnLocations;
 
 		Pathfinder.init(this);
 
 		for (int i = 0; i < 10; i++) {
 			//spawnEntity(new EnemySkeleton(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
 			//spawnEntity(new EnemyRat(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
-			spawnEntity(new EnemyNekro(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
+			//spawnEntity(new EnemyNekro(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
 			//spawnEntity(new EnemyBigSkeleton(this, new Vector((float) (19f + Math.random() * 15f), (float) (19f + Math.random() * 15f))));
 		}
 	}
@@ -469,6 +474,10 @@ public class Map {
 
 	public Vector getSpawnLocation() {
 		return spawnLocation.clone();
+	}
+
+	public Vector[] getEnemySpawnLocations() {
+		return enemySpawnLocations;
 	}
 
 	public EntityPlayer getPlayer() {

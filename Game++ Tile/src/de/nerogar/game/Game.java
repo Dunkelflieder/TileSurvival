@@ -36,8 +36,8 @@ public class Game {
 		renderEngine.init(WIDTH, HEIGHT);
 		bgMusic.setLooping(true);
 		bgMusic.play();
-		SoundCategory.MUSIC.setGain(1f);
-		SoundCategory.EFFECT.setGain(0.3f);
+		SoundCategory.MUSIC.setGain(0.3f);
+		SoundCategory.EFFECT.setGain(0.5f);
 
 	}
 
@@ -58,7 +58,7 @@ public class Game {
 		SoundManager.update();
 		InputHandler.update(this);
 		GuiBank.update();
-		
+
 		if (map != null && map.ready) {
 			map.update(1f / FRAMERATE);
 			float listenerX = (float) map.getOffsX() + 0.5f * WIDTH / Map.TILE_RENDER_SIZE;
@@ -69,7 +69,7 @@ public class Game {
 	}
 
 	public void closeMap() {
-		
+
 		map = null;
 	}
 
@@ -90,10 +90,8 @@ public class Game {
 	}
 
 	public void cleanup() {
-		if (server != null)
-			server.stopServer();
-		if (client != null)
-			client.stopClient();
+		if (server != null) server.stopServer();
+		if (client != null) client.stopClient();
 	}
 
 }

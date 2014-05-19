@@ -3,6 +3,7 @@ package de.nerogar.game;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -76,6 +77,10 @@ public class MapLoader {
 		return (color & 0xffffff) == 0xf00000;
 	}
 
+	private static boolean isEnemySpawn(int color) {
+		return (color & 0xffffff) == 0xffff00;
+	}
+
 	public static Map loadMap(int worldType, String filename) {
 		BufferedImage image;
 		int[] pixels;
@@ -83,6 +88,7 @@ public class MapLoader {
 		int height;
 
 		Vector playerPos = new Vector();
+		ArrayList<Vector> enemySpawnLocationsList = new ArrayList<Vector>();
 
 		try {
 			image = ImageIO.read(new File("res/" + filename));
@@ -112,10 +118,15 @@ public class MapLoader {
 				playerPos.setX(i % mapSize).setY(i / mapSize);
 			} else if (isBone(pixels[i])) {
 				map.spawnEntity(new EntityBone(map, new Vector(i % mapSize, i / mapSize)));
+			} else if (isEnemySpawn(pixels[i])) {
+				enemySpawnLocationsList.add(new Vector(i % mapSize, i / mapSize));
 			}
 		}
 
-		map.load(tileIDs, mapSize, playerPos);
+		Vector[] enemySpawnLocations = new Vector[enemySpawnLocationsList.size()];
+		enemySpawnLocationsList.toArray(enemySpawnLocations);
+
+		map.load(tileIDs, mapSize, playerPos, enemySpawnLocations);
 		return map;
 	}
 }
