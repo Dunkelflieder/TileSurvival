@@ -8,11 +8,8 @@ import de.nerogar.game.pathfinder.Pathfinder;
 
 public class EnemyNekro extends EntityEnemy {
 
-	private Entity targetBones;
 	private ArrayList<Position> path;
 	private int pathProgress;
-
-	private float nextRandomUpdate = 0f;
 
 	private float nextSpawn;
 
@@ -21,7 +18,7 @@ public class EnemyNekro extends EntityEnemy {
 		moveSpeed = 3.0f;
 		textureID = 16 * 3;
 
-		targetBones = getTarget();
+		target = getTarget();
 	}
 
 	private EntityBone getTarget() {
@@ -37,19 +34,24 @@ public class EnemyNekro extends EntityEnemy {
 	}
 
 	@Override
+	public void recalcPath() {
+		path = Pathfinder.getPath(map, getCenter().toPosition(), target.getCenter().toPosition());
+		if (path == null) {
+			System.out.println("no path, target player");
+			target = map.getRandomPlayer();
+			path = Pathfinder.getPath(map, getCenter().toPosition(), target.getCenter().toPosition());
+		}
+		pathProgress = -1;
+	}
+
+	@Override
 	public void update(float time) {
 		super.update(time);
-		nextRandomUpdate -= time;
 
 		if (nextRandomUpdate < 0f) {
-			if (targetBones == null) return;
-			path = Pathfinder.getPath(map, getCenter().toPosition(), targetBones.getCenter().toPosition());
-			if (path == null) {
-				System.out.println("no path, target player");
-				targetBones = map.getRandomPlayer();
-				path = Pathfinder.getPath(map, getCenter().toPosition(), targetBones.getCenter().toPosition());
-			}
-			pathProgress = -1;
+			if (target == null) return;
+			recalcPath();
+
 			nextRandomUpdate = (float) (Math.random() * 10.0);
 		}
 
@@ -65,9 +67,9 @@ public class EnemyNekro extends EntityEnemy {
 			move(dir.multiplied(speedmult));
 		}
 
-		if (intersects(targetBones)) {
+		if (intersects(target)) {
 			if (nextSpawn < 0) {
-				map.spawnEntity(new EnemySkeleton(map, targetBones.pos.clone()));
+				map.spawnEntity(new EnemySkeleton(map, target.pos.clone()));
 				nextSpawn = (float) (10f * Math.random() + 15f);
 			}
 			nextSpawn -= time;

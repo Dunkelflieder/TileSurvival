@@ -19,8 +19,8 @@ public class Healer extends PlayerClass {
 		weaponUpgrades[1][1] = new EnergyRestore(player, 25, 3.0f);
 		weaponUpgrades[1][2] = new EnergyRestore(player, 35, 2.0f);
 
-		weaponUpgrades[2][0] = new SlowDownArea(player, 5, 3.0f);
-		weaponUpgrades[2][1] = new SlowDownArea(player, 5, 3.0f);
-		weaponUpgrades[2][2] = new SlowDownArea(player, 5, 3.0f);
+		weaponUpgrades[2][0] = new Speed(player, 5, 5.0f);
+		weaponUpgrades[2][1] = new Speed(player, 10, 10.0f);
+		weaponUpgrades[2][2] = new Speed(player, 15, 15.0f);
 	}
 }

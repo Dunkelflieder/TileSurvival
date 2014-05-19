@@ -10,6 +10,9 @@ public abstract class EntityEnemy extends Entity {
 	public float damageCooldown;
 	public float maxDamageCooldown;
 
+	public Entity target;
+	public float nextRandomUpdate;
+
 	public EntityEnemy(Map map, Vector pos, Vector dimension, int health, float damageCooldown) {
 		super(map, pos, dimension, health, true);
 		this.maxDamageCooldown = damageCooldown;
@@ -27,7 +30,10 @@ public abstract class EntityEnemy extends Entity {
 	public void update(float time) {
 		super.update(time);
 		damageCooldown -= time;
+		nextRandomUpdate -= time;
 	}
+
+	public abstract void recalcPath();
 
 	@Override
 	public void renderAfterShader() {

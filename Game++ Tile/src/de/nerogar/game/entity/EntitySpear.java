@@ -7,7 +7,7 @@ import de.nerogar.game.graphics.Light;
 public class EntitySpear extends EntityProjectile {
 
 	public EntitySpear(Map map, Vector pos) {
-		super(map, pos, 3);
+		super(map, pos, 8);
 		dimension = new Vector(1f);
 	}
 

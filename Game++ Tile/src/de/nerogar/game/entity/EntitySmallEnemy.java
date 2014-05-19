@@ -12,6 +12,11 @@ public class EntitySmallEnemy extends EntityEnemy {
 	}
 
 	@Override
+	public void recalcPath() {
+
+	}
+
+	@Override
 	public void update(float time) {
 		super.update(time);
 
@@ -30,4 +35,5 @@ public class EntitySmallEnemy extends EntityEnemy {
 			map.spawnEntity(new EntityEnergyDrop(map, getCenter()));
 		}
 	}
+
 }

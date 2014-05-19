@@ -19,8 +19,8 @@ public class Mage extends PlayerClass {
 		weaponUpgrades[1][1] = new IceSpikes(player, 5, 3.0f);
 		weaponUpgrades[1][2] = new IceSpikes(player, 5, 3.0f);
 
-		weaponUpgrades[2][0] = new SlowDownArea(player, 5, 3.0f);
-		weaponUpgrades[2][1] = new SlowDownArea(player, 5, 3.0f);
-		weaponUpgrades[2][2] = new SlowDownArea(player, 5, 3.0f);
+		weaponUpgrades[2][0] = new Trap(player, 5, 3.0f);
+		weaponUpgrades[2][1] = new Trap(player, 15, 3.0f);
+		weaponUpgrades[2][2] = new Trap(player, 25, 3.0f);
 	}
 }

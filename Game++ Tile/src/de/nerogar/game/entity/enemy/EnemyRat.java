@@ -8,11 +8,8 @@ import de.nerogar.game.pathfinder.Pathfinder;
 
 public class EnemyRat extends EntityEnemy {
 
-	private Entity targetPlayer;
 	private ArrayList<Position> path;
 	private int pathProgress;
-
-	private float nextRandomUpdate = 0f;
 
 	public EnemyRat(Map map, Vector pos) {
 		super(map, pos, new Vector(1.0f), 20, 1f);
@@ -21,19 +18,23 @@ public class EnemyRat extends EntityEnemy {
 	}
 
 	@Override
+	public void recalcPath() {
+		path = Pathfinder.getPath(map, getCenter().toPosition(), target.getCenter().toPosition());
+		if (path == null) {
+			target = map.getRandomPlayer();
+			path = Pathfinder.getPath(map, getCenter().toPosition(), target.getCenter().toPosition());
+		}
+		pathProgress = -1;
+	}
+
+	@Override
 	public void update(float time) {
 		super.update(time);
-		nextRandomUpdate -= time;
 
 		if (nextRandomUpdate < 0f) {
-			targetPlayer = map.getNearestPlayer(getCenter());
-			if (targetPlayer == null) return;
-			path = Pathfinder.getPath(map, getCenter().toPosition(), targetPlayer.getCenter().toPosition());
-			if (path == null) {
-				targetPlayer = map.getRandomPlayer();
-				path = Pathfinder.getPath(map, getCenter().toPosition(), targetPlayer.getCenter().toPosition());
-			}
-			pathProgress = -1;
+			target = map.getNearestPlayer(getCenter());
+			if (target == null) return;
+			recalcPath();
 			nextRandomUpdate = (float) (Math.random() * 10.0);
 		}
 
@@ -49,11 +50,11 @@ public class EnemyRat extends EntityEnemy {
 			move(dir.multiplied(speedmult));
 		}
 
-		if (intersects(targetPlayer)) {
-			damageEntity(targetPlayer, 1);
+		if (intersects(target)) {
+			damageEntity(target, 1);
 			if (Math.random() < 0.2) {
-				targetPlayer.poison = 2;
-				targetPlayer.poisonTime = 5f;
+				target.poison = 2;
+				target.poisonTime = 5f;
 			}
 
 		}

@@ -8,11 +8,8 @@ import de.nerogar.game.pathfinder.Pathfinder;
 
 public class EnemyBigSkeleton extends EntityEnemy {
 
-	private Entity targetPlayer;
 	private ArrayList<Position> path;
 	private int pathProgress;
-
-	private float nextRandomUpdate = 0f;
 
 	public EnemyBigSkeleton(Map map, Vector pos) {
 		super(map, pos, new Vector(1.5f), 100, 1f);
@@ -21,22 +18,27 @@ public class EnemyBigSkeleton extends EntityEnemy {
 	}
 
 	@Override
+	public void recalcPath() {
+		path = Pathfinder.getPath(map, getCenter().toPosition(), target.getCenter().toPosition());
+		if (path == null) {
+			target = map.getRandomPlayer();
+			path = Pathfinder.getPath(map, getCenter().toPosition(), target.getCenter().toPosition());
+		}
+		pathProgress = -1;
+	}
+
+	@Override
 	public void update(float time) {
 		super.update(time);
-		nextRandomUpdate -= time;
 
 		if (nextRandomUpdate < 0f) {
-			targetPlayer = map.getNearestPlayer(getCenter());
-			if (targetPlayer == null) return;
-			path = Pathfinder.getPath(map, getCenter().toPosition(), targetPlayer.getCenter().toPosition());
-			if (path == null) {
-				targetPlayer = map.getRandomPlayer();
-				path = Pathfinder.getPath(map, getCenter().toPosition(), targetPlayer.getCenter().toPosition());
-			}
-			pathProgress = -1;
+			target = map.getNearestPlayer(getCenter());
+			if (target == null) return;
+			recalcPath();
+
 			nextRandomUpdate = (float) (Math.random() * 10.0);
 
-			if (targetPlayer.pos.subtracted(pos).getValue() < 5f) path = null;
+			if (target.pos.subtracted(pos).getValue() < 5f) path = null;
 		}
 
 		if (path != null && pathProgress < path.size() - 1) {
@@ -49,15 +51,15 @@ public class EnemyBigSkeleton extends EntityEnemy {
 			}
 
 			move(dir.multiplied(speedmult));
-		} else if (path == null && targetPlayer != null) {
-			Vector dir = targetPlayer.pos.subtracted(pos);
+		} else if (path == null && target != null) {
+			Vector dir = target.pos.subtracted(pos);
 			dir.setValue(moveSpeed * time);
 
 			move(dir.multiplied(speedmult));
 		}
 
-		if (intersects(targetPlayer)) {
-			damageEntity(targetPlayer, 10);
+		if (intersects(target)) {
+			damageEntity(target, 10);
 		}
 	}
 
@@ -71,4 +73,5 @@ public class EnemyBigSkeleton extends EntityEnemy {
 			map.spawnEntity(new EnemySkeleton(map, pos.clone()));
 		}
 	}
+
 }

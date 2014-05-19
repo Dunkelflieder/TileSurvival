@@ -14,6 +14,11 @@ public class EnemyDump extends EntityEnemy {
 	}
 
 	@Override
+	public void recalcPath() {
+
+	}
+
+	@Override
 	public void update(float time) {
 		super.update(time);
 	}
