@@ -39,6 +39,7 @@ public class EntityExplosion extends EntityWeapon {
 
 		Sound explodeSound = new Sound(SoundCategory.EFFECT, "smallpuff1.ogg");
 		explodeSound.setPosition(getCenter());
+		explodeSound.randomizePitch(0.4f);
 		explodeSound.play();
 	}
 

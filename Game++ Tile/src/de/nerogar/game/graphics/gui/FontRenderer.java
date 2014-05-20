@@ -59,7 +59,6 @@ public class FontRenderer {
 	}
 
 	private static void drawChar(float tx1, float ty1, float tx2, float ty2, float sx1, float sy1, float sx2, float sy2) {
-		glColor3f(1.0f, 1.0f, 1.0f);
 		glBegin(GL_QUADS);
 
 		glTexCoord2f(sx1, sy1);

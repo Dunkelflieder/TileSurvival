@@ -18,6 +18,7 @@ public abstract class Weapon {
 	public int energyCost;
 
 	public int textureID;
+	public int level = 0;
 
 	public static float renderSize = Map.TILE_RENDER_SIZE;
 

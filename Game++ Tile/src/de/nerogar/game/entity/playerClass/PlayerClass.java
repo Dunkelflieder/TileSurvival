@@ -42,6 +42,7 @@ public abstract class PlayerClass {
 
 	public void setWeaponLevel(int weaponID, int level) {
 		weapons[weaponID] = weaponUpgrades[weaponID][level];
+		weapons[weaponID].level = level;
 	}
 
 	public Weapon getSelectedWeapon() {

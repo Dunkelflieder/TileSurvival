@@ -1,7 +1,5 @@
 package de.nerogar.game.entity;
 
-import java.util.Random;
-
 import de.nerogar.game.Map;
 import de.nerogar.game.Vector;
 import de.nerogar.game.graphics.Light;
@@ -71,8 +69,5 @@ public class EntityFireball extends EntityWeapon {
 	@Override
 	public void onDie() {
 		map.spawnEntity(new EntityExplosion(sender, map, getCenter(), 2f, health));
-		/*explodeSound.setPosition(getCenter());
-		explodeSound.randomizePitch(0.4f);
-		explodeSound.play();*/
 	}
 }
