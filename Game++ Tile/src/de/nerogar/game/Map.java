@@ -269,6 +269,7 @@ public class Map {
 					entity.speedmult = entityPositionsPacket.entitySpeedMults[i];
 					entity.maxHealth = Integer.MAX_VALUE;
 					entity.health = (int) (entityPositionsPacket.entityHealths[i] * Integer.MAX_VALUE);
+					entity.energy = (int) (entityPositionsPacket.entityEnergys[i] * Integer.MAX_VALUE);
 				}
 			}
 
@@ -292,6 +293,7 @@ public class Map {
 		float[] entitySpeedMults = new float[entities.size()];
 		int[] entityDirections = new int[entities.size()];
 		float[] entityHealths = new float[entities.size()];
+		float[] entityEnergys = new float[entities.size()];
 
 		int i = 0;
 		for (Entity entity : entities.values()) {
@@ -302,6 +304,7 @@ public class Map {
 			entitySpeedMults[i] = entity.speedmult;
 			entityDirections[i] = entity.facingDir;
 			entityHealths[i] = (float) entity.health / entity.maxHealth;
+			entityEnergys[i] = (float) entity.energy / entity.maxEnergy;
 			i++;
 		}
 
@@ -311,6 +314,7 @@ public class Map {
 		entityPositionsPacket.entitySpeedMults = entitySpeedMults;
 		entityPositionsPacket.entityDirections = entityDirections;
 		entityPositionsPacket.entityHealths = entityHealths;
+		entityPositionsPacket.entityEnergys = entityEnergys;
 
 		Game.game.server.broadcastData(entityPositionsPacket);
 	}

@@ -29,8 +29,10 @@ public class EnemyNekro extends EntityEnemy {
 			}
 		}
 
-		if (bones.size() > 0) return bones.get((int) (Math.random() * bones.size()));
-		else return null;
+		if (bones.size() > 0)
+			return bones.get((int) (Math.random() * bones.size()));
+		else
+			return null;
 	}
 
 	@Override
@@ -53,6 +55,7 @@ public class EnemyNekro extends EntityEnemy {
 			recalcPath();
 
 			nextRandomUpdate = (float) (Math.random() * 10.0);
+			System.out.println("random update, next in " + nextRandomUpdate);
 		}
 
 		if (path != null && pathProgress < path.size() - 1) {
