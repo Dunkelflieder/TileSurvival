@@ -7,7 +7,7 @@ public class Bomb extends Weapon {
 
 	public Bomb(Entity owner, int damage, float cooldown) {
 		super(owner, damage, cooldown, 5);
-		textureID = 8 * 1 + 0;
+		textureID = 8 * 1 + 1;
 	}
 
 	@Override
