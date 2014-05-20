@@ -38,6 +38,33 @@ public class MapLoader {
 		case 0x0a0a0a:
 			return Map.WALL_CROSS.id;// +
 
+		case 0x007800:
+			return Map.FENCE_V.id;
+		case 0x006400:
+			return Map.FENCE_H.id;
+		case 0x00b400:
+			return Map.FENCE_TD.id;
+		case 0x00c800:
+			return Map.FENCE_TU.id;
+		case 0x00dc00:
+			return Map.FENCE_TR.id;
+		case 0x000a00:
+			return Map.FENCE_DOOR_UL.id;
+		case 0x001e00:
+			return Map.FENCE_DOOR_UR.id;
+		case 0x001400:
+			return Map.FENCE_DOOR_DL.id;
+		case 0x002800:
+			return Map.FENCE_DOOR_DR.id;
+		case 0x003200:
+			return Map.FENCE_DOOR_RU.id;
+		case 0x004600:
+			return Map.FENCE_DOOR_RD.id;
+		case 0x005000:
+			return Map.FENCE_DOOR_LD.id;
+		case 0x003c00:
+			return Map.FENCE_DOOR_LU.id;
+
 		case 0xf00000:
 			return Map.FLOOR.id;//bones
 
