@@ -12,12 +12,12 @@ public class Mage extends PlayerClass {
 	@Override
 	protected void initWeaponsUpgrades() {
 		weaponUpgrades[0][0] = new Fireball(player, 5, 3.0f);
-		weaponUpgrades[0][1] = new Fireball(player, 5, 3.0f);
-		weaponUpgrades[0][2] = new Fireball(player, 5, 3.0f);
+		weaponUpgrades[0][1] = new Fireball(player, 15, 3.0f);
+		weaponUpgrades[0][2] = new Fireball(player, 25, 3.0f);
 
-		weaponUpgrades[1][0] = new IceSpikes(player, 5, 3.0f);
-		weaponUpgrades[1][1] = new IceSpikes(player, 5, 3.0f);
-		weaponUpgrades[1][2] = new IceSpikes(player, 5, 3.0f);
+		weaponUpgrades[1][0] = new IceSpikes(player, 2, 3.0f);
+		weaponUpgrades[1][1] = new IceSpikes(player, 7, 3.0f);
+		weaponUpgrades[1][2] = new IceSpikes(player, 15, 3.0f);
 
 		weaponUpgrades[2][0] = new Trap(player, 5, 3.0f);
 		weaponUpgrades[2][1] = new Trap(player, 15, 3.0f);
