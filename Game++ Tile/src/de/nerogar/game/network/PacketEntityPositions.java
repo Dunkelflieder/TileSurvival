@@ -26,7 +26,8 @@ public class PacketEntityPositions extends Packet {
 		data.addFloat("s", entityMoveSpeeds);
 		data.addFloat("sm", entitySpeedMults);
 		data.addInt("d", entityDirections);
-		data.addFloat("h", entityHealths);data.addFloat("e", entityEnergys);
+		data.addFloat("h", entityHealths);
+		data.addFloat("e", entityEnergys);
 
 		packedData = data.toByteArray();
 	}
@@ -47,7 +48,7 @@ public class PacketEntityPositions extends Packet {
 		entityDirections = data.getIntArray("d");
 		entityHealths = data.getFloatArray("h");
 		entityEnergys = data.getFloatArray("e");
-		
+
 	}
 
 	@Override

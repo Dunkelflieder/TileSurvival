@@ -273,6 +273,7 @@ public class Map {
 					entity.speedmult = entityPositionsPacket.entitySpeedMults[i];
 					entity.maxHealth = Integer.MAX_VALUE;
 					entity.health = (int) (entityPositionsPacket.entityHealths[i] * Integer.MAX_VALUE);
+					entity.maxEnergy = Integer.MAX_VALUE;
 					entity.energy = (int) (entityPositionsPacket.entityEnergys[i] * Integer.MAX_VALUE);
 				}
 			}
