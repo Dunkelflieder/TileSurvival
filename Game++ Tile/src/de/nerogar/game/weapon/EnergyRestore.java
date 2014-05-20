@@ -22,7 +22,6 @@ public class EnergyRestore extends Weapon {
 				}
 			}
 		}
-		owner.health = Math.min(owner.health + damage, owner.maxHealth);
 	}
 
 	@Override

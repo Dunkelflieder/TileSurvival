@@ -18,13 +18,10 @@ public class Heal extends Weapon {
 			if (entity.faction == owner.faction && !(entity instanceof EntityWeapon)) {
 				float entityDist = owner.getCenter().subtract(entity.getCenter()).getValue();
 				if (entityDist <= MAX_RESTORE_DISTANCE) {
-					if (entity.health < entity.maxHealth) entity.health += damage;
-
-					if (entity.health > entity.maxHealth) entity.health = entity.maxHealth;
+					processEffect(entity);
 				}
 			}
 		}
-		owner.health = Math.min(owner.health + damage, owner.maxHealth);
 	}
 
 	@Override

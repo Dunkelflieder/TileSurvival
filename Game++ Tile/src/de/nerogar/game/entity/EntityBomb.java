@@ -11,6 +11,7 @@ public class EntityBomb extends EntityWeapon {
 
 	public EntityBomb(Map map, Vector pos) {
 		super(map, pos);
+		dimension = new Vector(1f);
 		init();
 	}
 
