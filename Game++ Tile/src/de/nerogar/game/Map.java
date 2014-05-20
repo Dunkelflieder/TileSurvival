@@ -13,6 +13,7 @@ import org.lwjgl.opengl.Display;
 import de.nerogar.game.entity.*;
 import de.nerogar.game.entity.playerClass.PlayerClass;
 import de.nerogar.game.graphics.*;
+import de.nerogar.game.graphics.gui.FontRenderer;
 import de.nerogar.game.graphics.gui.GuiBank;
 import de.nerogar.game.network.*;
 import de.nerogar.game.pathfinder.Pathfinder;
@@ -56,8 +57,8 @@ public class Map {
 	public static final Tile FENCE_DOOR_LU = new Tile(31, false);
 
 	public static final Tile[] TILES = new Tile[] { FLOOR, ROCK, TREE, TORCH, CHEST, OPEN_CHEST, DOOR, DOOR_OPEN, //
-	WALL_V, WALL_H, WALL_TR, WALL_TU, WALL_TD, WALL_TL, WALL_RU, WALL_RD, WALL_LU, WALL_LD, WALL_CROSS,//
-	FENCE_V, FENCE_H, FENCE_TD, FENCE_TU, FENCE_TR, FENCE_DOOR_UL, FENCE_DOOR_UR, FENCE_DOOR_DL, FENCE_DOOR_DR, FENCE_DOOR_RU, FENCE_DOOR_RD, FENCE_DOOR_LD, FENCE_DOOR_LU };
+			WALL_V, WALL_H, WALL_TR, WALL_TU, WALL_TD, WALL_TL, WALL_RU, WALL_RD, WALL_LU, WALL_LD, WALL_CROSS,//
+			FENCE_V, FENCE_H, FENCE_TD, FENCE_TU, FENCE_TR, FENCE_DOOR_UL, FENCE_DOOR_UR, FENCE_DOOR_DL, FENCE_DOOR_DR, FENCE_DOOR_RU, FENCE_DOOR_RD, FENCE_DOOR_LD, FENCE_DOOR_LU };
 
 	//texture
 	public static final float TILE_RENDER_SIZE = 64f;
@@ -376,6 +377,10 @@ public class Map {
 		for (Entity entity : entities.values()) {
 			entity.renderAfterShader();
 		}
+
+		glColor3f(1, 0, 0);
+		FontRenderer.drawString("Wave: " + getWave(), 32f, 32f, Game.game.WIDTH - 64f, 16f, FontRenderer.LEFT);
+		glColor3f(1, 1, 1);
 
 	}
 

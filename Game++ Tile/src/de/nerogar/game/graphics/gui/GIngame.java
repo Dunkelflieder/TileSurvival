@@ -1,5 +1,7 @@
 package de.nerogar.game.graphics.gui;
 
+import static org.lwjgl.opengl.GL11.glColor3f;
+
 import de.nerogar.game.Game;
 import de.nerogar.game.Vector;
 import de.nerogar.game.entity.EntityPlayer;
@@ -31,6 +33,11 @@ public class GIngame extends Gui {
 		for (int i = 0; i < weapons.length; i++) {
 			Weapon w = weapons[i];
 			w.render(posX + i * (8f + Weapon.renderSize), posY);
+			if (w.level > 0) {
+				glColor3f(0, 1, 0);
+				FontRenderer.drawString("+" + w.level, posX + i * (8f + Weapon.renderSize) + 4, posY + Weapon.renderSize - 16f, 64f, 12f, FontRenderer.LEFT);
+				glColor3f(1, 1, 1);
+			}
 		}
 	}
 

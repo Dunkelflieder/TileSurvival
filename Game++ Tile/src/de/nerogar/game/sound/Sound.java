@@ -192,7 +192,6 @@ public class Sound {
 
 	public void randomizePitch(float f) {
 		setPitch((1 - 0.5f * f) + random.nextFloat() * f);
-		System.out.println("randomized pitch to " + getPitch() + " with derivation " + f);
 	}
 
 }
