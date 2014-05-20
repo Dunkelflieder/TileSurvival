@@ -178,6 +178,7 @@ public class Map {
 			updating = true;
 			for (Entity entity : entities.values()) {
 				entity.update(time);
+				if (entity instanceof EntityPlayer) ((EntityPlayer) entity).updateStats(time);
 			}
 			updating = false;
 
