@@ -22,7 +22,7 @@ public abstract class EntityEnemy extends Entity {
 		faction = FACTION_MOB;
 	}
 
-	public void damageEntity(Entity target, int damage) {
+	public void damageEntity(Entity target, float damage) {
 		if (damageCooldown < 0) {
 			damageCooldown = maxDamageCooldown;
 			target.damage((int) (damage * getLevelMult(level)));
@@ -38,7 +38,7 @@ public abstract class EntityEnemy extends Entity {
 
 	public abstract void recalcPath();
 
-	private static float getLevelMult(int level) {
+	public static float getLevelMult(int level) {
 		return (float) Math.sqrt((double) level * 0.8);
 	}
 

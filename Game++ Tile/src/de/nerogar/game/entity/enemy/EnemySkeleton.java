@@ -52,7 +52,7 @@ public class EnemySkeleton extends EntityEnemy {
 		}
 
 		if (intersects(target)) {
-			damageEntity(target, 3);
+			damageEntity(target, 5);
 		}
 	}
 
