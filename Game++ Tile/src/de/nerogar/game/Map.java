@@ -246,9 +246,12 @@ public class Map {
 
 			if (entity != null && entity instanceof EntityPlayer) {
 				EntityPlayer playerEntity = (EntityPlayer) entity;
-				playerEntity.getPlayerClass().selectWeapon(activateWeaponPacket.selectedWeapon);
-				playerEntity.getSelectedWeapon().start(new Vector(activateWeaponPacket.targetPosition[0], activateWeaponPacket.targetPosition[1]));
-				playerEntity.getPlayerClass().setCurrentWeaponUsed();
+				if (playerEntity.getPlayerClass().getSelectedWeapon().energyCost <= playerEntity.energy) {
+					playerEntity.energy -= playerEntity.getPlayerClass().getSelectedWeapon().energyCost;
+					playerEntity.getPlayerClass().selectWeapon(activateWeaponPacket.selectedWeapon);
+					playerEntity.getSelectedWeapon().start(new Vector(activateWeaponPacket.targetPosition[0], activateWeaponPacket.targetPosition[1]));
+					playerEntity.getPlayerClass().setCurrentWeaponUsed();
+				}
 			}
 
 		}
