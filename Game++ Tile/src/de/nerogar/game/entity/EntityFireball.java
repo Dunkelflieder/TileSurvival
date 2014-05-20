@@ -1,5 +1,7 @@
 package de.nerogar.game.entity;
 
+import java.util.Random;
+
 import de.nerogar.game.Map;
 import de.nerogar.game.Vector;
 import de.nerogar.game.graphics.Light;
@@ -48,8 +50,10 @@ public class EntityFireball extends EntityWeapon {
 		light = new Light(new Vector(), 2, 0.8f);
 		explodeSound = new Sound(SoundCategory.EFFECT, "smallpuff1.ogg");
 		Sound fireball_throw = new Sound(SoundCategory.EFFECT, "fireball_throw1.ogg");
+
 		fireball_throw.setGain(0.2f);
 		fireball_throw.setPosition(getCenter());
+		fireball_throw.randomizePitch(0.4f);
 		fireball_throw.play();
 	}
 
@@ -71,6 +75,7 @@ public class EntityFireball extends EntityWeapon {
 	public void onDie() {
 		map.spawnEntity(new EntityExplosion(sender, map, getCenter(), 2f, health));
 		explodeSound.setPosition(getCenter());
+		explodeSound.randomizePitch(0.4f);
 		explodeSound.play();
 	}
 }

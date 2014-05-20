@@ -106,12 +106,9 @@ public class Sound {
 		setPitch(pitch);
 		setPosition(position);
 		setVelocity(velocity);
-		if (isPlaying())
-			play();
-		if (isPaused())
-			pause();
-		if (isStopped())
-			stop();
+		if (isPlaying()) play();
+		if (isPaused()) pause();
+		if (isStopped()) stop();
 	}
 
 	public ALBuffer[] getBuffers() {
@@ -153,7 +150,7 @@ public class Sound {
 		this.gain = gain;
 		updateGain();
 	}
-	
+
 	public void updateGain() {
 		getSource().setGain(gain * category.getGain());
 	}
@@ -191,6 +188,11 @@ public class Sound {
 
 	public void setCategory(SoundCategory category) {
 		this.category = category;
+	}
+
+	public void randomizePitch(float f) {
+		setPitch((1 - 0.5f * f) + random.nextFloat() * f);
+		System.out.println("randomized pitch to " + getPitch() + " with derivation " + f);
 	}
 
 }
