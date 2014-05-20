@@ -87,6 +87,7 @@ public abstract class Weapon {
 		glEnd();
 
 		glColor3f(1.0f, 1.0f, 1.0f);
+
 		glEnable(GL11.GL_TEXTURE_2D);
 
 	}

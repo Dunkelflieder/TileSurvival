@@ -45,8 +45,8 @@ public class EntityTeamRestore extends EntityWeapon {
 				if (entity.faction == faction && !(entity instanceof EntityWeapon)) {
 					float entityDist = getCenter().subtract(entity.getCenter()).getValue();
 					if (entityDist <= MAX_RESTORE_DISTANCE) {
-						if (entity.health < entity.maxHealth) entity.health += 5;
-						if (entity.energy < entity.maxEnergy) entity.energy += 5;
+						if (entity.health < entity.maxHealth) entity.health += health;
+						if (entity.energy < entity.maxEnergy) entity.energy += health;
 
 						if (entity.health > entity.maxHealth) entity.health = entity.maxHealth;
 						if (entity.energy > entity.maxEnergy) entity.energy = entity.maxEnergy;

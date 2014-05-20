@@ -14,7 +14,7 @@ public class EnemyNekro extends EntityEnemy {
 	private float nextSpawn;
 
 	public EnemyNekro(Map map, Vector pos) {
-		super(map, pos, new Vector(1.0f), 50, 1f);
+		super(map, pos, new Vector(1.0f), 20, 1f);
 		moveSpeed = 3.0f;
 		textureID = 16 * 3;
 

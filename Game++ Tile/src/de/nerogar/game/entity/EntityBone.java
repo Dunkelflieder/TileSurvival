@@ -7,9 +7,9 @@ import de.nerogar.game.graphics.Light;
 public class EntityBone extends Entity {
 
 	public EntityBone(Map map, Vector pos) {
-		super(map, pos, new Vector(0.3f), 0, false);
+		super(map, pos, new Vector(1.0f), 1, false);
 		resistDamage = true;
-		textureID = 16 * 15 + 2;
+		textureID = 16 * 15 + 3;
 
 		light = new Light(pos, 3f, 0.5f);
 	}

@@ -41,8 +41,23 @@ public class Map {
 	public static final Tile WALL_LD = new Tile(17, true);
 	public static final Tile WALL_CROSS = new Tile(18, true);
 
+	public static final Tile FENCE_V = new Tile(19, true);
+	public static final Tile FENCE_H = new Tile(20, true);
+	public static final Tile FENCE_TD = new Tile(21, true);
+	public static final Tile FENCE_TU = new Tile(22, true);
+	public static final Tile FENCE_TR = new Tile(23, true);
+	public static final Tile FENCE_DOOR_UL = new Tile(24, false);
+	public static final Tile FENCE_DOOR_UR = new Tile(25, false);
+	public static final Tile FENCE_DOOR_DL = new Tile(26, false);
+	public static final Tile FENCE_DOOR_DR = new Tile(27, false);
+	public static final Tile FENCE_DOOR_RU = new Tile(28, false);
+	public static final Tile FENCE_DOOR_RD = new Tile(29, false);
+	public static final Tile FENCE_DOOR_LD = new Tile(30, false);
+	public static final Tile FENCE_DOOR_LU = new Tile(31, false);
+
 	public static final Tile[] TILES = new Tile[] { FLOOR, ROCK, TREE, TORCH, CHEST, OPEN_CHEST, DOOR, DOOR_OPEN, //
-			WALL_V, WALL_H, WALL_TR, WALL_TU, WALL_TD, WALL_TL, WALL_RU, WALL_RD, WALL_LU, WALL_LD, WALL_CROSS };
+	WALL_V, WALL_H, WALL_TR, WALL_TU, WALL_TD, WALL_TL, WALL_RU, WALL_RD, WALL_LU, WALL_LD, WALL_CROSS,//
+	FENCE_V, FENCE_H, FENCE_TD, FENCE_TU, FENCE_TR, FENCE_DOOR_UL, FENCE_DOOR_UR, FENCE_DOOR_DL, FENCE_DOOR_DR, FENCE_DOOR_RU, FENCE_DOOR_RD, FENCE_DOOR_LD, FENCE_DOOR_LU };
 
 	//texture
 	public static final float TILE_RENDER_SIZE = 64f;
@@ -60,7 +75,6 @@ public class Map {
 	private HashMap<Integer, Entity> entities;
 	private ArrayList<Entity> newEntities;
 	private boolean updating;
-	private float playTime;
 	private Wave wave;
 	private ArrayList<Light> lights;
 	private final int MAX_LIGHTS = 100;
@@ -145,7 +159,6 @@ public class Map {
 
 	public void update(float time) {
 		if (worldType == SERVER_WORLD) {
-			playTime += time;
 
 			for (Entity entity : getEntities()) {
 				if (entity.removed) {
@@ -530,6 +543,10 @@ public class Map {
 			if (entity != targetEntity && entity.intersects(targetEntity)) entityList.add(targetEntity);
 		}
 		return entityList;
+	}
+
+	public int getWave() {
+		return wave.wave;
 	}
 
 }

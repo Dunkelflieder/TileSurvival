@@ -59,7 +59,7 @@ public class EnemyBigSkeleton extends EntityEnemy {
 		}
 
 		if (intersects(target)) {
-			damageEntity(target, 10);
+			damageEntity(target, 15);
 		}
 	}
 

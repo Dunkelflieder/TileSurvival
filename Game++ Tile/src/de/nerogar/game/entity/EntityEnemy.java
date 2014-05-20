@@ -13,16 +13,19 @@ public abstract class EntityEnemy extends Entity {
 	public Entity target;
 	public float nextRandomUpdate;
 
+	public int level;
+
 	public EntityEnemy(Map map, Vector pos, Vector dimension, int health, float damageCooldown) {
-		super(map, pos, dimension, health, true);
+		super(map, pos, dimension, (int) (health * getLevelMult(map.getWave())), true);
 		this.maxDamageCooldown = damageCooldown;
+		this.level = map.getWave();
 		faction = FACTION_MOB;
 	}
 
-	public void damageEntity(Entity target, int damage) {
+	public void damageEntity(Entity target, float damage) {
 		if (damageCooldown < 0) {
 			damageCooldown = maxDamageCooldown;
-			target.damage(damage);
+			target.damage((int) (damage * getLevelMult(level)));
 		}
 	}
 
@@ -34,6 +37,10 @@ public abstract class EntityEnemy extends Entity {
 	}
 
 	public abstract void recalcPath();
+
+	public static float getLevelMult(int level) {
+		return (float) Math.sqrt((double) level * 0.8);
+	}
 
 	@Override
 	public void renderAfterShader() {

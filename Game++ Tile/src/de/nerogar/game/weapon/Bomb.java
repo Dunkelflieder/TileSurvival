@@ -3,17 +3,17 @@ package de.nerogar.game.weapon;
 import de.nerogar.game.Vector;
 import de.nerogar.game.entity.*;
 
-public class GuardTower extends Weapon {
+public class Bomb extends Weapon {
 
-	public GuardTower(Entity owner, int damage, float cooldown) {
-		super(owner, damage, cooldown, 30);
-		textureID = 8 * 1 + 0;
+	public Bomb(Entity owner, int damage, float cooldown) {
+		super(owner, damage, cooldown, 20);
+		textureID = 8 * 1 + 1;
 	}
 
 	@Override
 	public void start(Vector target) {
-		EntityGuardTower guardTowerEntity = new EntityGuardTower(owner, owner.map, target, damage);
-		owner.map.spawnEntity(guardTowerEntity);
+		EntityBomb bombEntity = new EntityBomb(owner, owner.map, target, damage);
+		owner.map.spawnEntity(bombEntity);
 	}
 
 	@Override

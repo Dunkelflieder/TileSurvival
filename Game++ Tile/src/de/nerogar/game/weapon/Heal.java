@@ -8,7 +8,7 @@ public class Heal extends Weapon {
 	public float MAX_RESTORE_DISTANCE = 5.0f;
 
 	public Heal(Entity owner, int damage, float cooldown) {
-		super(owner, damage, cooldown, 20);
+		super(owner, damage, cooldown, 40);
 		textureID = 8 * 3 + 0;
 	}
 

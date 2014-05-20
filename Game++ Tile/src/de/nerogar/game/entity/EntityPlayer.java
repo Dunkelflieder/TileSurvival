@@ -1,5 +1,7 @@
 package de.nerogar.game.entity;
 
+import static org.lwjgl.opengl.GL11.glColor3f;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -91,6 +93,7 @@ public class EntityPlayer extends Entity {
 				if (client == null) getPlayerClass().getSelectedWeapon().start(target);
 				energy -= getPlayerClass().getSelectedWeapon().energyCost;
 				weapon.cooldown = weapon.maxCooldown;
+				playerClass.setCurrentWeaponUsed();
 
 				if (client != null) {
 					PacketActivateWeapon activateWeaponPacket = new PacketActivateWeapon();
@@ -130,4 +133,17 @@ public class EntityPlayer extends Entity {
 	public void setPlayerClass(PlayerClass playerClass) {
 		this.playerClass = playerClass;
 	}
+
+	@Override
+	public void renderAfterShader() {
+
+		float healthPercent = (float) health / maxHealth;
+		glColor3f(0.0f, 0.1f, 0.1f);
+		RenderHelper.renderLine((pos.getX() - map.getOffsX()) * Map.TILE_RENDER_SIZE, (pos.getY() - map.getOffsY()) * Map.TILE_RENDER_SIZE, (pos.getX() - map.getOffsX() + dimension.getX()) * Map.TILE_RENDER_SIZE, (pos.getY() - map.getOffsY()) * Map.TILE_RENDER_SIZE, 2);
+		glColor3f(0.0f, 0.5f, 0.0f);
+		RenderHelper.renderLine((pos.getX() - map.getOffsX()) * Map.TILE_RENDER_SIZE, (pos.getY() - map.getOffsY()) * Map.TILE_RENDER_SIZE, (pos.getX() - map.getOffsX() + dimension.getX() * healthPercent) * Map.TILE_RENDER_SIZE, (pos.getY() - map.getOffsY()) * Map.TILE_RENDER_SIZE, 2);
+		glColor3f(1, 1, 1);
+
+	}
+
 }

@@ -51,9 +51,9 @@ public class EnemyRat extends EntityEnemy {
 		}
 
 		if (intersects(target)) {
-			damageEntity(target, 1);
+			damageEntity(target, 3);
 			if (Math.random() < 0.2) {
-				target.poison = 2;
+				target.poison = (int) (5 * getLevelMult(level));
 				target.poisonTime = 5f;
 			}
 

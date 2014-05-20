@@ -6,14 +6,14 @@ import de.nerogar.game.weapon.*;
 public class Healer extends PlayerClass {
 
 	public Healer(EntityPlayer player) {
-		super(player, 100, 100, 3.0f, 4);
+		super(player, 100, 100, 3.5f, 4);
 	}
 
 	@Override
 	protected void initWeaponsUpgrades() {
 		weaponUpgrades[0][0] = new Heal(player, 20, 3.0f);
 		weaponUpgrades[0][1] = new Heal(player, 40, 3.0f);
-		weaponUpgrades[0][2] = new Heal(player, 60, 3.0f);
+		weaponUpgrades[0][2] = new Heal(player, 60, 2.5f);
 
 		weaponUpgrades[1][0] = new EnergyRestore(player, 15, 3.0f);
 		weaponUpgrades[1][1] = new EnergyRestore(player, 25, 3.0f);

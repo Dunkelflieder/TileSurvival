@@ -6,7 +6,7 @@ import de.nerogar.game.entity.*;
 public class SlowDownArea extends Weapon {
 
 	public SlowDownArea(Entity owner, int damage, float cooldown) {
-		super(owner, damage, cooldown, 15);
+		super(owner, damage, cooldown, 20);
 		textureID = 8 * 0 + 7;
 	}
 

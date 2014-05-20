@@ -40,11 +40,11 @@ public class Wave {
 		}
 
 		for (int i = 0; i < 10; i++) {
-			map.spawnEntity(new EnemyBigSkeleton(map, getRandomSpawnLocation()));
+			//map.spawnEntity(new EnemyBigSkeleton(map, getRandomSpawnLocation()));
 		}
 
 		for (int i = 0; i < 10; i++) {
-			map.spawnEntity(new EnemyGhost(map, getRandomSpawnLocation()));
+			//map.spawnEntity(new EnemyGhost(map, getRandomSpawnLocation()));
 		}
 	}
 }

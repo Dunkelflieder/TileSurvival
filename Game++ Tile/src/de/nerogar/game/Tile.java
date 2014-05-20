@@ -11,10 +11,10 @@ public class Tile {
 		this.collide = collide;
 		this.cost = cost;
 	}
-	
+
 	public Tile(int id, boolean collide) {
 		this.id = id;
 		this.collide = collide;
-		this.cost = -1;
+		this.cost = collide ? -1 : 1;
 	}
 }

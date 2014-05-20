@@ -1,15 +1,16 @@
 package de.nerogar.game.entity;
 
+import static org.lwjgl.opengl.GL11.glColor3f;
+
 import java.util.ArrayList;
 
-import de.nerogar.game.Map;
-import de.nerogar.game.Vector;
+import de.nerogar.game.*;
 import de.nerogar.game.graphics.Light;
 
 public class EntityTrap extends EntityWeapon {
 
 	private int hitCount;
-	private int maxHitcount = 2;
+	private int maxHitcount = 10;
 	private ArrayList<Entity> hitEntities;
 
 	public EntityTrap(Map map, Vector pos) {
@@ -54,5 +55,19 @@ public class EntityTrap extends EntityWeapon {
 
 	@Override
 	public void onDie() {
+
 	}
+
+	@Override
+	public void renderAfterShader() {
+
+		float hitTime = (float) hitCount / (float) maxHitcount;
+		glColor3f(0.0f, 0.1f, 0.1f);
+		RenderHelper.renderLine((pos.getX() - map.getOffsX()) * Map.TILE_RENDER_SIZE, (pos.getY() - map.getOffsY()) * Map.TILE_RENDER_SIZE, (pos.getX() - map.getOffsX() + dimension.getX()) * Map.TILE_RENDER_SIZE, (pos.getY() - map.getOffsY()) * Map.TILE_RENDER_SIZE, 2);
+		glColor3f(0.2f, 0.2f, 0.8f);
+		RenderHelper.renderLine((pos.getX() - map.getOffsX()) * Map.TILE_RENDER_SIZE, (pos.getY() - map.getOffsY()) * Map.TILE_RENDER_SIZE, (pos.getX() - map.getOffsX() + dimension.getX() * hitTime) * Map.TILE_RENDER_SIZE, (pos.getY() - map.getOffsY()) * Map.TILE_RENDER_SIZE, 2);
+		glColor3f(1, 1, 1);
+
+	}
+
 }

@@ -3,6 +3,8 @@ package de.nerogar.game.entity;
 import de.nerogar.game.Map;
 import de.nerogar.game.Vector;
 import de.nerogar.game.graphics.Light;
+import de.nerogar.game.sound.Sound;
+import de.nerogar.game.sound.SoundCategory;
 
 public class EntityExplosion extends EntityWeapon {
 
@@ -34,6 +36,10 @@ public class EntityExplosion extends EntityWeapon {
 	private void init() {
 		textureID = 16 * 15 + 1;
 		light = new Light(new Vector(), 20f, 5f);
+
+		Sound explodeSound = new Sound(SoundCategory.EFFECT, "smallpuff1.ogg");
+		explodeSound.setPosition(getCenter());
+		explodeSound.play();
 	}
 
 	public boolean intersects(Vector entityPos) {
