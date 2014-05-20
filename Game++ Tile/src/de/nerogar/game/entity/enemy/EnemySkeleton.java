@@ -12,7 +12,7 @@ public class EnemySkeleton extends EntityEnemy {
 	private int pathProgress;
 
 	public EnemySkeleton(Map map, Vector pos) {
-		super(map, pos, new Vector(1.0f), 20, 1f);
+		super(map, pos, new Vector(1.0f), 5, 1f);
 		moveSpeed = 2.0f;
 		textureID = 16 * 2;
 	}

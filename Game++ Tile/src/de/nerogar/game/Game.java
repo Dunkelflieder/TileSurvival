@@ -80,6 +80,11 @@ public class Game {
 		GuiBank.render();
 	}
 
+	public void cleanup() {
+		if (server != null) server.stopServer();
+		if (client != null) client.stopClient();
+	}
+
 	public static void main(String[] args) {
 		if (args.length > 0) {
 			Game.host = args[0];
@@ -87,11 +92,6 @@ public class Game {
 
 		game = new Game();
 		game.run();
-	}
-
-	public void cleanup() {
-		if (server != null) server.stopServer();
-		if (client != null) client.stopClient();
 	}
 
 }

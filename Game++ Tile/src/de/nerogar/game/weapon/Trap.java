@@ -6,7 +6,7 @@ import de.nerogar.game.entity.*;
 public class Trap extends Weapon {
 
 	public Trap(Entity owner, int damage, float cooldown) {
-		super(owner, damage, cooldown, 5);
+		super(owner, damage, cooldown, 30);
 		textureID = 8 * 2 + 0;
 	}
 

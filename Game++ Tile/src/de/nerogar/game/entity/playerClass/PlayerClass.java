@@ -8,6 +8,7 @@ public abstract class PlayerClass {
 	protected EntityPlayer player;
 	protected Weapon[][] weaponUpgrades;
 	public Weapon[] weapons;
+	public int[] weaponUses;
 	public int selectedWeapon;
 	public int maxHealth;
 	public int maxEnergy;
@@ -28,6 +29,7 @@ public abstract class PlayerClass {
 		player.maxHealth = maxHealth;
 		player.moveSpeed = moveSpeed;
 		this.weaponUpgrades = new Weapon[3][3];//3 weapons, 3 level
+		weaponUses = new int[3];
 		player.textureID = textureID;
 		initWeaponsUpgrades();
 
@@ -67,6 +69,13 @@ public abstract class PlayerClass {
 		}
 	}
 
+	public void setCurrentWeaponUsed() {
+		weaponUses[selectedWeapon]++;
+		if (weaponUses[selectedWeapon] > 0) setWeaponLevel(selectedWeapon, 0);
+		if (weaponUses[selectedWeapon] > 10) setWeaponLevel(selectedWeapon, 1);
+		if (weaponUses[selectedWeapon] > 50) setWeaponLevel(selectedWeapon, 2);
+	}
+
 	public static PlayerClass getInstanceByID(int id, EntityPlayer player) {
 		switch (id) {
 		case ENGINEER:
@@ -80,4 +89,5 @@ public abstract class PlayerClass {
 		}
 		return null;
 	}
+
 }

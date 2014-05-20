@@ -75,7 +75,6 @@ public class Map {
 	private HashMap<Integer, Entity> entities;
 	private ArrayList<Entity> newEntities;
 	private boolean updating;
-	private float playTime;
 	private Wave wave;
 	private ArrayList<Light> lights;
 	private final int MAX_LIGHTS = 100;
@@ -160,7 +159,6 @@ public class Map {
 
 	public void update(float time) {
 		if (worldType == SERVER_WORLD) {
-			playTime += time;
 
 			for (Entity entity : getEntities()) {
 				if (entity.removed) {
@@ -545,6 +543,10 @@ public class Map {
 			if (entity != targetEntity && entity.intersects(targetEntity)) entityList.add(targetEntity);
 		}
 		return entityList;
+	}
+
+	public int getWave() {
+		return wave.wave;
 	}
 
 }

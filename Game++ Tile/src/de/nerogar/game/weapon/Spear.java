@@ -6,7 +6,7 @@ import de.nerogar.game.entity.*;
 public class Spear extends Weapon {
 
 	public Spear(Entity owner, int damage, float cooldown) {
-		super(owner, damage, cooldown, 5);
+		super(owner, damage, cooldown, 0);
 		textureID = 8 * 0 + 1;
 	}
 

@@ -6,7 +6,7 @@ import de.nerogar.game.entity.*;
 public class IceSpikes extends Weapon {
 
 	public IceSpikes(Entity owner, int damage, float cooldown) {
-		super(owner, damage, cooldown, 5);
+		super(owner, damage, cooldown, 10);
 		textureID = 8 * 2 + 1;
 	}
 

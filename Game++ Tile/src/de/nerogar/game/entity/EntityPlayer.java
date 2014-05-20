@@ -93,6 +93,7 @@ public class EntityPlayer extends Entity {
 				if (client == null) getPlayerClass().getSelectedWeapon().start(target);
 				energy -= getPlayerClass().getSelectedWeapon().energyCost;
 				weapon.cooldown = weapon.maxCooldown;
+				playerClass.setCurrentWeaponUsed();
 
 				if (client != null) {
 					PacketActivateWeapon activateWeaponPacket = new PacketActivateWeapon();

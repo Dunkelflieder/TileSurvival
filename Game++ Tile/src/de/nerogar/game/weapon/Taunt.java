@@ -8,7 +8,7 @@ public class Taunt extends Weapon {
 	public float MAX_RESTORE_DISTANCE = 10.0f;
 
 	public Taunt(Entity owner, int damage, float cooldown) {
-		super(owner, damage, cooldown, 20);
+		super(owner, damage, cooldown, 30);
 		textureID = 8 * 0 + 2;
 	}
 
