@@ -106,7 +106,7 @@ public class EntityPlayer extends Entity {
 			}
 		}
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
+		if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
 			getPlayerClass().activateWeaponDebugTimes();
 		}
 

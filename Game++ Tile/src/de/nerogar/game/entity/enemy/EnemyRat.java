@@ -12,7 +12,7 @@ public class EnemyRat extends EntityEnemy {
 	private int pathProgress;
 
 	public EnemyRat(Map map, Vector pos) {
-		super(map, pos, new Vector(1.0f), 20, 1f);
+		super(map, pos, new Vector(1.0f), 8, 1f);
 		moveSpeed = 3.0f;
 		textureID = 16;
 	}

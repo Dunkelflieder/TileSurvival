@@ -7,7 +7,7 @@ public class Trap extends Weapon {
 
 	public Trap(Entity owner, int damage, float cooldown) {
 		super(owner, damage, cooldown, 30);
-		textureID = 8 * 2 + 0;
+		textureID = 8 * 2 + 2;
 	}
 
 	@Override

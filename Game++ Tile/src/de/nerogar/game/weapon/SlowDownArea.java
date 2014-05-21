@@ -7,7 +7,7 @@ public class SlowDownArea extends Weapon {
 
 	public SlowDownArea(Entity owner, int damage, float cooldown) {
 		super(owner, damage, cooldown, 20);
-		textureID = 8 * 0 + 7;
+		textureID = 8 * 0 + 1;
 	}
 
 	@Override

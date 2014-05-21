@@ -7,7 +7,7 @@ public class Spear extends Weapon {
 
 	public Spear(Entity owner, int damage, float cooldown) {
 		super(owner, damage, cooldown, 0);
-		textureID = 8 * 0 + 1;
+		textureID = 8 * 0 + 0;
 	}
 
 	@Override
