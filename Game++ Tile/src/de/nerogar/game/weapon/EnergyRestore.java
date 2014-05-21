@@ -4,12 +4,11 @@ import de.nerogar.game.Vector;
 import de.nerogar.game.entity.*;
 import de.nerogar.game.sound.Sound;
 import de.nerogar.game.sound.SoundCategory;
+import de.nerogar.game.sound.SoundManager;
 
 public class EnergyRestore extends Weapon {
 
 	public float MAX_RESTORE_DISTANCE = 5.0f;
-	
-	private Sound activateSound = new Sound(SoundCategory.EFFECT, "energy1.ogg");
 
 	public EnergyRestore(Entity owner, int damage, float cooldown) {
 		super(owner, damage, cooldown, 20);
@@ -27,9 +26,7 @@ public class EnergyRestore extends Weapon {
 			}
 		}
 		
-		activateSound.setPosition(owner.getCenter());
-		activateSound.randomizePitch(0.4f);
-		activateSound.play();
+		SoundManager.broadcastNetworkSound(owner.getCenter(), "energy1.ogg");
 	}
 
 	@Override

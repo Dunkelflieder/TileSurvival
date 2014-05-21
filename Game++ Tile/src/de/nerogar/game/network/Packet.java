@@ -78,5 +78,6 @@ public abstract class Packet {
 		registerPacket(PacketActivateWeapon.class);
 		registerPacket(PacketSelectPlayerClass.class);
 		registerPacket(PacketWave.class);
+		registerPacket(PacketSound.class);
 	}
 }

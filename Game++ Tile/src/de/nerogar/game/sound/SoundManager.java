@@ -6,7 +6,9 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.OpenALException;
 
+import de.nerogar.game.Game;
 import de.nerogar.game.Vector;
+import de.nerogar.game.network.PacketSound;
 
 public class SoundManager {
 
@@ -44,8 +46,7 @@ public class SoundManager {
 
 	/** creates the OpenAL Context, if it isn't already created */
 	public static void createAL() {
-		if (SoundManager.alCreated)
-			return;
+		if (SoundManager.alCreated) return;
 		try {
 			AL.create(); // quick and easy way to initialize OpenAL with the default audio device
 			alCreated = true;
@@ -159,6 +160,33 @@ public class SoundManager {
 				sources[i].updateGain(category);
 			}
 		}
+	}
+
+	public static void broadcastNetworkSound(Vector pos, String... sound) {
+
+		Sound activateSound = new Sound(SoundCategory.EFFECT, sound);
+		activateSound.setPosition(pos);
+		activateSound.randomizePitch(0.4f);
+		activateSound.play();
+
+		PacketSound packet = new PacketSound();
+		packet.sound = sound;
+		packet.pos = pos;
+
+		if (Game.game.map.isServerWorld()) {
+			Game.game.server.broadcastData(packet);
+			playNetworkSound(pos, sound);
+		} else {
+			Game.game.client.sendPacket(packet);
+		}
+
+	}
+
+	public static void playNetworkSound(Vector pos, String... sound) {
+		Sound activateSound = new Sound(SoundCategory.EFFECT, sound);
+		activateSound.setPosition(pos);
+		activateSound.randomizePitch(0.4f);
+		activateSound.play();
 	}
 
 }
