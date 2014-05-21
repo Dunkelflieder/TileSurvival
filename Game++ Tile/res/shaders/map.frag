@@ -6,6 +6,7 @@ uniform sampler2D normalTex;
 uniform vec2 offset;
 uniform float scale;
 uniform int lightsCount;
+uniform float random;
 
 uniform float lightsX[100];
 uniform float lightsY[100];
@@ -21,7 +22,7 @@ float rand(vec2 co){
 
 float light(vec2 lightPos, float size, float intensity){
 	float distMult = max((1.0 - pow(distance(pos, lightPos - offset)/size, 3.0)), 0.0);
-	float dirMult = max(dot((normalize(texture2D(normalTex, varyingTexCoord.xy).xyz - vec3(0.5, 0.5, 0.5))), normalize(vec3(pos-(lightPos - offset), 1.0))), 0.0);
+	float dirMult = max(dot((normalize(texture2D(normalTex, varyingTexCoord.xy).xyz - vec3(0.5, 0.5, 0.5))), normalize(vec3(pos-(lightPos - offset), 1.0+0.13*(rand(lightPos+vec2(random)))))), 0.0);
 
 	return dirMult * distMult * intensity;
 }

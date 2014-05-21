@@ -340,6 +340,7 @@ public class Map {
 		glUniform1f(glGetUniformLocation(shader.shaderHandle, "scale"), TILE_RENDER_SIZE);
 		glUniform1i(glGetUniformLocation(shader.shaderHandle, "colorTex"), 0);
 		glUniform1i(glGetUniformLocation(shader.shaderHandle, "normalTex"), 1);
+		glUniform1f(glGetUniformLocation(shader.shaderHandle, "random"), (float) Math.random());
 
 		glUniform1(glGetUniformLocation(shader.shaderHandle, "lightsX"), lightBufferX);
 		glUniform1(glGetUniformLocation(shader.shaderHandle, "lightsY"), lightBufferY);
