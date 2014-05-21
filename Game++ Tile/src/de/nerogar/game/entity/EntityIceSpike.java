@@ -44,7 +44,7 @@ public class EntityIceSpike extends EntityWeapon {
 	}
 
 	private void init() {
-		textureID = 16 * 15 + 4;
+		textureID = 16 * 15 + 5;
 
 		light = new Light(new Vector(), 2, 0.8f);
 
