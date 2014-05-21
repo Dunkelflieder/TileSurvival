@@ -24,6 +24,7 @@ public class EnemyGhost extends EntityEnemy {
 
 	@Override
 	public void recalcPath() {
+		if (target == null) return;
 		if (walkPos == null || walkPos.subtracted(target.getCenter()).getValue() > MAX_FIGHT_DISTANCE) {
 			walkPos = target.getCenter().add(new Vector((float) Math.random() - 0.5f, (float) Math.random() - 0.5f).setValue((float) Math.random() * MAX_FIGHT_DISTANCE));
 		}
