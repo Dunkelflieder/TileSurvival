@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL20.*;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.BrokenBarrierException;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
@@ -17,6 +18,7 @@ import de.nerogar.game.graphics.gui.FontRenderer;
 import de.nerogar.game.graphics.gui.GuiBank;
 import de.nerogar.game.network.*;
 import de.nerogar.game.pathfinder.Pathfinder;
+import de.nerogar.game.sound.SoundManager;
 
 public class Map {
 
@@ -299,6 +301,14 @@ public class Map {
 		} else if (packet instanceof PacketWave && !isServerWorld()) {
 			PacketWave packetWave = (PacketWave) packet;
 			wave.setWave(packetWave.wave);
+		} else if (packet instanceof PacketSound) {
+			PacketSound packetSound = (PacketSound) packet;
+			if (isServerWorld()) {
+				SoundManager.broadcastNetworkSound(packetSound.pos, packetSound.sound);
+			} else {
+				SoundManager.playNetworkSound(packetSound.pos, packetSound.sound);
+			}
+			
 		}
 	}
 
