@@ -6,8 +6,6 @@ import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex3f;
 
-import java.util.Random;
-
 import de.nerogar.game.*;
 import de.nerogar.game.graphics.TextureBank;
 import de.nerogar.game.sound.SoundCategory;

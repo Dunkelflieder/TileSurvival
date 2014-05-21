@@ -2,8 +2,6 @@ package de.nerogar.game.weapon;
 
 import de.nerogar.game.Vector;
 import de.nerogar.game.entity.*;
-import de.nerogar.game.sound.Sound;
-import de.nerogar.game.sound.SoundCategory;
 import de.nerogar.game.sound.SoundManager;
 
 public class EnergyRestore extends Weapon {

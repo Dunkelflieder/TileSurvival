@@ -6,7 +6,6 @@ import static org.lwjgl.opengl.GL20.*;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.BrokenBarrierException;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
