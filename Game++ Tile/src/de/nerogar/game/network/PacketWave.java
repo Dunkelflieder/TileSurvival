@@ -15,7 +15,7 @@ public class PacketWave extends Packet {
 	public void pack() {
 		data = new DNFile();
 
-		data.addFloat("w", wave);
+		data.addInt("w", wave);
 
 		packedData = data.toByteArray();
 	}
