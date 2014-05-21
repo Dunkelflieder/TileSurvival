@@ -18,7 +18,14 @@ public class GuardTower extends Weapon {
 
 	@Override
 	public boolean canActivate() {
-		return true;
+		int existingCount = 0;
+		for (Entity entity : owner.map.getEntities()) {
+			if (entity instanceof EntityGuardTower && ((EntityWeapon) entity).sender == owner) {
+				existingCount++;
+			}
+		}
+
+		return existingCount < 10;
 	}
 
 	@Override
