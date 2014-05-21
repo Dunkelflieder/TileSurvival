@@ -88,6 +88,7 @@ public class Map {
 	private int[] tileIDs;
 	private int size;
 	public boolean ready;
+	private float playTime;
 
 	//server
 	private int worldType;
@@ -161,6 +162,8 @@ public class Map {
 	}
 
 	public void update(float time) {
+		playTime += time;
+
 		if (worldType == SERVER_WORLD) {
 
 			for (Entity entity : getEntities()) {
@@ -340,7 +343,7 @@ public class Map {
 		glUniform1f(glGetUniformLocation(shader.shaderHandle, "scale"), TILE_RENDER_SIZE);
 		glUniform1i(glGetUniformLocation(shader.shaderHandle, "colorTex"), 0);
 		glUniform1i(glGetUniformLocation(shader.shaderHandle, "normalTex"), 1);
-		glUniform1f(glGetUniformLocation(shader.shaderHandle, "random"), (float) Math.random());
+		glUniform1f(glGetUniformLocation(shader.shaderHandle, "random"), playTime);
 
 		glUniform1(glGetUniformLocation(shader.shaderHandle, "lightsX"), lightBufferX);
 		glUniform1(glGetUniformLocation(shader.shaderHandle, "lightsY"), lightBufferY);

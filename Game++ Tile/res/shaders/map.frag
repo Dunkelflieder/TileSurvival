@@ -17,12 +17,13 @@ vec3 nightColor=vec3(0.3, 0.6, 1.0);
 vec3 torchColor=vec3(1.2, 0.6, 0.3);
 
 float rand(vec2 co){
+	co*=.000001+.0000002*co.y;
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
 float light(vec2 lightPos, float size, float intensity){
 	float distMult = max((1.0 - pow(distance(pos, lightPos - offset)/size, 3.0)), 0.0);
-	float dirMult = max(dot((normalize(texture2D(normalTex, varyingTexCoord.xy).xyz - vec3(0.5, 0.5, 0.5))), normalize(vec3(pos-(lightPos - offset), 1.0+0.13*(rand(lightPos+vec2(random)))))), 0.0);
+	float dirMult = max(dot((normalize(texture2D(normalTex, varyingTexCoord.xy).xyz - vec3(0.5, 0.5, 0.5))), normalize(vec3(pos-(lightPos - offset), 1.0+0.07*(rand(lightPos+vec2(random, 0.0)))))), 0.0);
 
 	return dirMult * distMult * intensity;
 }
