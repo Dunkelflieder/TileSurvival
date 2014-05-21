@@ -3,11 +3,14 @@ package de.nerogar.game.entity;
 import static org.lwjgl.opengl.GL11.glColor3f;
 import de.nerogar.game.*;
 import de.nerogar.game.graphics.Light;
+import de.nerogar.game.sound.Sound;
+import de.nerogar.game.sound.SoundCategory;
 
 public class EntityBomb extends EntityWeapon {
 
 	private final float MAX_LIFETIME = 3f;
 	private float lifetime;
+	private Sound activateSound = new Sound(SoundCategory.EFFECT, "place1.ogg");
 
 	public EntityBomb(Map map, Vector pos) {
 		super(map, pos);
@@ -23,9 +26,13 @@ public class EntityBomb extends EntityWeapon {
 	}
 
 	private void init() {
-		textureID = 16 * 15 + 3;
+		textureID = 16 * 15 + 6;
 
 		light = new Light(pos, 3f, 0.5f);
+		
+		activateSound.setPosition(pos);
+		activateSound.randomizePitch(0.4f);
+		activateSound.play();
 	}
 
 	@Override

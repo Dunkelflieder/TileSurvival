@@ -2,10 +2,13 @@ package de.nerogar.game.weapon;
 
 import de.nerogar.game.Vector;
 import de.nerogar.game.entity.*;
+import de.nerogar.game.sound.Sound;
+import de.nerogar.game.sound.SoundCategory;
 
 public class Taunt extends Weapon {
 
 	public float MAX_RESTORE_DISTANCE = 10.0f;
+	private Sound activateSound = new Sound(SoundCategory.EFFECT, "taunt.ogg");
 
 	public Taunt(Entity owner, int damage, float cooldown) {
 		super(owner, damage, cooldown, 30);
@@ -27,7 +30,11 @@ public class Taunt extends Weapon {
 				}
 			}
 		}
-		owner.health = Math.min(owner.health + damage, owner.maxHealth);
+		//owner.health = Math.min(owner.health + damage, owner.maxHealth);
+		
+		activateSound.setPosition(owner.getCenter());
+		activateSound.randomizePitch(0.4f);
+		activateSound.play();
 	}
 
 	@Override

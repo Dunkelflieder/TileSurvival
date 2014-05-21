@@ -6,12 +6,15 @@ import java.util.ArrayList;
 
 import de.nerogar.game.*;
 import de.nerogar.game.graphics.Light;
+import de.nerogar.game.sound.Sound;
+import de.nerogar.game.sound.SoundCategory;
 
 public class EntityTrap extends EntityWeapon {
 
 	private int hitCount;
 	private int maxHitcount = 10;
 	private ArrayList<Entity> hitEntities;
+	private Sound activateSound = new Sound(SoundCategory.EFFECT, "place1.ogg");
 
 	public EntityTrap(Map map, Vector pos) {
 		super(map, pos);
@@ -32,6 +35,10 @@ public class EntityTrap extends EntityWeapon {
 		textureID = 16 * 15 + 4;
 
 		light = new Light(new Vector(), 2, 0.8f);
+		
+		activateSound.setPosition(pos);
+		activateSound.randomizePitch(0.4f);
+		activateSound.play();
 	}
 
 	@Override

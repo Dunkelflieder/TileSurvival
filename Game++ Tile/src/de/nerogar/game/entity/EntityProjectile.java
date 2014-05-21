@@ -18,7 +18,6 @@ public abstract class EntityProjectile extends EntityWeapon {
 		super(map, pos);
 		this.maxHitCount = maxHitCount;
 		dimension = new Vector(1f);
-		init();
 	}
 
 	public EntityProjectile(Entity sender, Map map, Vector pos, Vector target, int damage, int maxHitCount, int speed) {
@@ -35,8 +34,6 @@ public abstract class EntityProjectile extends EntityWeapon {
 		direction.setValue(moveSpeed);
 
 		hitEntities = new ArrayList<Entity>();
-
-		init();
 	}
 
 	protected abstract void init();

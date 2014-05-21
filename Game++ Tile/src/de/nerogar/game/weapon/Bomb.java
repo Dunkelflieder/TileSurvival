@@ -2,9 +2,11 @@ package de.nerogar.game.weapon;
 
 import de.nerogar.game.Vector;
 import de.nerogar.game.entity.*;
+import de.nerogar.game.sound.Sound;
+import de.nerogar.game.sound.SoundCategory;
 
 public class Bomb extends Weapon {
-
+	
 	public Bomb(Entity owner, int damage, float cooldown) {
 		super(owner, damage, cooldown, 20);
 		textureID = 8 * 1 + 2;

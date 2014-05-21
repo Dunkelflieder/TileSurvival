@@ -2,11 +2,15 @@ package de.nerogar.game.weapon;
 
 import de.nerogar.game.Vector;
 import de.nerogar.game.entity.*;
+import de.nerogar.game.sound.Sound;
+import de.nerogar.game.sound.SoundCategory;
 
 public class Heal extends Weapon {
 
 	public float MAX_RESTORE_DISTANCE = 5.0f;
 
+	private Sound activateSound = new Sound(SoundCategory.EFFECT, "heal1.ogg");
+	
 	public Heal(Entity owner, int damage, float cooldown) {
 		super(owner, damage, cooldown, 40);
 		textureID = 8 * 3 + 0;
@@ -22,6 +26,10 @@ public class Heal extends Weapon {
 				}
 			}
 		}
+		
+		activateSound.setPosition(owner.getCenter());
+		activateSound.randomizePitch(0.4f);
+		activateSound.play();
 	}
 
 	@Override
