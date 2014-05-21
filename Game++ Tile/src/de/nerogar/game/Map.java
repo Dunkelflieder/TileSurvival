@@ -55,10 +55,12 @@ public class Map {
 	public static final Tile FENCE_DOOR_RD = new Tile(29, false);
 	public static final Tile FENCE_DOOR_LD = new Tile(30, false);
 	public static final Tile FENCE_DOOR_LU = new Tile(31, false);
+	public static final Tile STONES = new Tile(32, true);
 
 	public static final Tile[] TILES = new Tile[] { FLOOR, ROCK, TREE, TORCH, CHEST, OPEN_CHEST, DOOR, DOOR_OPEN, //
-			WALL_V, WALL_H, WALL_TR, WALL_TU, WALL_TD, WALL_TL, WALL_RU, WALL_RD, WALL_LU, WALL_LD, WALL_CROSS,//
-			FENCE_V, FENCE_H, FENCE_TD, FENCE_TU, FENCE_TR, FENCE_DOOR_UL, FENCE_DOOR_UR, FENCE_DOOR_DL, FENCE_DOOR_DR, FENCE_DOOR_RU, FENCE_DOOR_RD, FENCE_DOOR_LD, FENCE_DOOR_LU };
+	WALL_V, WALL_H, WALL_TR, WALL_TU, WALL_TD, WALL_TL, WALL_RU, WALL_RD, WALL_LU, WALL_LD, WALL_CROSS,//
+	FENCE_V, FENCE_H, FENCE_TD, FENCE_TU, FENCE_TR, FENCE_DOOR_UL, FENCE_DOOR_UR, FENCE_DOOR_DL, FENCE_DOOR_DR, FENCE_DOOR_RU, FENCE_DOOR_RD, FENCE_DOOR_LD, FENCE_DOOR_LU,//
+	STONES };
 
 	//texture
 	public static final float TILE_RENDER_SIZE = 64f;

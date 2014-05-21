@@ -69,11 +69,15 @@ public class MapLoader {
 			return Map.FLOOR.id;//bones
 
 		case 0x000000:
-			return Map.TREE.id;// +
+			return Map.TREE.id;
+			
+		case 0x00000a:
+			return Map.STONES.id;
+			
+		case 0x969600:
+			return Map.TORCH.id;
 			//old
 
-		case 0x00a000:
-			return Map.FLOOR.id;
 			/*case 0x00a000:
 				return Map.FLOOR.id;
 			case 0x000000:
