@@ -12,7 +12,7 @@ import de.nerogar.game.graphics.TextureBank;
 public class GCredits extends Gui {
 
 	private GEButton buttonBack;
-	private GEText textNerogar1, textNerogar2, textFelk1, textFelk2, textGurke1, textGurke2;
+	private GEText textNerogar1, textNerogar2, textFelk1, textFelk2, textGurke1, textGurke2, textLegal1, textLegal2;
 
 	public GCredits() {
 		super(true);
@@ -28,9 +28,14 @@ public class GCredits extends Gui {
 		textFelk1 = new GEText(new Vector(64, 300), new Vector(180, 24), "Felk:");
 		textGurke1 = new GEText(new Vector(64, 360), new Vector(180, 24), "Gurke:");
 
-		textNerogar2 = new GEText(new Vector(280, 240), new Vector(Game.game.WIDTH - 300, 24), "lead programming, artwork");
+		textNerogar2 = new GEText(new Vector(280, 240), new Vector(Game.game.WIDTH - 300, 24), "game design, lead programming, artwork");
 		textFelk2 = new GEText(new Vector(280, 300), new Vector(Game.game.WIDTH - 300, 24), "additional programming, music & sound");
-		textGurke2 = new GEText(new Vector(280, 360), new Vector(Game.game.WIDTH - 300, 24), "lead game design, map design");
+		textGurke2 = new GEText(new Vector(280, 360), new Vector(Game.game.WIDTH - 300, 24), "game design, map design, artwork");
+		
+		textLegal1 = new GEText(new Vector(20, 440), new Vector(Game.game.WIDTH - 40, 24), "This software uses LWJGL and JOrbis");
+		textLegal2 = new GEText(new Vector(20, 480), new Vector(Game.game.WIDTH - 40, 24), "Programmed in 2 weeks for the Game++ Community Challenge #2");
+		textLegal1.setAlignment(FontRenderer.CENTERED);
+		textLegal2.setAlignment(FontRenderer.CENTERED);
 		
 		textNerogar1.setAlignment(FontRenderer.LEFT);
 		textFelk1.setAlignment(FontRenderer.LEFT);
@@ -39,9 +44,9 @@ public class GCredits extends Gui {
 		textFelk2.setAlignment(FontRenderer.LEFT);
 		textGurke2.setAlignment(FontRenderer.LEFT);
 
-		buttonBack = new GEButton(new Vector(posX, 420), new Vector(Map.TILE_RENDER_SIZE * 4, Map.TILE_RENDER_SIZE), "back");
+		buttonBack = new GEButton(new Vector(posX, 520), new Vector(Map.TILE_RENDER_SIZE * 4, Map.TILE_RENDER_SIZE), "back");
 
-		addGuiElements(buttonBack, textNerogar1, textFelk1, textGurke1, textNerogar2, textFelk2, textGurke2);
+		addGuiElements(buttonBack, textNerogar1, textFelk1, textGurke1, textNerogar2, textFelk2, textGurke2, textLegal1, textLegal2);
 
 	}
 

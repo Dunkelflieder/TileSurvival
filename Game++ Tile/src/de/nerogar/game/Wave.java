@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import de.nerogar.game.entity.Entity;
 import de.nerogar.game.entity.enemy.*;
+import de.nerogar.game.network.PacketWave;
 
 public class Wave {
 	public int wave;
@@ -19,6 +20,11 @@ public class Wave {
 			wave++;
 			spawnEnemies();
 			System.out.println("wave " + wave + " started.");
+			if (map.isServerWorld()){
+				PacketWave packet = new PacketWave();
+				packet.wave = wave;
+				Game.game.server.broadcastData(packet);
+			}
 		}
 	}
 
@@ -50,5 +56,9 @@ public class Wave {
 		for (int i = 0; i < 5; i++) {
 			map.spawnEntity(new EnemyGhost(map, getRandomSpawnLocation()));
 		}
+	}
+
+	public void setWave(int wave) {
+		this.wave = wave;
 	}
 }
