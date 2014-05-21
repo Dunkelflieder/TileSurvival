@@ -91,7 +91,6 @@ public class EntityPlayer extends Entity {
 
 			if (weapon.cooldown <= 0f && energy >= weapon.energyCost && weapon.canActivate()) {
 				if (client == null) getPlayerClass().getSelectedWeapon().start(target);
-				energy -= getPlayerClass().getSelectedWeapon().energyCost;
 				weapon.cooldown = weapon.maxCooldown;
 				playerClass.setCurrentWeaponUsed();
 
@@ -101,6 +100,8 @@ public class EntityPlayer extends Entity {
 					activateWeaponPacket.playerID = id;
 					activateWeaponPacket.selectedWeapon = getPlayerClass().selectedWeapon;
 					Game.game.client.sendPacket(activateWeaponPacket);
+				} else {
+					energy -= getPlayerClass().getSelectedWeapon().energyCost;
 				}
 			}
 		}
