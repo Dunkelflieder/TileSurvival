@@ -35,11 +35,11 @@ public class Wave {
 
 	private void spawnEnemies() {
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 5; i++) {
 			map.spawnEntity(new EnemyRat(map, getRandomSpawnLocation()));
 		}
-		
-		for (int i = 0; i < 10; i++) {
+
+		for (int i = 0; i < 4; i++) {
 			map.spawnEntity(new EnemyNekro(map, getRandomSpawnLocation()));
 		}
 
