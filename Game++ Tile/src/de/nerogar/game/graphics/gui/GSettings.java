@@ -64,18 +64,16 @@ public class GSettings extends Gui {
 
 		glBegin(GL_QUADS);
 
-		Random r = new Random();
-
-		glTexCoord2f(r.nextFloat(), r.nextFloat());
+		glTexCoord2f(0, 0);
 		glVertex3f(0, 0, -1f);
 
-		glTexCoord2f(r.nextFloat(), r.nextFloat());
+		glTexCoord2f(1, 0);
 		glVertex3f(Game.game.WIDTH, 0, -1f);
 
-		glTexCoord2f(r.nextFloat(), r.nextFloat());
+		glTexCoord2f(1, 1);
 		glVertex3f(Game.game.WIDTH, Game.game.HEIGHT, -1f);
 
-		glTexCoord2f(r.nextFloat(), r.nextFloat());
+		glTexCoord2f(0, 1);
 		glVertex3f(0, Game.game.HEIGHT, -1f);
 
 		glEnd();
