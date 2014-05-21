@@ -29,10 +29,8 @@ public class EnemyNekro extends EntityEnemy {
 			}
 		}
 
-		if (bones.size() > 0)
-			return bones.get((int) (Math.random() * bones.size()));
-		else
-			return null;
+		if (bones.size() > 0) return bones.get((int) (Math.random() * bones.size()));
+		else return null;
 	}
 
 	@Override
@@ -50,6 +48,8 @@ public class EnemyNekro extends EntityEnemy {
 	public void update(float time) {
 		super.update(time);
 
+		float boneDist = 1f;
+
 		if (nextRandomUpdate < 0f) {
 			if (target == null) return;
 			recalcPath();
@@ -57,7 +57,7 @@ public class EnemyNekro extends EntityEnemy {
 			nextRandomUpdate = (float) (Math.random() * 10.0);
 		}
 
-		if (path != null && pathProgress < path.size() - 1) {
+		if (path != null && pathProgress < path.size() - 1 && target.getCenter().subtract(getCenter()).getValue() > boneDist) {
 			Vector dir = path.get(pathProgress + 1).toVector().subtracted(pos);
 			float targetDist = dir.getValue();
 			dir.setValue(moveSpeed * time);
@@ -69,7 +69,7 @@ public class EnemyNekro extends EntityEnemy {
 			move(dir.multiplied(speedmult));
 		}
 
-		if (intersects(target)) {
+		if (target.getCenter().subtract(getCenter()).getValue() < boneDist) {
 			if (nextSpawn < 0) {
 				map.spawnEntity(new EnemySkeleton(map, target.pos.clone()));
 				nextSpawn = (float) (10f * Math.random() + 15f);
